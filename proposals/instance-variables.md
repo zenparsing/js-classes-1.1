@@ -85,7 +85,7 @@ The *instance variable definition list* is stored in an internal slot on the cla
 
 ### Instance Variable Initialization
 
-Objects contain a possibly empty *instance variable list*. Each entry in the *instance variable list* is a record that contains an *instance variable key* and a value. The *instance variable list* is used to store the current values of the object's instance variables.
+Objects contain a possibly empty *instance variable list* in an `[[InstanceVariableList]]` internal slot. Each entry in the *instance variable list* is a record that contains an *instance variable key* and a value. The *instance variable list* is used to store the current values of the object's instance variables.
 
 Immediately before the `this` value is bound to a function environment record within **SuperCall** evaluation and `[[Construct]]`, if the current function has a `[[HomeObject]]` and the `[[HomeObject]]` has a non-empty *instance variable definition list*, we perform the following operation:
 
@@ -128,7 +128,8 @@ An *instance variable environment record* contains a reference to the function e
 - For each record *entry* in *thisValue*.[[InstanceVariableList]].
   - If *entry*.[[InstanceVariableKey]] matches *instanceVarKey*
     - Set *entry*.[[InstanceVariableValue]] to *value*.
-- Throw a **ReferenceError**.
+    - Let *instanceVarFound* be **true**.
+- If *instanceVarFound* is **false** throw a **ReferenceError*.
 
 #### DeleteBinding(name)
 
