@@ -31,7 +31,7 @@ class Point {
   let x = 0, y = 0;
 
   print() {
-    console.log(`<${ x }, ${ y }`);
+    console.log(`<${ x },${ y }>`);
   }
 }
 ```
