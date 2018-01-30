@@ -12,17 +12,17 @@ ClassElementList:
   ...
 
 InstanceVariableDeclaration:
-  let InstanceVariableList ;
+  let InstanceVariableBindingList ;
 
-InstanceVariableList:
-  InstanceVariableDefinition
-  InstanceVariableList , InstanceVariableDefinition
+InstanceVariableBindingList:
+  InstanceVariableBinding
+  InstanceVariableBindingList , InstanceVariableBinding
 
-InstanceVariableDefinition:
+InstanceVariableBinding:
   BindingIdentifier Initializer?
 ```
 
-Early errors prohibit duplicate instance variable binding names within a class body.
+Early errors prohibit duplicate instance variable binding names within a single class body.
 
 Example:
 
@@ -87,7 +87,7 @@ The *instance variable definition list* is stored in an internal slot on the cla
 
 Objects contain a possibly empty *instance variable list* in an `[[InstanceVariableList]]` internal slot. Each entry in the *instance variable list* is a record that contains an *instance variable key* and a value. The *instance variable list* is used to store the current values of the object's instance variables.
 
-Immediately before the `this` value is bound to a function environment record within **SuperCall** evaluation and `[[Construct]]`, if the current function has a `[[HomeObject]]` and the `[[HomeObject]]` has a non-empty *instance variable definition list*, we perform the following operation:
+Immediately after the `this` value is bound to a function environment record within **SuperCall** evaluation and `[[Construct]]`, if the current function has a `[[HomeObject]]` and the `[[HomeObject]]` has a non-empty *instance variable definition list*, we perform the following operation:
 
 For each entry in the *instance variable definition list*:
 
@@ -96,7 +96,7 @@ For each entry in the *instance variable definition list*:
 
 > Evaluating initializers within the execution context's instance variable environment ensures that initializers have access to the values of other instance variables that have already been initialized.
 
-> Accessing the "this" value within an initializer expression will throw a ReferenceError
+> The "this" value can be used within initializer expressions to refer to the newly constructed object.
 
 ### Method and Constructor Invocation
 
