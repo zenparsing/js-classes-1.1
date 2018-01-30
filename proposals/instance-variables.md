@@ -40,7 +40,7 @@ Member expressions are extended to allow *instance variable member expressions*.
 
 ```
 MemberExpression:
-  MemberExpression .& Identitfier
+  MemberExpression -> Identitfier
   ..
 ```
 
@@ -53,7 +53,7 @@ class Point {
   let x = 0, y = 0;
 
   equals(otherPoint) {
-    return x === otherPoint.&x && y === otherPoint.&y;
+    return x === otherPoint->x && y === otherPoint->y;
   }
 }
 ```
@@ -137,7 +137,7 @@ An *instance variable environment record* contains a reference to the function e
 
 ### Instance Variable Member Expressions
 
-To evaluate an expression of the form `x .& y` we attempt to resolve a binding whose name is the result of calling **MapInstanceVariableName** on the string value of the right operand. If a binding is not found we throw a **ReferenceError**. Otherwise, we return an *instance variable reference* whose *base* component is the result of evaluating the left operand and whose *name* component is the resolved *instance variable key*.
+To evaluate an expression of the form `x->y` we attempt to resolve a binding whose name is the result of calling **MapInstanceVariableName** on the string value of the right operand. If a binding is not found we throw a **ReferenceError**. Otherwise, we return an *instance variable reference* whose *base* component is the result of evaluating the left operand and whose *name* component is the resolved *instance variable key*.
 
 When **GetValue** is called on an *instance variable reference*, we perform the following operations:
 
