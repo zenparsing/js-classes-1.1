@@ -1,6 +1,6 @@
 # Proposal: Instance Variables
 
-For background see [Assumptions and Constraints](../docs/assumptions-and-constraints.md).
+For background see [Assumptions and Constraints](../../docs/assumptions-and-constraints.md).
 
 ## Syntax
 
