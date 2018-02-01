@@ -33,6 +33,12 @@ Given the usage of `private` in TypeScript, users have difficulty understanding 
 
   - This constraint rules out `#`-prefixed private field names.
 
+### C4. Traditional access specifiers are taken
+
+Given the usage of `private` and `protected` in TypeScript, we can't change the meaning of these keywords within class bodies without significant disruption to TypeScript.
+
+  - This constraint rules out `private` declarations in the class body.
+
 ## Additional Considerations
 
 - The WeakMap model of private state works well for most use cases, including edge cases like "super-override".
