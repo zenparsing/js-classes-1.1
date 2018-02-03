@@ -1,15 +1,6 @@
 class Counter extends HTMLElement {
   var x;
 
-  hidden clicked() {
-    this->x++;
-    window.requestAnimationFrame(() => this->render());
-  }
-
-  hidden render() {
-    this.textContent = this->x.toString();
-  }
-
   constructor() {
     super();
     this->x = 0;
@@ -18,6 +9,15 @@ class Counter extends HTMLElement {
 
   connectedCallback() {
     this->render();
+  }
+
+  hidden clicked() {
+    this->x++;
+    window.requestAnimationFrame(() => this->render());
+  }
+
+  hidden render() {
+    this.textContent = this->x.toString();
   }
 
   static {
