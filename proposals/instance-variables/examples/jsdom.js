@@ -5,42 +5,42 @@ export const registry = new JSDOMRegistry();
 export class JSDOM {
   var createdBy;
 
-  hidden registerWithRegistry(registryName) {
-    // ...elided...
+  hidden registerWithRegistry() {
+    // ... elided ...
   }
 
-  hidden finalizeFactoryCreated(factoryName) {
-    this->createdBy = factoryName;
-    this->registerWithRegistry(registry);
-    return this;
-  }
-
-  async static fromURL(url, options = {}) {
-    normalizeFromURLOptions(options);
-    normalizeOptions(options);
+  static async fromURL(url, options = {}) {
+    JSDOM->normalizeFromURLOptions(options);
+    JSDOM->normalizeOptions(options);
 
     const body = await getBodyFromURL(url);
-    return new this(body, options)->finalizeFactoryCreated(factoryName);
+    return JSDOM->finalizeFactoryCreated(new JSDOM(body, options), "fromURL");
   }
 
-  async static fromFile(filename, options = {}) {
-    normalizeOptions(options);
+  static fromFile(filename, options = {}) {
+    JSDOM->normalizeOptions(options);
 
     const body = await getBodyFromFilename(filename);
-    return new this(body, options)->finalizeFactoryCreated(factoryName);
+    return JSDOM->finalizeFactoryCreated(new JSDOM(body, options), "fromFile");
   }
 
-}
-
-function normalizeFromURLOptions(options) {
-  if (options.referrer === undefined) {
-    throw new TypeError();
+  static hidden finalizeFactoryCreated(jsdom, factoryName) {
+    jsdom->createdBy = factoryName;
+    jsdom->registerWithRegistry(registry);
+    return jsdom;
   }
-}
 
-function normalizeOptions(options) {
-  if (options.url === undefined) {
-    throw new TypeError();
+  static hidden normalizeFromURLOptions(options) {
+    if (options.referrer === undefined) {
+      throw new TypeError();
+    }
   }
-  options.url = (new URL(options.url)).href;
+
+  static hidden normalizeOptions(options) {
+    if (options.url === undefined) {
+      throw new TypeError();
+    }
+    options.url = (new URL(options.url)).href;
+  }
+
 }
