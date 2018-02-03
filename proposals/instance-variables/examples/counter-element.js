@@ -1,5 +1,5 @@
 class Counter extends HTMLElement {
-  var x = 0;
+  var x;
 
   hidden clicked() {
     this->x++;
@@ -12,7 +12,8 @@ class Counter extends HTMLElement {
 
   constructor() {
     super();
-    this.onclick = () => this->bind();
+    this->x = 0;
+    this.onclick = () => this->clicked();
   }
 
   connectedCallback() {
