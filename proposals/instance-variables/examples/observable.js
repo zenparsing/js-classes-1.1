@@ -6,22 +6,23 @@ let setState;
 let getObserver;
 
 class Subscription {
-  let _state = 'initializing';
-  let _observer;
-  let _cleanup;
+  var state;
+  var observer;
+  var cleanup;
 
   constructor(observer, subscriber) {
-    _observer = observer;
+    this->state = 'initializing';
+    this->observer = observer;
 
     let subscriptionObserver = new SubscriptionObserver(this);
 
     try {
-      _cleanup = subscriber.call(undefined, subscriptionObserver);
+      this->cleanup = subscriber.call(undefined, subscriptionObserver);
     } catch (err) {
       enqueue(() => subscriptionObserver.error(err));
     }
 
-    _state = 'ready';
+    this->state = 'ready';
   }
 
   unsubscribe() {
@@ -31,104 +32,103 @@ class Subscription {
     }
   }
 
+  get closed() {
+    return this->state === 'closed';
+  }
+
+  hidden close() {
+    this->observer = undefined;
+    this->state = 'closed';
+  }
+
+  hidden validate() {
+    switch (this->state) {
+      case 'ready': break;
+      case 'initializing': throw new Error('Subscription is not initialized');
+      case 'running': throw new Error('Subscription observer is already running');
+    }
+  }
+
+  hidden cleanup() {
+    let cleanup = this->cleanup;
+    if (cleanup === undefined)
+      return;
+
+    this->cleanup = undefined;
+    if (!cleanup) {
+      return;
+    }
+
+    if (typeof cleanup === 'function') {
+      cleanup();
+    } else {
+      let unsubscribe = getMethod(cleanup, 'unsubscribe');
+      if (unsubscribe) {
+        unsubscribe.call(cleanup);
+      }
+    }
+  }
+
   static {
-
-    subscriptionClosed = s => {
-      return s->_state = 'closed';
-    };
-
-    closeSubscription = s => {
-      s->_observer = undefined;
-      s->_state = 'closed';
-    };
-
-    validateSubscription = s => {
-      switch (s->_state) {
-        case 'ready': break;
-        case 'initializing': throw new Error('Subscription is not initialized');
-        case 'running': throw new Error('Subscription observer is already running');
-      }
-    };
-
-    cleanupSubscription = s => {
-      let cleanup = s->_cleanup;
-      if (cleanup === undefined)
-        return;
-
-      s->_cleanup = undefined;
-      if (!cleanup) {
-        return;
-      }
-
-      if (typeof cleanup === 'function') {
-        cleanup();
-      } else {
-        let unsubscribe = getMethod(cleanup, 'unsubscribe');
-        if (unsubscribe) {
-          unsubscribe.call(cleanup);
-        }
-      }
-    };
-
-    setState = (s, state) => {
-      s->_state = state;
-    };
-
-    getObserver = s => {
-      return s->_observer;
-    };
-
+    subscriptionClosed = s => s->state = 'closed';
+    closeSubscription = s => s->close();
+    validateSubscription = s => s->validate();
+    cleanupSubscription = s => s->cleanup();
+    setState = (s, state) => void s->state = state;
+    getObserver = s => s->observer;
   }
 
 }
 
 class SubscriptionObserver {
-  let _subscription;
+  var subscription;
 
   constructor(subscription) {
-    _subscription = subscription;
+    this->subscription = subscription;
   }
 
   get closed() {
-    return subscriptionClosed(_subscription);
+    return subscriptionClosed(this->subscription);
   }
 
   next(value) {
-    if (subscriptionClosed(_subscription))
+    let subscription = this->subscription;
+    if (subscriptionClosed(subscription))
       return;
 
-    validateSubscription(_subscription);
+    validateSubscription(subscription);
 
-    let observer = getObserver(_subscription);
+    let observer = getObserver(subscription);
     let m = getMethod(observer, 'next');
     if (!m) return;
 
-    setState(_subscription, 'running');
+    setState(subscription, 'running');
 
     try {
       m.call(observer, value);
     } finally {
-      if (!subscriptionClosed(_subscription))
-        setState(_subscription, 'ready');
+      if (!subscriptionClosed(subscription))
+        setState(subscription, 'ready');
     }
   }
 
   error(value) {
-    if (subscriptionClosed(_subscription)) {
+    let subscription = this->subscription;
+    if (subscriptionClosed(subscription)) {
       throw value;
     }
 
-    validateSubscription(_subscription);
+    validateSubscription(subscription);
 
-    let observer = getObserver(_subscription);
-    closeSubscription(_subscription);
+    let observer = getObserver(subscription);
+    closeSubscription(subscription);
 
     try {
       let m = getMethod(observer, 'error');
       if (m) m.call(observer, value);
       else throw value;
     } catch (e) {
-      try { cleanupSubscription(_subscription) }
+      try { cleanupSubscription(subscription) }
       finally { throw e }
     }
 
@@ -136,29 +136,30 @@ class SubscriptionObserver {
   }
 
   complete() {
-    if (subscriptionClosed(_subscription))
+    let subscription = this->subscription;
+    if (subscriptionClosed(subscription))
       return;
 
-    validateSubscription(_subscription);
+    validateSubscription(subscription);
 
-    let observer = getObserver(_subscription);
-    closeSubscription(_subscription);
+    let observer = getObserver(subscription);
+    closeSubscription(subscription);
 
     try {
       let m = getMethod(observer, 'complete');
       if (m) m.call(observer);
     } catch (e) {
-      try { cleanupSubscription(_subscription) }
+      try { cleanupSubscription(subscription) }
       finally { throw e }
     }
 
-    cleanupSubscription(_subscription);
+    cleanupSubscription(subscription);
   }
 
 }
 
 class Observable {
-  let _subscriber;
+  var subscriber;
 
   constructor(subscriber) {
     if (!(this instanceof Observable))
@@ -167,7 +168,7 @@ class Observable {
     if (typeof subscriber !== 'function')
       throw new TypeError('Observable initializer must be a function');
 
-    _subscriber = subscriber;
+    this->subscriber = subscriber;
   }
 
   subscribe(observer) {
@@ -178,7 +179,7 @@ class Observable {
         complete: arguments[2],
       };
     }
-    return new Subscription(observer, _subscriber);
+    return new Subscription(observer, this->subscriber);
   }
 
   forEach(fn) {

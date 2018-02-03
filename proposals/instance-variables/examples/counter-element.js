@@ -1,14 +1,23 @@
 class Counter extends HTMLElement {
-  let x = 0;
-  let clicked = () => void(x++, window.requestAnimationFrame(render));
-  let render = () => (this.textContent = x.toString());
+  var x = 0;
+
+  hidden clicked() {
+    this->x++;
+    window.requestAnimationFrame(() => this->render());
+  }
+
+  hidden render() {
+    this.textContent = this->x.toString();
+  }
 
   constructor() {
     super();
-    this.onclick = clicked;
+    this.onclick = () => this->bind();
   }
 
-  connectedCallback() { render(); }
+  connectedCallback() {
+    this->render();
+  }
 
   static {
     window.customElements.define('num-counter', this);

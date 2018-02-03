@@ -3,31 +3,31 @@
 export const registry = new JSDOMRegistry();
 
 export class JSDOM {
-  let createdBy;
+  var createdBy;
 
-  let registerWithRegistry = () => {
-    // ... elided ...
-  };
+  hidden registerWithRegistry(registryName) {
+    // ...elided...
+  }
 
-  let finalizeFactoryCreated = factoryName => {
-    createdBy = factoryName;
-    registerWithRegistry(registry);
+  hidden finalizeFactoryCreated(factoryName) {
+    this->createdBy = factoryName;
+    this->registerWithRegistry(registry);
     return this;
-  };
+  }
 
   async static fromURL(url, options = {}) {
     normalizeFromURLOptions(options);
     normalizeOptions(options);
 
     const body = await getBodyFromURL(url);
-    return new JSDOM(body, options)->finalizeFactoryCreated(factoryName);
+    return new this(body, options)->finalizeFactoryCreated(factoryName);
   }
 
   async static fromFile(filename, options = {}) {
     normalizeOptions(options);
 
     const body = await getBodyFromFilename(filename);
-    return new JSDOM(body, options)->finalizeFactoryCreated(factoryName);
+    return new this(body, options)->finalizeFactoryCreated(factoryName);
   }
 
 }
