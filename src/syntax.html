@@ -15,7 +15,7 @@
       <ins>`hidden` MethodDefinition[?Yield, ?Await]</ins>
       `static` MethodDefinition[?Yield, ?Await]
       <ins>`static` `hidden` MethodDefinition[?Yield, ?Await]</ins>
-      <ins>`static` `{` StatementList[~Yield, ~Await] `}`</ins>
+      <ins>ClassInitializerBlock</ins>
       `;`
 
     InstanceVariableDefinition :
@@ -24,6 +24,9 @@
     InstanceVariableList :
       BindingIdentifier
       InstanceVariableList `,` BindingIdentifier
+
+    ClassInitializerBlock :
+      `static` `{` StatementList[~Yield, ~Await]? `}`
 
     MemberExpression[Yield, Await] :
       PrimaryExpression[?Yield, ?Await]
@@ -36,7 +39,7 @@
       `new` MemberExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
 
     CallExpression[Yield, Await] :
-      CoverCallExpressionAndAsyncArrowHead[?Yield, ?Await] #callcover
+      CoverCallExpressionAndAsyncArrowHead[?Yield, ?Await]
       SuperCall[?Yield, ?Await]
       CallExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
       CallExpression[?Yield, ?Await] `[` Expression[+In, ?Yield, ?Await] `]`
