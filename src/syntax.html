@@ -10,7 +10,7 @@
       <ins>`hidden` MethodDefinition[?Yield, ?Await]</ins>
 
     ClassElement[Yield, Await] :
-      <ins>InstanceVariableDefinition</ins>
+      <ins>InstanceVariableDefinition[?Yield, ?Await]</ins>
       MethodDefinition[?Yield, ?Await]
       <ins>`hidden` MethodDefinition[?Yield, ?Await]</ins>
       `static` MethodDefinition[?Yield, ?Await]
@@ -18,12 +18,12 @@
       <ins>ClassInitializerBlock</ins>
       `;`
 
-    InstanceVariableDefinition :
-      `var` InstanceVariableList `;`
+    InstanceVariableDefinition[Yield, Await] :
+      `var` InstanceVariableList[?Yield, ?Await] `;`
 
-    InstanceVariableList :
-      BindingIdentifier
-      InstanceVariableList `,` BindingIdentifier
+    InstanceVariableList[Yield, Await] :
+      BindingIdentifier[?Yield, ?Await]
+      InstanceVariableList `,` BindingIdentifier[?Yield, ?Await]
 
     ClassInitializerBlock :
       `static` `{` StatementList[~Yield, ~Await]? `}`
