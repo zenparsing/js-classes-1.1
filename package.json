@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "js-classes-1.1",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node scripts/build.js",
+    "build": "node scripts/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zenparsing/js-classes-1.1.git"
+  },
+  "dependencies": {
+    "ecmarkup": "^3.12.0"
+  }
+}
