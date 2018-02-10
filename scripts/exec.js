@@ -5,7 +5,7 @@ module.exports = function(cmd, opts = {}) {
     execSync(cmd, { stdio: 'inherit', env: process.env });
   } catch (err) {
     if (!opts.ignoreErrors) {
-      process.exit(1);
+      throw err;
     }
   }
 };
