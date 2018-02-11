@@ -1,0 +1,151 @@
+<emu-clause id='sec-static-semantics'>
+  <h1>Static Semantics</h1>
+
+  <emu-clause id='sec-prop-name' aoid='PropName'>
+    <h1>PropName</h1>
+    <emu-note type='editor'>
+      <p>PropName returns ~empty~ for hidden method definitions</p>
+    </emu-note>
+    <emu-grammar>
+      PropertyDefinition : HiddenMethod
+      ClassElement : HiddenMethod
+    </emu-grammar>
+    <emu-alg>
+      1. Return ~empty~.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id='sec-hidden-name' aoid='HiddenMethodName'>
+    <h1>HiddenMethodName</h1>
+    <emu-note type='editor'>
+      <p>HiddenMethodName of a |HiddenMethod| is ~empty~ unless it derives a method with an |IdentifierName| property name.</p>
+    </emu-note>
+
+    <emu-grammar>
+      HiddenMethod : `hidden` MethodDefinition
+    </emu-grammar>
+    <emu-alg>
+      1. Return HiddenMethodName of |MethodDefinition|.
+    </emu-alg>
+
+    <emu-grammar>
+      MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
+      MethodDefinition : `get` PropertyName `(` `)` `{` FunctionBody `}`
+      MethodDefinition : `set` PropertyName `(` PropertySetParameterList `)` `{` FunctionBody `}`
+    </emu-grammar>
+    <emu-grammar>
+      GeneratorMethod : `*` PropertyName `(` UniqueFormalParameters `)` `{` GeneratorBody `}`
+    </emu-grammar>
+    <emu-grammar>
+      AsyncMethod : `async` [no LineTerminator here] PropertyName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
+    </emu-grammar>
+    <emu-alg>
+      1. Return HiddenMethodName of |PropertyName|.
+    </emu-alg>
+
+    <emu-grammar>
+      LiteralPropertyName : StringLiteral
+      LiteralPropertyName : NumericLiteral
+      ComputedPropertyName : `[` AssignmentExpression `]`
+    </emu-grammar>
+    <emu-alg>
+      1. Return ~empty~.
+    </emu-alg>
+
+    <emu-grammar>
+      LiteralPropertyName : IdentifierName
+    </emu-grammar>
+    <emu-alg>
+      1. Return StringValue of |IdentifierName|.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id='sec-hidden-name' aoid='HiddenNameList'>
+    <h1>HiddenNameList</h1>
+    <emu-note type='editor'>
+      HiddenNameList of a |PropertyDefinitionList| or |ClassElementList| is a List containing all of the hidden names defined in an object literal or class body.
+    </emu-note>
+
+    <emu-grammar>
+      PropertyDefinitionList : PropertyDefinition
+    </emu-grammar>
+    <emu-alg>
+      1. Return HiddenNameList of |PropertyDefinition|.
+    </emu-alg>
+
+    <emu-grammar>
+      PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition
+    </emu-grammar>
+    <emu-alg>
+      1. Let _names_ be HiddenNameList of |PropertyDefinitionList|.
+      2. Append to _names_ the elements of the HiddenNameList of |PropertyDefinition|.
+      3. Return _names_.
+    </emu-alg>
+
+    <emu-grammar>
+      PropertyDefinition : IdentifierReference
+      PropertyDefinition : PropertyName `:` AssignmentExpression
+      PropertyDefinition : MethodDefinition
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new empty List.
+    </emu-alg>
+
+    <emu-grammar>
+      PropertyDefinition : HiddenMethod
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new List containing HiddenMethodName of |HiddenMethod|.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElementList : ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Return HiddenNameList of |PropertyDefinition|.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElementList : ClassElementList ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Let _names_ be HiddenNameList of |ClassElementList|.
+      2. Append to _names_ the elements of the HiddenNameList of |ClassElement|.
+      3. Return _names_.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElement : MethodDefinition
+      ClassElement : `static` MethodDefinition
+      ClassElement : `;`
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new empty List.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElement : HiddenMethod
+      ClassElement : `static` HiddenMethod
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new List containing HiddenMethodName of |HiddenMethod|.
+    </emu-alg>
+
+    <emu-grammar>
+      InstanceVariableList : BindingIdentifier
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new List containing StringValue of |BindingIdentifier|.
+    </emu-alg>
+
+    <emu-grammar>
+      InstanceVariableList : InstanceVariableList `,` BindingIdentifier
+    </emu-grammar>
+    <emu-alg>
+      1. Let _names_ be HiddenNameList of |InstanceVariableList|.
+      2. Append StringValue of |BindingIdentifier| to _names_.
+      3. Return _names_.
+    </emu-alg>
+  </emu-clause>
+
+</emu-clause>

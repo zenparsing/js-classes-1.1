@@ -1,4 +1,4 @@
-<emu-clause id=sec-syntax>
+<emu-clause id='sec-syntax'>
   <h1>Syntax</h1>
   <emu-grammar>
 
@@ -7,16 +7,19 @@
       CoverInitializedName[?Yield, ?Await]
       PropertyName[?Yield, ?Await] `:` AssignmentExpression[+In, ?Yield, ?Await]
       MethodDefinition[?Yield, ?Await]
-      <ins>`hidden` MethodDefinition[?Yield, ?Await]</ins>
+      <ins>HiddenMethod[?Yield, ?Await]</ins>
 
     ClassElement[Yield, Await] :
       <ins>InstanceVariableDefinition[?Yield, ?Await]</ins>
       MethodDefinition[?Yield, ?Await]
-      <ins>`hidden` MethodDefinition[?Yield, ?Await]</ins>
+      <ins>HiddenMethod[?Yield, ?Await]</ins>
       `static` MethodDefinition[?Yield, ?Await]
-      <ins>`static` `hidden` MethodDefinition[?Yield, ?Await]</ins>
+      <ins>`static` HiddenMethod[?Yield, ?Await]</ins>
       <ins>ClassInitializerBlock</ins>
       `;`
+
+    HiddenMethod[?Yield, ?Await] :
+      `hidden` MethodDefinition[?Yield, ?Await]
 
     InstanceVariableDefinition[Yield, Await] :
       `var` InstanceVariableList[?Yield, ?Await] `;`
