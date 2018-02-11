@@ -1,5 +1,5 @@
 <!doctype html>
-<head><meta charset="utf-8"><title>ECMAScript Classes 1.1</title><script type="application/json" id="menu-search-biblio">[{"type":"clause","id":"sec-intro","aoid":null,"title":"Introduction","titleHTML":"Introduction","number":"","namespace":"<no location>","location":"","referencingIds":[],"key":"Introduction"},{"type":"production","id":"prod-PropertyDefinition","name":"PropertyDefinition","referencingIds":[],"namespace":"<no location>","location":"","key":"PropertyDefinition"},{"type":"production","id":"prod-ClassElement","name":"ClassElement","referencingIds":[],"namespace":"<no location>","location":"","key":"ClassElement"},{"type":"production","id":"prod-InstanceVariableDefinition","name":"InstanceVariableDefinition","referencingIds":["_ref_0"],"namespace":"<no location>","location":"","key":"InstanceVariableDefinition"},{"type":"production","id":"prod-InstanceVariableList","name":"InstanceVariableList","referencingIds":["_ref_2","_ref_3"],"namespace":"<no location>","location":"","key":"InstanceVariableList"},{"type":"production","id":"prod-ClassInitializerBlock","name":"ClassInitializerBlock","referencingIds":["_ref_1"],"namespace":"<no location>","location":"","key":"ClassInitializerBlock"},{"type":"production","id":"prod-MemberExpression","name":"MemberExpression","referencingIds":["_ref_4","_ref_5","_ref_6","_ref_7","_ref_8"],"namespace":"<no location>","location":"","key":"MemberExpression"},{"type":"production","id":"prod-CallExpression","name":"CallExpression","referencingIds":["_ref_9","_ref_10","_ref_11","_ref_12","_ref_13"],"namespace":"<no location>","location":"","key":"CallExpression"},{"type":"clause","id":"sec-syntax","aoid":null,"title":"Syntax","titleHTML":"Syntax","number":"1","namespace":"<no location>","location":"","referencingIds":[],"key":"Syntax"},{"type":"clause","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","titleHTML":"Copyright &amp; Software License","number":"A","namespace":"<no location>","location":"","referencingIds":[],"key":"Copyright & Software License"}]</script><script>"use strict";
+<head><meta charset="utf-8"><title>ECMAScript Classes 1.1</title><script type="application/json" id="menu-search-biblio">[{"type":"clause","id":"sec-intro","aoid":null,"title":"Introduction","titleHTML":"Introduction","number":"","namespace":"<no location>","location":"","referencingIds":[],"key":"Introduction"},{"type":"production","id":"prod-PropertyDefinition","name":"PropertyDefinition","referencingIds":["_ref_61","_ref_62","_ref_64","_ref_66","_ref_71"],"namespace":"<no location>","location":"","key":"PropertyDefinition"},{"type":"production","id":"prod-ClassElement","name":"ClassElement","referencingIds":["_ref_70","_ref_73","_ref_75"],"namespace":"<no location>","location":"","key":"ClassElement"},{"type":"production","id":"prod-HiddenMethod","name":"HiddenMethod","referencingIds":["_ref_17","_ref_20","_ref_22","_ref_41","_ref_42","_ref_54","_ref_55","_ref_56","_ref_68","_ref_69","_ref_78","_ref_79","_ref_80"],"namespace":"<no location>","location":"","key":"HiddenMethod"},{"type":"production","id":"prod-InstanceVariableDefinition","name":"InstanceVariableDefinition","referencingIds":["_ref_18"],"namespace":"<no location>","location":"","key":"InstanceVariableDefinition"},{"type":"production","id":"prod-InstanceVariableList","name":"InstanceVariableList","referencingIds":["_ref_25","_ref_26","_ref_81","_ref_82"],"namespace":"<no location>","location":"","key":"InstanceVariableList"},{"type":"production","id":"prod-ClassInitializerBlock","name":"ClassInitializerBlock","referencingIds":["_ref_23"],"namespace":"<no location>","location":"","key":"ClassInitializerBlock"},{"type":"production","id":"prod-MemberExpression","name":"MemberExpression","referencingIds":["_ref_28","_ref_29","_ref_30","_ref_31","_ref_32","_ref_50"],"namespace":"<no location>","location":"","key":"MemberExpression"},{"type":"production","id":"prod-CallExpression","name":"CallExpression","referencingIds":["_ref_33","_ref_34","_ref_35","_ref_36","_ref_37","_ref_51"],"namespace":"<no location>","location":"","key":"CallExpression"},{"type":"clause","id":"sec-syntax","aoid":null,"title":"Syntax","titleHTML":"Syntax","number":"1","namespace":"<no location>","location":"","referencingIds":[],"key":"Syntax"},{"type":"production","id":"prod-ObjectLiteral","name":"ObjectLiteral","referencingIds":[],"namespace":"<no location>","location":"","key":"ObjectLiteral"},{"type":"clause","id":"sec-early-errors-object-initializer","aoid":null,"title":"Object Initializer","titleHTML":"Object Initializer","number":"2.1","namespace":"<no location>","location":"","referencingIds":[],"key":"Object Initializer"},{"type":"clause","id":"sec-early-errors-method-definitions","aoid":null,"title":"Method Definitions","titleHTML":"Method Definitions","number":"2.2","namespace":"<no location>","location":"","referencingIds":[],"key":"Method Definitions"},{"type":"production","id":"prod-ClassBody","name":"ClassBody","referencingIds":[],"namespace":"<no location>","location":"","key":"ClassBody"},{"type":"clause","id":"sec-early-errors-class-definitions","aoid":null,"title":"Class Definitions","titleHTML":"Class Definitions","number":"2.3","namespace":"<no location>","location":"","referencingIds":[],"key":"Class Definitions"},{"type":"production","id":"prod-UnaryExpression","name":"UnaryExpression","referencingIds":["_ref_47","_ref_48","_ref_49","_ref_52","_ref_53"],"namespace":"<no location>","location":"","key":"UnaryExpression"},{"type":"production","id":"prod-PrimaryExpression","name":"PrimaryExpression","referencingIds":["_ref_27"],"namespace":"<no location>","location":"","key":"PrimaryExpression"},{"type":"clause","id":"sec-early-errors-delete","aoid":null,"title":"The delete operator","titleHTML":"The <code>delete</code> operator","number":"2.4","namespace":"<no location>","location":"","referencingIds":[],"key":"The delete operator"},{"type":"clause","id":"sec-early-errors","aoid":null,"title":"Early Errors","titleHTML":"Early Errors","number":"2","namespace":"<no location>","location":"","referencingIds":[],"key":"Early Errors"},{"type":"op","aoid":"PropName","refId":"sec-prop-name","location":"","referencingIds":[],"key":"PropName"},{"type":"clause","id":"sec-prop-name","aoid":"PropName","title":"PropName","titleHTML":"PropName","number":"3.1","namespace":"<no location>","location":"","referencingIds":[],"key":"PropName"},{"type":"production","id":"prod-MethodDefinition","name":"MethodDefinition","referencingIds":["_ref_16","_ref_19","_ref_21","_ref_24","_ref_57","_ref_58","_ref_67","_ref_76","_ref_77"],"namespace":"<no location>","location":"","key":"MethodDefinition"},{"type":"production","id":"prod-GeneratorMethod","name":"GeneratorMethod","referencingIds":[],"namespace":"<no location>","location":"","key":"GeneratorMethod"},{"type":"production","id":"prod-AsyncMethod","name":"AsyncMethod","referencingIds":[],"namespace":"<no location>","location":"","key":"AsyncMethod"},{"type":"production","id":"prod-LiteralPropertyName","name":"LiteralPropertyName","referencingIds":[],"namespace":"<no location>","location":"","key":"LiteralPropertyName"},{"type":"production","id":"prod-ComputedPropertyName","name":"ComputedPropertyName","referencingIds":[],"namespace":"<no location>","location":"","key":"ComputedPropertyName"},{"type":"op","aoid":"HiddenMethodName","refId":"sec-hidden-name","location":"","referencingIds":[],"key":"HiddenMethodName"},{"type":"clause","id":"sec-hidden-name","aoid":"HiddenMethodName","title":"HiddenMethodName","titleHTML":"HiddenMethodName","number":"3.2","namespace":"<no location>","location":"","referencingIds":[],"key":"HiddenMethodName"},{"type":"production","id":"prod-PropertyDefinitionList","name":"PropertyDefinitionList","referencingIds":["_ref_38","_ref_39","_ref_40","_ref_59","_ref_63","_ref_65"],"namespace":"<no location>","location":"","key":"PropertyDefinitionList"},{"type":"production","id":"prod-ClassElementList","name":"ClassElementList","referencingIds":["_ref_43","_ref_44","_ref_45","_ref_46","_ref_60","_ref_72","_ref_74"],"namespace":"<no location>","location":"","key":"ClassElementList"},{"type":"op","aoid":"HiddenNameList","refId":"sec-hidden-name","location":"","referencingIds":[],"key":"HiddenNameList"},{"type":"clause","id":"sec-hidden-name","aoid":"HiddenNameList","title":"HiddenNameList","titleHTML":"HiddenNameList","number":"3.3","namespace":"<no location>","location":"","referencingIds":["_ref_0","_ref_1","_ref_2","_ref_3","_ref_4","_ref_5","_ref_6","_ref_7","_ref_8","_ref_9","_ref_10","_ref_11","_ref_12","_ref_13","_ref_14","_ref_15"],"key":"HiddenNameList"},{"type":"clause","id":"sec-static-semantics","aoid":null,"title":"Static Semantics","titleHTML":"Static Semantics","number":"3","namespace":"<no location>","location":"","referencingIds":[],"key":"Static Semantics"},{"type":"clause","id":"sec-copyright-and-software-license","aoid":null,"title":"Copyright & Software License","titleHTML":"Copyright &amp; Software License","number":"A","namespace":"<no location>","location":"","referencingIds":[],"key":"Copyright & Software License"}]</script><script>"use strict";
 
 function Search(menu) {
   this.menu = menu;
@@ -1788,7 +1788,17 @@ li.menu-search-result-term:before {
   text-align: right;
   padding-right: 5px;
 }
-</style></head><body><div id="menu-toggle">☰</div><div id="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins</div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-intro" title="Introduction">Introduction</a></li><li><span class="item-toggle-none"></span><a href="#sec-syntax" title="Syntax"><span class="secnum">1</span> Syntax</a></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="title first">ECMAScript Classes 1.1</h1>
+</style></head><body><div id="menu-toggle">☰</div><div id="menu-spacer"></div><div id="menu"><div id="menu-search"><input type="text" id="menu-search-box" placeholder="Search..."><div id="menu-search-results" class="inactive"></div></div><div id="menu-pins"><div class="menu-pane-header">Pins</div><ul id="menu-pins-list"></ul></div><div class="menu-pane-header">Table of Contents</div><div id="menu-toc"><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-intro" title="Introduction">Introduction</a></li><li><span class="item-toggle-none"></span><a href="#sec-syntax" title="Syntax"><span class="secnum">1</span> Syntax</a></li><li><span class="item-toggle">◢</span><a href="#sec-early-errors" title="Early Errors"><span class="secnum">2</span> Early Errors</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-early-errors-object-initializer" title="Object Initializer"><span class="secnum">2.1</span> Object Initializer</a></li><li><span class="item-toggle-none"></span><a href="#sec-early-errors-method-definitions" title="Method Definitions"><span class="secnum">2.2</span> Method Definitions</a></li><li><span class="item-toggle-none"></span><a href="#sec-early-errors-class-definitions" title="Class Definitions"><span class="secnum">2.3</span> Class Definitions</a></li><li><span class="item-toggle-none"></span><a href="#sec-early-errors-delete" title="The delete operator"><span class="secnum">2.4</span> The <code>delete</code> operator</a></li></ol></li><li><span class="item-toggle">◢</span><a href="#sec-static-semantics" title="Static Semantics"><span class="secnum">3</span> Static Semantics</a><ol class="toc"><li><span class="item-toggle-none"></span><a href="#sec-prop-name" title="PropName"><span class="secnum">3.1</span> PropName</a></li><li><span class="item-toggle-none"></span><a href="#sec-hidden-name" title="HiddenMethodName"><span class="secnum">3.2</span> HiddenMethodName</a></li><li><span class="item-toggle-none"></span><a href="#sec-hidden-name" title="HiddenNameList"><span class="secnum">3.3</span> HiddenNameList</a></li></ol></li><li><span class="item-toggle-none"></span><a href="#sec-copyright-and-software-license" title="Copyright &amp; Software License"><span class="secnum">A</span> Copyright &amp; Software License</a></li></ol></div></div><div id="spec-container"><h1 class="title first">ECMAScript Classes 1.1</h1>
+
+<style>
+  emu-production[collapsed]:first-of-type {
+    margin-top: 1em;
+  }
+  emu-production[collapsed]:last-of-type {
+    margin-bottom: 1em;
+  }
+
+</style>
 
 <emu-intro id="sec-intro">
   <h1>Introduction</h1>
@@ -1800,47 +1810,277 @@ li.menu-search-result-term:before {
     <emu-nt params="Yield, Await"><a href="#prod-PropertyDefinition">PropertyDefinition</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0e54a070"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-IdentifierReference">IdentifierReference</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
     <emu-rhs a="68f5ac08"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-CoverInitializedName">CoverInitializedName</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
     <emu-rhs a="e73ae371"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>:</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
-    <emu-rhs a="91edbff4"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs><ins>
-    <emu-rhs a="ab3fdc45"><emu-t>hidden</emu-t><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="91edbff4"><emu-nt params="?Yield, ?Await" id="_ref_16"><a href="#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs><ins>
+    <emu-rhs a="6debb336"><emu-nt params="?Yield, ?Await" id="_ref_17"><a href="#prod-HiddenMethod">HiddenMethod</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
 </ins></emu-production>
 <emu-production name="ClassElement" params="Yield, Await" id="prod-ClassElement">
-    <emu-nt params="Yield, Await"><a href="#prod-ClassElement">ClassElement</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><ins><emu-rhs a="bcc3c1e9"><emu-nt params="?Yield, ?Await" id="_ref_0"><a href="#prod-InstanceVariableDefinition">InstanceVariableDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs></ins>
-    <emu-rhs a="91edbff4"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs><ins>
-    <emu-rhs a="ab3fdc45"><emu-t>hidden</emu-t><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs></ins>
-    <emu-rhs a="6b4234e8"><emu-t>static</emu-t><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs><ins>
-    <emu-rhs a="4d25d5ea"><emu-t>static</emu-t><emu-t>hidden</emu-t><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs></ins>
-    <ins><emu-rhs a="8fb9863a"><emu-nt id="_ref_1"><a href="#prod-ClassInitializerBlock">ClassInitializerBlock</a></emu-nt></emu-rhs></ins>
+    <emu-nt params="Yield, Await"><a href="#prod-ClassElement">ClassElement</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><ins><emu-rhs a="bcc3c1e9"><emu-nt params="?Yield, ?Await" id="_ref_18"><a href="#prod-InstanceVariableDefinition">InstanceVariableDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs></ins>
+    <emu-rhs a="91edbff4"><emu-nt params="?Yield, ?Await" id="_ref_19"><a href="#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs><ins>
+    <emu-rhs a="6debb336"><emu-nt params="?Yield, ?Await" id="_ref_20"><a href="#prod-HiddenMethod">HiddenMethod</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs></ins>
+    <emu-rhs a="6b4234e8"><emu-t>static</emu-t><emu-nt params="?Yield, ?Await" id="_ref_21"><a href="#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs><ins>
+    <emu-rhs a="971e7094"><emu-t>static</emu-t><emu-nt params="?Yield, ?Await" id="_ref_22"><a href="#prod-HiddenMethod">HiddenMethod</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs></ins>
+    <ins><emu-rhs a="8fb9863a"><emu-nt id="_ref_23"><a href="#prod-ClassInitializerBlock">ClassInitializerBlock</a></emu-nt></emu-rhs></ins>
     <emu-rhs a="4a0dac03"><emu-t>;</emu-t></emu-rhs>
 </emu-production>
+<emu-production name="HiddenMethod" params="Yield, Await" id="prod-HiddenMethod">
+    <emu-nt params="Yield, Await"><a href="#prod-HiddenMethod">HiddenMethod</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="ab3fdc45"><emu-t>hidden</emu-t><emu-nt params="?Yield, ?Await" id="_ref_24"><a href="#prod-MethodDefinition">MethodDefinition</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+</emu-production>
 <emu-production name="InstanceVariableDefinition" params="Yield, Await" id="prod-InstanceVariableDefinition">
-    <emu-nt params="Yield, Await"><a href="#prod-InstanceVariableDefinition">InstanceVariableDefinition</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="5b713641"><emu-t>var</emu-t><emu-nt params="?Yield, ?Await" id="_ref_2"><a href="#prod-InstanceVariableList">InstanceVariableList</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
+    <emu-nt params="Yield, Await"><a href="#prod-InstanceVariableDefinition">InstanceVariableDefinition</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="5b713641"><emu-t>var</emu-t><emu-nt params="?Yield, ?Await" id="_ref_25"><a href="#prod-InstanceVariableList">InstanceVariableList</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>;</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="InstanceVariableList" params="Yield, Await" id="prod-InstanceVariableList">
     <emu-nt params="Yield, Await"><a href="#prod-InstanceVariableList">InstanceVariableList</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="22bf917e"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
-    <emu-rhs a="bc50c27f"><emu-nt id="_ref_3"><a href="#prod-InstanceVariableList">InstanceVariableList</a></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="bc50c27f"><emu-nt id="_ref_26"><a href="#prod-InstanceVariableList">InstanceVariableList</a></emu-nt><emu-t>,</emu-t><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="ClassInitializerBlock" id="prod-ClassInitializerBlock">
     <emu-nt><a href="#prod-ClassInitializerBlock">ClassInitializerBlock</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f39fcb02"><emu-t>static</emu-t><emu-t>{</emu-t><emu-nt params="~Yield, ~Await" optional=""><a href="https://tc39.github.io/ecma262/#prod-StatementList">StatementList</a><emu-mods><emu-params>[~Yield, ~Await]</emu-params><emu-opt>opt</emu-opt></emu-mods></emu-nt><emu-t>}</emu-t></emu-rhs>
 </emu-production>
 <emu-production name="MemberExpression" params="Yield, Await" id="prod-MemberExpression">
-    <emu-nt params="Yield, Await"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="669d9e8f"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-PrimaryExpression">PrimaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
-    <emu-rhs a="46700b57"><emu-nt params="?Yield, ?Await" id="_ref_4"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
-    <emu-rhs a="fea749a8"><emu-nt params="?Yield, ?Await" id="_ref_5"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs><ins>
-    <emu-rhs a="56d9baea"><emu-nt params="?Yield, ?Await" id="_ref_6"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>-&gt;</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs></ins>
-    <emu-rhs a="27fb207d"><emu-nt params="?Yield, ?Await" id="_ref_7"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-TemplateLiteral">TemplateLiteral</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-nt params="Yield, Await"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="669d9e8f"><emu-nt params="?Yield, ?Await" id="_ref_27"><a href="#prod-PrimaryExpression">PrimaryExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="46700b57"><emu-nt params="?Yield, ?Await" id="_ref_28"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="fea749a8"><emu-nt params="?Yield, ?Await" id="_ref_29"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs><ins>
+    <emu-rhs a="56d9baea"><emu-nt params="?Yield, ?Await" id="_ref_30"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>-&gt;</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs></ins>
+    <emu-rhs a="27fb207d"><emu-nt params="?Yield, ?Await" id="_ref_31"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-TemplateLiteral">TemplateLiteral</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
     <emu-rhs a="83d44750"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-SuperProperty">SuperProperty</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
     <emu-rhs a="c81ee20f"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-MetaProperty">MetaProperty</a></emu-nt></emu-rhs>
-    <emu-rhs a="b8554289"><emu-t>new</emu-t><emu-nt params="?Yield, ?Await" id="_ref_8"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="b8554289"><emu-t>new</emu-t><emu-nt params="?Yield, ?Await" id="_ref_32"><a href="#prod-MemberExpression">MemberExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
 </emu-production>
 <emu-production name="CallExpression" params="Yield, Await" id="prod-CallExpression">
     <emu-nt params="Yield, Await"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[Yield, Await]</emu-params></emu-mods></emu-nt><emu-geq>:</emu-geq><emu-rhs a="7a7b6d65"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-CoverCallExpressionAndAsyncArrowHead">CoverCallExpressionAndAsyncArrowHead</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
     <emu-rhs a="e5c60d05"><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-SuperCall">SuperCall</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
-    <emu-rhs a="cd0d9a85"><emu-nt params="?Yield, ?Await" id="_ref_9"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
-    <emu-rhs a="24037841"><emu-nt params="?Yield, ?Await" id="_ref_10"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
-    <emu-rhs a="f1fcc490"><emu-nt params="?Yield, ?Await" id="_ref_11"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs><ins>
-    <emu-rhs a="7fa66570"><emu-nt params="?Yield, ?Await" id="_ref_12"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>-&gt;</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs></ins>
-    <emu-rhs a="e25f4b8f"><emu-nt params="?Yield, ?Await" id="_ref_13"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-TemplateLiteral">TemplateLiteral</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="cd0d9a85"><emu-nt params="?Yield, ?Await" id="_ref_33"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Arguments">Arguments</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
+    <emu-rhs a="24037841"><emu-nt params="?Yield, ?Await" id="_ref_34"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>[</emu-t><emu-nt params="+In, ?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-Expression">Expression</a><emu-mods><emu-params>[+In, ?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>]</emu-t></emu-rhs>
+    <emu-rhs a="f1fcc490"><emu-nt params="?Yield, ?Await" id="_ref_35"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>.</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs><ins>
+    <emu-rhs a="7fa66570"><emu-nt params="?Yield, ?Await" id="_ref_36"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-t>-&gt;</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs></ins>
+    <emu-rhs a="e25f4b8f"><emu-nt params="?Yield, ?Await" id="_ref_37"><a href="#prod-CallExpression">CallExpression</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt><emu-nt params="?Yield, ?Await"><a href="https://tc39.github.io/ecma262/#prod-TemplateLiteral">TemplateLiteral</a><emu-mods><emu-params>[?Yield, ?Await]</emu-params></emu-mods></emu-nt></emu-rhs>
 </emu-production></emu-grammar>
+</emu-clause>
+</emu-import>
+<emu-import href="./early-errors.html"><emu-clause id="sec-early-errors">
+  <h1><span class="secnum">2</span>Early Errors</h1>
+
+  <emu-clause id="sec-early-errors-object-initializer">
+    <h1><span class="secnum">2.1</span>Object Initializer</h1>
+    <emu-grammar><emu-production name="ObjectLiteral" collapsed="" id="prod-ObjectLiteral">
+    <emu-nt><a href="#prod-ObjectLiteral">ObjectLiteral</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="1bef8ed3"><emu-t>{</emu-t><emu-nt id="_ref_38"><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="ObjectLiteral" collapsed="">
+    <emu-nt><a href="#prod-ObjectLiteral">ObjectLiteral</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="8703527f"><emu-t>{</emu-t><emu-nt id="_ref_39"><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt><emu-t>,</emu-t><emu-t>}</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+    <ul>
+      <li>It is a Syntax Error if <emu-xref aoid="HiddenNameList" id="_ref_0"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_40"><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt> contains duplicate entries.</li>
+    </ul>
+  </emu-clause>
+
+  <emu-clause id="sec-early-errors-method-definitions">
+    <h1><span class="secnum">2.2</span>Method Definitions</h1>
+    <emu-grammar><emu-production name="PropertyDefinition" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="633b33fc"><emu-nt id="_ref_41"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <ul>
+      <li>It is a Syntax Error if <emu-xref aoid="HiddenMethodName" id="_ref_1"><a href="#sec-hidden-name">HiddenMethodName</a></emu-xref> of <emu-nt id="_ref_42"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt> is <emu-const>empty</emu-const>.</li>
+    </ul>
+  </emu-clause>
+
+  <emu-clause id="sec-early-errors-class-definitions">
+    <h1><span class="secnum">2.3</span>Class Definitions</h1>
+    <emu-grammar><emu-production name="ClassBody" collapsed="" id="prod-ClassBody">
+    <emu-nt><a href="#prod-ClassBody">ClassBody</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="d72d43ba"><emu-nt id="_ref_43"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <ul>
+      <li>It is a Syntax Error if <emu-xref aoid="HiddenNameList" id="_ref_2"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_44"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt> contains duplicate entries.</li>
+      <li>It is a Syntax Error if <emu-xref aoid="HiddenNameList" id="_ref_3"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_45"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt> contains <emu-val>"constructor"</emu-val>.</li>
+      <li>It is a Syntax Error if <emu-xref aoid="HiddenNameList" id="_ref_4"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_46"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt> contains <emu-val>"prototype"</emu-val>.</li>
+    </ul>
+  </emu-clause>
+
+  <emu-clause id="sec-early-errors-delete">
+    <h1><span class="secnum">2.4</span>The <code>delete</code> operator</h1>
+    <emu-note type="editor"><span class="note">Editor's Note</span><div class="note-contents">
+      <p>Hidden member expressions may not appear as the operand of a <code>delete</code> operator.</p>
+    </div></emu-note>
+    <emu-grammar><emu-production name="UnaryExpression" collapsed="" id="prod-UnaryExpression">
+    <emu-nt><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="bfdc08c3"><emu-t>delete</emu-t><emu-nt id="_ref_47"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <ul>
+      <li>
+        It is a Syntax Error if the <emu-nt id="_ref_48"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt> is contained in <emu-xref href="#sec-strict-mode-code"><a href="https://tc39.github.io/ecma262/#sec-strict-mode-code">strict mode code</a></emu-xref> and the derived <emu-nt id="_ref_49"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt> is  <emu-grammar><emu-production name="PrimaryExpression" collapsed="" id="prod-PrimaryExpression" class=" inline">
+    <emu-nt><a href="#prod-PrimaryExpression">PrimaryExpression</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2361f19d"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierReference">IdentifierReference</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>,  <ins><emu-grammar><emu-production name="MemberExpression" collapsed="" class=" inline">
+    <emu-nt><a href="#prod-MemberExpression">MemberExpression</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3df673c3"><emu-nt id="_ref_50"><a href="#prod-MemberExpression">MemberExpression</a></emu-nt><emu-t>-&gt;</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>, or  <emu-grammar><emu-production name="CallExpression" collapsed="" class=" inline">
+    <emu-nt><a href="#prod-CallExpression">CallExpression</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4754060b"><emu-nt id="_ref_51"><a href="#prod-CallExpression">CallExpression</a></emu-nt><emu-t>-&gt;</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar></ins>.
+      
+      </li>
+      <li>
+        <p>It is a Syntax Error if the derived <emu-nt id="_ref_52"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt> is
+          
+          <br>
+          <emu-grammar><emu-production name="PrimaryExpression" collapsed="" class=" inline">
+    <emu-nt><a href="#prod-PrimaryExpression">PrimaryExpression</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="cab6f5d7"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-CoverParenthesizedExpressionAndArrowParameterList">CoverParenthesizedExpressionAndArrowParameterList</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+          <br>
+          and <emu-nt><a href="https://tc39.github.io/ecma262/#prod-CoverParenthesizedExpressionAndArrowParameterList">CoverParenthesizedExpressionAndArrowParameterList</a></emu-nt> ultimately derives a phrase that, if used in place of <emu-nt id="_ref_53"><a href="#prod-UnaryExpression">UnaryExpression</a></emu-nt>, would produce a Syntax Error according to these rules. This rule is recursively applied.</p>
+      </li>
+    </ul>
+    <emu-note><span class="note">Note</span><div class="note-contents">
+      <p>The last rule means that expressions such as <code>delete (((foo)))</code> produce early errors because of recursive application of the first rule.</p>
+    </div></emu-note>
+  </emu-clause>
+
+</emu-clause>
+</emu-import>
+<emu-import href="./static-semantics.html"><emu-clause id="sec-static-semantics">
+  <h1><span class="secnum">3</span>Static Semantics</h1>
+
+  <emu-clause id="sec-prop-name" aoid="PropName">
+    <h1><span class="secnum">3.1</span>PropName</h1>
+    <emu-note type="editor"><span class="note">Editor's Note</span><div class="note-contents">
+      <p>PropName returns <emu-const>empty</emu-const> for hidden method definitions</p>
+    </div></emu-note>
+    <emu-grammar><emu-production name="PropertyDefinition" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="633b33fc"><emu-nt id="_ref_54"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElement" collapsed="">
+    <emu-nt><a href="#prod-ClassElement">ClassElement</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="633b33fc"><emu-nt id="_ref_55"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return <emu-const>empty</emu-const>.
+    </li></ol></emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-hidden-name" aoid="HiddenMethodName">
+    <h1><span class="secnum">3.2</span>HiddenMethodName</h1>
+    <emu-note type="editor"><span class="note">Editor's Note</span><div class="note-contents">
+      <p>HiddenMethodName of a <emu-nt id="_ref_56"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt> is <emu-const>empty</emu-const> unless it derives a method with an <emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt> property name.</p>
+    </div></emu-note>
+
+    <emu-grammar><emu-production name="HiddenMethod" collapsed="">
+    <emu-nt><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f7d913e3"><emu-t>hidden</emu-t><emu-nt id="_ref_57"><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return <emu-xref aoid="HiddenMethodName" id="_ref_5"><a href="#sec-hidden-name">HiddenMethodName</a></emu-xref> of <emu-nt id="_ref_58"><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="MethodDefinition" collapsed="" id="prod-MethodDefinition">
+    <emu-nt><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="cb8e53e9"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt><emu-t>(</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-UniqueFormalParameters">UniqueFormalParameters</a></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-FunctionBody">FunctionBody</a></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="MethodDefinition" collapsed="">
+    <emu-nt><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f1487956"><emu-t>get</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt><emu-t>(</emu-t><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-FunctionBody">FunctionBody</a></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production>
+<emu-production name="MethodDefinition" collapsed="">
+    <emu-nt><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4402354c"><emu-t>set</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt><emu-t>(</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertySetParameterList">PropertySetParameterList</a></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-FunctionBody">FunctionBody</a></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-grammar><emu-production name="GeneratorMethod" collapsed="" id="prod-GeneratorMethod">
+    <emu-nt><a href="#prod-GeneratorMethod">GeneratorMethod</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="c5c757ac"><emu-t>*</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt><emu-t>(</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-UniqueFormalParameters">UniqueFormalParameters</a></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-GeneratorBody">GeneratorBody</a></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-grammar><emu-production name="AsyncMethod" collapsed="" id="prod-AsyncMethod">
+    <emu-nt><a href="#prod-AsyncMethod">AsyncMethod</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="7d771781"><emu-t>async</emu-t><emu-gann>[no <emu-nt><a href="https://tc39.github.io/ecma262/#prod-LineTerminator">LineTerminator</a></emu-nt> here]</emu-gann><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt><emu-t>(</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-UniqueFormalParameters">UniqueFormalParameters</a></emu-nt><emu-t>)</emu-t><emu-t>{</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-AsyncFunctionBody">AsyncFunctionBody</a></emu-nt><emu-t>}</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return <emu-xref aoid="HiddenMethodName" id="_ref_6"><a href="#sec-hidden-name">HiddenMethodName</a></emu-xref> of <emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="LiteralPropertyName" collapsed="" id="prod-LiteralPropertyName">
+    <emu-nt><a href="#prod-LiteralPropertyName">LiteralPropertyName</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="5c74e54d"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-StringLiteral">StringLiteral</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="LiteralPropertyName" collapsed="">
+    <emu-nt><a href="#prod-LiteralPropertyName">LiteralPropertyName</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="a548b407"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-NumericLiteral">NumericLiteral</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ComputedPropertyName" collapsed="" id="prod-ComputedPropertyName">
+    <emu-nt><a href="#prod-ComputedPropertyName">ComputedPropertyName</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2ed5550b"><emu-t>[</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a></emu-nt><emu-t>]</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return <emu-const>empty</emu-const>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="LiteralPropertyName" collapsed="">
+    <emu-nt><a href="#prod-LiteralPropertyName">LiteralPropertyName</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="0ebb31e2"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return StringValue of <emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierName">IdentifierName</a></emu-nt>.
+    </li></ol></emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-hidden-name" aoid="HiddenNameList">
+    <h1><span class="secnum">3.3</span>HiddenNameList</h1>
+    <emu-note type="editor"><span class="note">Editor's Note</span><div class="note-contents">
+      HiddenNameList of a <emu-nt id="_ref_59"><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt> or <emu-nt id="_ref_60"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt> is a <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> containing all of the hidden names defined in an object literal or class body.
+    
+    </div></emu-note>
+
+    <emu-grammar><emu-production name="PropertyDefinitionList" collapsed="" id="prod-PropertyDefinitionList">
+    <emu-nt><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="671a051b"><emu-nt id="_ref_61"><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return <emu-xref aoid="HiddenNameList" id="_ref_7"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_62"><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="PropertyDefinitionList" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="3152d601"><emu-nt id="_ref_63"><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt><emu-t>,</emu-t><emu-nt id="_ref_64"><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Let <var>names</var> be <emu-xref aoid="HiddenNameList" id="_ref_8"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_65"><a href="#prod-PropertyDefinitionList">PropertyDefinitionList</a></emu-nt>.</li><li>Append to <var>names</var> the elements of the <emu-xref aoid="HiddenNameList" id="_ref_9"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_66"><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt>.</li><li>Return <var>names</var>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="PropertyDefinition" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2361f19d"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-IdentifierReference">IdentifierReference</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PropertyDefinition" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="f2d90b76"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-PropertyName">PropertyName</a></emu-nt><emu-t>:</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-AssignmentExpression">AssignmentExpression</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="PropertyDefinition" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4bc22514"><emu-nt id="_ref_67"><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="PropertyDefinition" collapsed="">
+    <emu-nt><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="633b33fc"><emu-nt id="_ref_68"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return a new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> containing <emu-xref aoid="HiddenMethodName" id="_ref_10"><a href="#sec-hidden-name">HiddenMethodName</a></emu-xref> of <emu-nt id="_ref_69"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="ClassElementList" collapsed="" id="prod-ClassElementList">
+    <emu-nt><a href="#prod-ClassElementList">ClassElementList</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="711bcbba"><emu-nt id="_ref_70"><a href="#prod-ClassElement">ClassElement</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return <emu-xref aoid="HiddenNameList" id="_ref_11"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_71"><a href="#prod-PropertyDefinition">PropertyDefinition</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="ClassElementList" collapsed="">
+    <emu-nt><a href="#prod-ClassElementList">ClassElementList</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="9ac50b6a"><emu-nt id="_ref_72"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt><emu-nt id="_ref_73"><a href="#prod-ClassElement">ClassElement</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Let <var>names</var> be <emu-xref aoid="HiddenNameList" id="_ref_12"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_74"><a href="#prod-ClassElementList">ClassElementList</a></emu-nt>.</li><li>Append to <var>names</var> the elements of the <emu-xref aoid="HiddenNameList" id="_ref_13"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_75"><a href="#prod-ClassElement">ClassElement</a></emu-nt>.</li><li>Return <var>names</var>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="ClassElement" collapsed="">
+    <emu-nt><a href="#prod-ClassElement">ClassElement</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4bc22514"><emu-nt id="_ref_76"><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElement" collapsed="">
+    <emu-nt><a href="#prod-ClassElement">ClassElement</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="fa58c6b5"><emu-t>static</emu-t><emu-nt id="_ref_77"><a href="#prod-MethodDefinition">MethodDefinition</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElement" collapsed="">
+    <emu-nt><a href="#prod-ClassElement">ClassElement</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="4a0dac03"><emu-t>;</emu-t></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return a new empty <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="ClassElement" collapsed="">
+    <emu-nt><a href="#prod-ClassElement">ClassElement</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="633b33fc"><emu-nt id="_ref_78"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt></emu-rhs>
+</emu-production>
+<emu-production name="ClassElement" collapsed="">
+    <emu-nt><a href="#prod-ClassElement">ClassElement</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="2993b460"><emu-t>static</emu-t><emu-nt id="_ref_79"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return a new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> containing <emu-xref aoid="HiddenMethodName" id="_ref_14"><a href="#sec-hidden-name">HiddenMethodName</a></emu-xref> of <emu-nt id="_ref_80"><a href="#prod-HiddenMethod">HiddenMethod</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="InstanceVariableList" collapsed="">
+    <emu-nt><a href="#prod-InstanceVariableList">InstanceVariableList</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="50e97238"><emu-nt><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Return a new <emu-xref href="#sec-list-and-record-specification-type"><a href="https://tc39.github.io/ecma262/#sec-list-and-record-specification-type">List</a></emu-xref> containing StringValue of <emu-nt><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a></emu-nt>.
+    </li></ol></emu-alg>
+
+    <emu-grammar><emu-production name="InstanceVariableList" collapsed="">
+    <emu-nt><a href="#prod-InstanceVariableList">InstanceVariableList</a></emu-nt><emu-geq>:</emu-geq><emu-rhs a="be3ab366"><emu-nt id="_ref_81"><a href="#prod-InstanceVariableList">InstanceVariableList</a></emu-nt><emu-t>,</emu-t><emu-nt><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a></emu-nt></emu-rhs>
+</emu-production></emu-grammar>
+    <emu-alg><ol><li>Let <var>names</var> be <emu-xref aoid="HiddenNameList" id="_ref_15"><a href="#sec-hidden-name">HiddenNameList</a></emu-xref> of <emu-nt id="_ref_82"><a href="#prod-InstanceVariableList">InstanceVariableList</a></emu-nt>.</li><li>Append StringValue of <emu-nt><a href="https://tc39.github.io/ecma262/#prod-BindingIdentifier">BindingIdentifier</a></emu-nt> to <var>names</var>.</li><li>Return <var>names</var>.
+    </li></ol></emu-alg>
+  </emu-clause>
+
 </emu-clause><emu-annex id="sec-copyright-and-software-license">
       <h1><span class="secnum">A</span>Copyright &amp; Software License</h1>
       
