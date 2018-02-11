@@ -152,8 +152,31 @@
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-class-initializer-blocks' aoid='ClassInitializerBlocks'>
-    <h1>ClassInitializerBlocks</h1>
+  <emu-clause id='sec-class-initializer' aoid='ClassInitializer'>
+    <h1>ClassInitializer</h1>
+    <emu-note type='editor'>
+      ClassInitializer of |ClassElementList| returns the first |ClassInitializerBlock| within a class definition. Early errors prevent multiple occurrances of |ClassInitializerBlock| within a single class definition.
+    </emu-note>
+    <emu-grammar>
+      ClassElementList : ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Return ClassInitializer of |ClassElement|.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElementList : ClassElementList ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Let _head_ be ClassInitializer of |ClassElementList|.
+      2. If _head_ is not ~empty~, return _head_.
+      3. If |ClassElement| is |ClassInitializerBlock|, return |ClassInitializerBlock|.
+      4. Return ~empty~.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id='sec-multiple-class-initializers' aoid='MultipleClassInitializers'>
+    <h1>MultipleClassInitializers</h1>
     <emu-note type='editor'>
       Early errors prevent multiple occurrances of |ClassInitializerBlock| within a single class definition.
     </emu-note>
@@ -161,34 +184,15 @@
       ClassElementList : ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Return ClassInitializerBlocks of |ClassElement|.
+      1. Return *false*.
     </emu-alg>
 
     <emu-grammar>
       ClassElementList : ClassElementList ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Let _initializers_ be ClassInitializerBlocks of |ClassElementList|.
-      2. Append to _initializers_ the elements of the ClassInitializerBlocks of |ClassElement|.
-      3. Return _initializers_.
-    </emu-alg>
-
-    <emu-grammar>
-      ClassElement : InstanceVariableDefinition
-      ClassElement : MethodDefinition
-      ClassElement : HiddenMethod
-      ClassElement : `static` MethodDefinition
-      ClassElement : `static` HiddenMethod
-    </emu-grammar>
-    <emu-alg>
-      1. Return a new empty List.
-    </emu-alg>
-
-    <emu-grammar>
-      ClassElement : ClassInitializerBlock
-    </emu-grammar>
-    <emu-alg>
-      1. Return a new List containing |ClassInitializerBlock|.
+      1. If ClassInitializer of |ClassElementList| is *true* and ClassInitializer of |ClassElement| is *true*, return *true*.
+      2. Return *false*.
     </emu-alg>
   </emu-clause>
 
