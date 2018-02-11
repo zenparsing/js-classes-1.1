@@ -60,7 +60,7 @@
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-hidden-name' aoid='HiddenNameList'>
+  <emu-clause id='sec-hidden-name-list' aoid='HiddenNameList'>
     <h1>HiddenNameList</h1>
     <emu-note type='editor'>
       HiddenNameList of a |PropertyDefinitionList| or |ClassElementList| is a List containing all of the hidden names defined in an object literal or class body.
@@ -95,14 +95,16 @@
       PropertyDefinition : HiddenMethod
     </emu-grammar>
     <emu-alg>
-      1. Return a new List containing HiddenMethodName of |HiddenMethod|.
+      1. Let _name_ be HiddenMethodName of |HiddenMethod|.
+      1. If _name_ is ~empty~, return a new empty List.
+      1. Return a new List containing _name_.
     </emu-alg>
 
     <emu-grammar>
       ClassElementList : ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Return HiddenNameList of |PropertyDefinition|.
+      1. Return HiddenNameList of |ClassElement|.
     </emu-alg>
 
     <emu-grammar>
@@ -128,7 +130,9 @@
       ClassElement : `static` HiddenMethod
     </emu-grammar>
     <emu-alg>
-      1. Return a new List containing HiddenMethodName of |HiddenMethod|.
+      1. Let _name_ be HiddenMethodName of |HiddenMethod|.
+      1. If _name_ is ~empty~, return a new empty List.
+      1. Return a new List containing _name_.
     </emu-alg>
 
     <emu-grammar>
@@ -145,6 +149,46 @@
       1. Let _names_ be HiddenNameList of |InstanceVariableList|.
       2. Append StringValue of |BindingIdentifier| to _names_.
       3. Return _names_.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id='sec-class-initializer-blocks' aoid='ClassInitializerBlocks'>
+    <h1>ClassInitializerBlocks</h1>
+    <emu-note type='editor'>
+      Early errors prevent multiple occurrances of |ClassInitializerBlock| within a single class definition.
+    </emu-note>
+    <emu-grammar>
+      ClassElementList : ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Return ClassInitializerBlocks of |ClassElement|.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElementList : ClassElementList ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Let _initializers_ be ClassInitializerBlocks of |ClassElementList|.
+      2. Append to _initializers_ the elements of the ClassInitializerBlocks of |ClassElement|.
+      3. Return _initializers_.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElement : InstanceVariableDefinition
+      ClassElement : MethodDefinition
+      ClassElement : HiddenMethod
+      ClassElement : `static` MethodDefinition
+      ClassElement : `static` HiddenMethod
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new empty List.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElement : ClassInitializerBlock
+    </emu-grammar>
+    <emu-alg>
+      1. Return a new List containing |ClassInitializerBlock|.
     </emu-alg>
   </emu-clause>
 
