@@ -1,6 +1,27 @@
 <emu-clause id='sec-early-errors'>
   <h1>Early Errors</h1>
 
+  <emu-clause id='sec-early-errors-scripts-and-modules'>
+    <h1>Scripts and Modules</h1>
+    <emu-grammar>
+      ScriptBody : StatementList
+    </emu-grammar>
+    <ul>
+      <li>
+        <ins>It is a Syntax Error if ContainsInvalidHiddenReferences of |StatementList| with argument &laquo; &raquo; is *true* unless the source code is eval code that is being processed by a direct eval.</ins>
+      </li>
+    </ul>
+
+    <emu-grammar>
+      ModuleBody : ModuleItemList
+    </emu-grammar>
+    <ul>
+      <li>
+        <ins>It is a Syntax Error if ContainsInvalidHiddenReferences of |StatementList| with argument &laquo; &raquo; is *true*.</ins>
+      </li>
+    </ul>
+  </emu-clause>
+
   <emu-clause id='sec-early-errors-object-initializer'>
     <h1>Object Initializer</h1>
     <emu-grammar>
@@ -8,17 +29,17 @@
       ObjectLiteral : `{` PropertyDefinitionList `,` `}`
     </emu-grammar>
     <ul>
-      <li>It is a Syntax Error if HiddenNameList of |PropertyDefinitionList| contains duplicate entries.</li>
+      <li><ins>It is a Syntax Error if HasDuplicateHiddenMembers(|PropertyDefinitionList|) is *true*.</ins></li>
     </ul>
   </emu-clause>
 
   <emu-clause id='sec-early-errors-method-definitions'>
     <h1>Method Definitions</h1>
     <emu-grammar>
-      PropertyDefinition : HiddenMethod
+      HiddenMethod : `hidden` MethodDefinition
     </emu-grammar>
     <ul>
-      <li>It is a Syntax Error if HiddenMethodName of |HiddenMethod| is ~empty~.</li>
+      <li>It is a Syntax Error if MethodHasIdentifierName of |MethodDefinition| is *false*.</li>
     </ul>
   </emu-clause>
 
@@ -28,11 +49,10 @@
       ClassBody : ClassElementList
     </emu-grammar>
     <ul>
-      <li>It is a Syntax Error if PrototypePropertyNameList of |ClassElementList| contains more than one occurrence of *"constructor"*.</li>
-      <li><ins>It is a Syntax Error if HiddenNameList of |ClassElementList| contains duplicate entries.</ins></li>
-      <li><ins>It is a Syntax Error if HiddenNameList of |ClassElementList| contains *"constructor"*.</ins></li>
-      <li><ins>It is a Syntax Error if HiddenNameList of |ClassElementList| contains *"prototype"*.</ins></li>
-      <li><ins>It is a Syntax Error if MultipleClassInitializers of |ClassElementList| is *true*.</ins></li>
+      <li><ins>It is a Syntax Error if HasDuplicateHiddenMembers(|ClassElementList|) is *true*.</ins></li>
+      <li><ins>It is a Syntax Error if HiddenMemberList of |ClassElementList| contains an element whose [[Name]] field is  *"constructor"*.</ins></li>
+      <li><ins>It is a Syntax Error if HiddenMemberList of |ClassElementList| contains an element whose [[Name]] field is  *"prototype"*.</ins></li>
+      <li><ins>It is a Syntax Error if HasMultipleClassInitializers of |ClassElementList| is *true*.</ins></li>
     </ul>
   </emu-clause>
 

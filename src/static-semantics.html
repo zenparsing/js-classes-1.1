@@ -15,18 +15,11 @@
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-hidden-name' aoid='HiddenMethodName'>
-    <h1>HiddenMethodName</h1>
+  <emu-clause id='sec-method-has-identifier-name' aoid='MethodHasIdentifierName'>
+    <h1>MethodHasIdentifierName</h1>
     <emu-note type='editor'>
-      <p>HiddenMethodName of a |HiddenMethod| is ~empty~ unless it derives a method with an |IdentifierName| property name.</p>
+      <p>MethodHasIdentifierName of a |MethodDefinition| returns *true* if it derives a method with an |IdentifierName| property name.</p>
     </emu-note>
-
-    <emu-grammar>
-      HiddenMethod : `hidden` MethodDefinition
-    </emu-grammar>
-    <emu-alg>
-      1. Return HiddenMethodName of |MethodDefinition|.
-    </emu-alg>
 
     <emu-grammar>
       MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
@@ -40,7 +33,7 @@
       AsyncMethod : `async` [no LineTerminator here] PropertyName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
     </emu-grammar>
     <emu-alg>
-      1. Return HiddenMethodName of |PropertyName|.
+      1. Return MethodHasIdentifierName of |PropertyName|.
     </emu-alg>
 
     <emu-grammar>
@@ -49,37 +42,77 @@
       ComputedPropertyName : `[` AssignmentExpression `]`
     </emu-grammar>
     <emu-alg>
-      1. Return ~empty~.
+      1. Return *false*.
     </emu-alg>
 
     <emu-grammar>
       LiteralPropertyName : IdentifierName
     </emu-grammar>
     <emu-alg>
-      1. Return StringValue of |IdentifierName|.
+      1. Return *true*.
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-hidden-name-list' aoid='HiddenNameList'>
-    <h1>HiddenNameList</h1>
+  <emu-clause id='sec-hidden-method-info' aoid='HiddenMethodInfo'>
+    <h1>HiddenMethodInfo</h1>
     <emu-note type='editor'>
-      HiddenNameList of a |PropertyDefinitionList| or |ClassElementList| is a List containing all of the hidden names defined in an object literal or class body.
+      HiddenMethodInfo of a |HiddenMethod| returns a Record of the form { [[Name]]: *string*, [[Kind]]: *string* }.
     </emu-note>
-
     <emu-grammar>
-      PropertyDefinitionList : PropertyDefinition
+      HiddenMethod : `hidden` MethodDefinition
     </emu-grammar>
     <emu-alg>
-      1. Return HiddenNameList of |PropertyDefinition|.
+      1. Return HiddenMethodInfo of |MethodDefinition|.
     </emu-alg>
+
+    <emu-grammar>
+      MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
+    </emu-grammar>
+    <emu-grammar>
+      GeneratorMethod : `*` PropertyName `(` UniqueFormalParameters `)` `{` GeneratorBody `}`
+    </emu-grammar>
+    <emu-grammar>
+      AsyncMethod : `async` [no LineTerminator here] PropertyName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
+    </emu-grammar>
+    <emu-alg>
+      1. Let _name_ be PropName of |PropertyName|.
+      2. If _name_ is ~empty~, return ~empty~.
+      3. Return a new Record { [[Name]]: _name_, [[Kind]]: *"method"* }.
+    </emu-alg>
+
+    <emu-grammar>
+      MethodDefinition : `get` PropertyName `(` `)` `{` FunctionBody `}`
+    </emu-grammar>
+    <emu-alg>
+      1. Let _name_ be PropName of |PropertyName|.
+      2. If _name_ is ~empty~, return ~empty~.
+      3. Return a new Record { [[Name]]: _name_, [[Kind]]: *"get"* }.
+    </emu-alg>
+
+    <emu-grammar>
+      MethodDefinition : `set` PropertyName `(` PropertySetParameterList `)` `{` FunctionBody `}`
+    </emu-grammar>
+    <emu-alg>
+      1. Let _name_ be PropName of |PropertyName|.
+      2. If _name_ is ~empty~, return ~empty~.
+      3. Return a new Record { [[Name]]: _name_, [[Kind]]: *"set"* }.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id='sec-hidden-member-list' aoid='HiddenMemberList'>
+    <h1>HiddenMemberList</h1>
+    <emu-note type='editor'>
+      HiddenMemberList of a |PropertyDefinitionList| or |ClassElementList| returns a List containing all of the hidden member names defined in an object literal or class body. Each element in the list is a Record of the form { [[Name]]: *string*, [[Kind]]: *string* }.
+    </emu-note>
 
     <emu-grammar>
       PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition
     </emu-grammar>
     <emu-alg>
-      1. Let _names_ be HiddenNameList of |PropertyDefinitionList|.
-      2. Append to _names_ the elements of the HiddenNameList of |PropertyDefinition|.
-      3. Return _names_.
+      1. Let _members_ be HiddenMemberList of |PropertyDefinitionList|.
+      2. Let _newMembers_ be HiddenMemberList of |PropertyDefinition|.
+      3. Append the elements of _newMembers_ to _members_.
+      4. Return _members_.
     </emu-alg>
 
     <emu-grammar>
@@ -95,31 +128,25 @@
       PropertyDefinition : HiddenMethod
     </emu-grammar>
     <emu-alg>
-      1. Let _name_ be HiddenMethodName of |HiddenMethod|.
-      1. If _name_ is ~empty~, return a new empty List.
-      1. Return a new List containing _name_.
-    </emu-alg>
-
-    <emu-grammar>
-      ClassElementList : ClassElement
-    </emu-grammar>
-    <emu-alg>
-      1. Return HiddenNameList of |ClassElement|.
+      1. Let _methodInfo_ be HiddenMethodInfo of |HiddenMethod|
+      2. Return a new List containing _methodInfo_.
     </emu-alg>
 
     <emu-grammar>
       ClassElementList : ClassElementList ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Let _names_ be HiddenNameList of |ClassElementList|.
-      2. Append to _names_ the elements of the HiddenNameList of |ClassElement|.
-      3. Return _names_.
+      1. Let _members_ be HiddenMemberList of |ClassElementList|.
+      2. Let _newMembers_ be HiddenMemberList of |ClassElement|.
+      3. Append the elements of _newMembers_ to _members_.
+      4. Return _members_.
     </emu-alg>
 
     <emu-grammar>
       ClassElement : MethodDefinition
       ClassElement : `static` MethodDefinition
       ClassElement : `;`
+      ClassElement : ClassInitializerBlock
     </emu-grammar>
     <emu-alg>
       1. Return a new empty List.
@@ -127,29 +154,59 @@
 
     <emu-grammar>
       ClassElement : HiddenMethod
-      ClassElement : `static` HiddenMethod
     </emu-grammar>
     <emu-alg>
-      1. Let _name_ be HiddenMethodName of |HiddenMethod|.
-      1. If _name_ is ~empty~, return a new empty List.
-      1. Return a new List containing _name_.
+      1. Let _methodInfo_ be HiddenMethodInfo of |HiddenMethod|
+      2. Return a new List containing _methodInfo_.
     </emu-alg>
 
     <emu-grammar>
       InstanceVariableList : BindingIdentifier
     </emu-grammar>
     <emu-alg>
-      1. Return a new List containing StringValue of |BindingIdentifier|.
+      1. Let _name_ be StringValue of |BindingIdentifier|.
+      2. Let _member_ be a new Record { [[Name]]: _name_, [[Kind]]: *"var"* }.
+      3. Return a new List containing _member_.
     </emu-alg>
 
     <emu-grammar>
       InstanceVariableList : InstanceVariableList `,` BindingIdentifier
     </emu-grammar>
     <emu-alg>
-      1. Let _names_ be HiddenNameList of |InstanceVariableList|.
-      2. Append StringValue of |BindingIdentifier| to _names_.
-      3. Return _names_.
+      1. Let _members_ be HiddenMemberList of |InstanceVariableList|.
+      2. Let _name_ be StringValue of |BindingIdentifier|.
+      3. Let _member_ be a new Record { [[Name]]: _name_, [[Kind]]: *"var"* }.
+      4. Append _member_ to _members_.
+      5. Return _members_.
     </emu-alg>
+
+  </emu-clause>
+
+  <emu-clause id='sec-has-duplicate-hidden-members' aoid='HasDuplicateHiddenMembers'>
+    <h1>HasDuplicateHiddenMembers</h1>
+    <emu-note type='editor'>
+      HasDuplicateHiddenMembers returns *true* if an object intializer or class body contains more than one definition for a single hidden name, and those definitions do not form an accessor method pair.
+    </emu-note>
+    <p>The abstract operation HasDuplicateHiddenMembers with argument _parseNode_ performs the following steps:</p>
+    <emu-alg>
+      1. Assert: _parseNode_ is |ClassElementList| or |PropertyDefintionList|.
+      2. Let _members_ be HiddenMemberList of _parseNode_.
+      3. For each element _member_ of _members_,
+        1. For each element _otherMember_ of _members_,
+          1. If _otherMember_.[[Name]] is _member_.[[Name]],
+            1. If _otherMember_.[[Kind]] is *"set"* and _member_.[[Kind]] is not *"get"* return *true*.
+            2. Else if _otherMember_.[[Kind]] is *"get"* and _member_.[[Kind]] is not *"set"* return *true*.
+            3. Else return *true*.
+      4. Return *false*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id='sec-contains-invalid-hidden-references' aoid='ContainsInvalidHiddenReferences'>
+    <h1>ContainsInvalidHiddenReferences</h1>
+    <emu-note type='editor'>
+      ContainsInvalidHiddenReferences of a parse node returns *true* if it contains any hidden references that are statically unresolvable or invalid using the initial set of member definitions in the parameter _hiddenNames_. ContainsInvalidHiddenReferences is a recursively applied semantic rule with a default definition similar to Contains.
+    </emu-note>
+    <p>With parameter _hiddenNames_.</p>
   </emu-clause>
 
   <emu-clause id='sec-class-initializer' aoid='ClassInitializer'>
@@ -175,10 +232,10 @@
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-multiple-class-initializers' aoid='MultipleClassInitializers'>
-    <h1>MultipleClassInitializers</h1>
+  <emu-clause id='sec-has-multiple-class-initializers' aoid='HasMultipleClassInitializers'>
+    <h1>HasMultipleClassInitializers</h1>
     <emu-note type='editor'>
-      Early errors prevent multiple occurrances of |ClassInitializerBlock| within a single class definition.
+      HasMultipleClassInitializers of |ClassElementList| returns *true* if the containing class body contains more than one occurance of |ClassInitializerBlock|.
     </emu-note>
     <emu-grammar>
       ClassElementList : ClassElement
@@ -191,7 +248,7 @@
       ClassElementList : ClassElementList ClassElement
     </emu-grammar>
     <emu-alg>
-      1. If ClassInitializer of |ClassElementList| is *true* and ClassInitializer of |ClassElement| is *true*, return *true*.
+      1. If ClassInitializer of |ClassElementList| is not ~empty~ and ClassInitializer of |ClassElement| is not ~empty~, return *true*.
       2. Return *false*.
     </emu-alg>
   </emu-clause>
