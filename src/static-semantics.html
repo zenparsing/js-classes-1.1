@@ -345,9 +345,10 @@
       |IsHiddenClassElement| of |ClassElement| returns *true* if the class element is a hidden method or instance variable declaration.
     </emu-note>
     <emu-grammar>
+      ClassElement : InstanceVariableDeclaration
       ClassElement : HiddenMethod
       ClassElement : `static` HiddenMethod
-      ClassElement : InstanceVariableDeclaration
+      ClassElement : ClassInitializer
     </emu-grammar>
     <emu-alg>
       1. Return *true*.
@@ -355,7 +356,6 @@
 
     <emu-grammar>
       ClassElement : `;`
-      ClassElement : ClassInitializer
       ClassElement : MethodDefinition
       ClassElement : `static` MethodDefinition
     </emu-grammar>
