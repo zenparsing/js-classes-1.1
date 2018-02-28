@@ -1,0 +1,141 @@
+<emu-clause id="sec-hidden-member-descriptors">
+  <h1>Hidden Member Descriptors</h1>
+  <p>The <dfn>Hidden Member Descriptor</dfn> type is used to explain the behavior of hidden member references. The schema name used within this specification to tag literal descriptions of Hidden Member Descriptor records is "HiddenMemberDescriptor".</p>
+  <p>Values of the Hidden Member Descriptor type are Records that contain at least a [[Name]] field. Hidden Member Descriptors may be classified as instance variable descriptors, method descriptors, or accessor descriptors.</p>
+
+  <p>An instance variable Hidden Member Descriptor is a Record with the following fields.</p>
+  <emu-table id="table-instance-variable-hidden-member-descriptors" caption="Instance Variable Hidden Member Descriptor Fields">
+    <table>
+      <tbody>
+        <tr>
+          <th>Field Name</th>
+          <th>Value</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>[[Name]]</td>
+          <td>*string*</td>
+          <td>The name of the instance variable.</td>
+        </tr>
+        <tr>
+          <td>[[InstanceVariableKey]]</td>
+          <td>A unique instance variable key</td>
+          <td>A unique key identifying the instance variable.</td>
+        </tr>
+      </tbody>
+    </table>
+  </emu-table>
+
+  <p>A method Hidden Member Descriptor is a Record with the following fields.</p>
+  <emu-table id="table-method-hidden-member-descriptors" caption="Method Hidden Member Descriptor Fields">
+    <table>
+      <tbody>
+        <tr>
+          <th>Field Name</th>
+          <th>Value</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>[[Name]]</td>
+          <td>*string*</td>
+          <td>The name of the hidden method.</td>
+        </tr>
+        <tr>
+          <td>[[Value]]</td>
+          <td>Object</td>
+          <td>A function object corresponding to a hidden method definition.</td>
+        </tr>
+      </tbody>
+    </table>
+  </emu-table>
+
+  <p>An accessor Hidden Member Descriptor is a Record with the following fields.</p>
+  <emu-table id="table-accessor-hidden-member-descriptors" caption="Accesor Hidden Member Descriptor Fields">
+    <table>
+      <tbody>
+        <tr>
+          <th>Field Name</th>
+          <th>Value</th>
+          <th>Meaning</th>
+        </tr>
+        <tr>
+          <td>[[Name]]</td>
+          <td>*string*</td>
+          <td>The name of the hidden accessor.</td>
+        </tr>
+        <tr>
+          <td>[[Get]]</td>
+          <td>Object | *undefined*</td>
+          <td>If the value is an Object it must be a function object. The function's [[Call]] internal method is called with an empty arguments list to retrieve a hidden property value each time a get access of a hidden reference is performed.</td>
+        </tr>
+        <tr>
+          <td>[[Set]]</td>
+          <td>Object | *undefined*</td>
+          <td>If the value is an Object it must be a function object. The function's [[Call]] internal method is called with an arguments list containing the assigned value as its sole argument each time a set access of a hidden reference is performed.</td>
+        </tr>
+      </tbody>
+    </table>
+  </emu-table>
+
+  <p>The following abstract operations are used in this specification to operate upon Hidden Member Descriptor values:</p>
+
+  <emu-clause id="sec-gethiddenmemberdescriptorkind" aoid="GetHiddenMemberDescriptorKind">
+    <h1>GetHiddenMemberDescriptorKind ( _desc_ )</h1>
+    <emu-alg>
+      1. Assert: Type(_desc_) is HiddenMemberDescriptor.
+      1. If _desc_ has an [[InstanceVariableKey]] field, return *"var"*.
+      1. If _desc_ has a [[Get]] or [[Set]] field, return *"accessor"*.
+      1. Else, return *"method"*.
+  </emu-clause>
+
+  <emu-clause id="sec-createhiddenbindings" aoid="CreateHiddenBindings">
+    <h1>CreateHiddenBindings ( _hiddenDefinitions_, _env_ )</h1>
+    <emu-alg>
+      1. Assert: _hiddenDefinitions_ is a List.
+      1. Assert: _env_ is a Lexical Environment.
+      1. Let _envRec_ be _env_'s EnvironmentRecord.
+      1. For each element _hmd_ of _hiddenDefinitions_, do
+        1. Let _boundName_ be the string-concatenation of `"->"` and _hmd_.[[Name]].
+        1. Perform ! _envRec_.CreateImmutableBinding(_boundName_, *true*).
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-initializehiddenbindings" aoid="InitializeHiddenBindings">
+    <h1>InitializeHiddenBindings  ( _hiddenDefinitions_, _env_ )</h1>
+    <emu-alg>
+      1. Assert: _hiddenDefinitions_ is a List.
+      1. Assert: _env_ is a Lexical Environment.
+      1. Let _envRec_ be _env_'s EnvironmentRecord.
+      1. For each element _hmd_ of _hiddenDefinitions_, do
+        1. Let _boundName_ be the string-concatenation of `"->"` and _hmd_.[[Name]].
+        1. Perform ! _envRec_.InitializeBinding(_boundName_, _hmd_).
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-gethiddenbindingvalue" aoid="GetHiddenBindingValue">
+    <h1>GetHiddenBindingValue ( _name_, _env_ )</h1>
+    <emu-alg>
+      1. Let _boundName_ be the string-concatenation of `"->"` and _name_.
+      1. While _env_ is not *null*,
+        1. Let _envRec_ be _env_'s EnvironmentRecord.
+        1. If _envRec_ is a declarative EnvironmentRecord, then
+          1. Let _exists_ be ! _envRec_.HasBinding(_boundName_).
+          1. If _exists_ is *true*, return ? _envRec_.GetBindingValue(_boundName_, *true*).
+          1. Let _env_ be the value of _env_'s outer environment reference.
+      1. Return *undefined*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-findinstancevariable" aoid="FindInstanceVariable">
+    <h1>FindInstanceVariable ( _obj_, _desc_ )</h1>
+    <emu-alg>
+      1. Assert: _desc_ is a HiddenMemberDescriptor Record.
+      1. Assert: GetHiddenMemberDescriptorKind(_desc_) is *"var"*.
+      1. If Type(_obj_) is not Object, throw a *TypeError* exception.
+      1. For each element _record_ of _obj_.[[InstanceVariables]], do
+        1. If _record_.[[Key]] is _desc_.[[InstanceVariableKey]], return _record_.
+      1. Throw a *TypeError* exception.
+    </emu-alg>
+  </emu-clause>
+
+</emu-clause>

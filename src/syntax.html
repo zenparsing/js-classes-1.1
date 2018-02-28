@@ -1,4 +1,4 @@
-<emu-clause id='sec-syntax'>
+<emu-clause id="sec-syntax">
   <h1>Syntax</h1>
   <emu-grammar>
 
@@ -10,26 +10,26 @@
       <ins>HiddenMethod[?Yield, ?Await]</ins>
 
     ClassElement[Yield, Await] :
-      <ins>InstanceVariableDefinition[?Yield, ?Await]</ins>
+      <ins>InstanceVariableDeclaration[?Yield, ?Await]</ins>
       MethodDefinition[?Yield, ?Await]
       <ins>HiddenMethod[?Yield, ?Await]</ins>
       `static` MethodDefinition[?Yield, ?Await]
       <ins>`static` HiddenMethod[?Yield, ?Await]</ins>
-      <ins>ClassInitializerBlock</ins>
+      <ins>ClassInitializer</ins>
       `;`
 
     HiddenMethod[?Yield, ?Await] :
       `hidden` MethodDefinition[?Yield, ?Await]
 
-    InstanceVariableDefinition[Yield, Await] :
+    InstanceVariableDeclaration[Yield, Await] :
       `var` InstanceVariableList[?Yield, ?Await] `;`
 
     InstanceVariableList[Yield, Await] :
       BindingIdentifier[?Yield, ?Await]
       InstanceVariableList `,` BindingIdentifier[?Yield, ?Await]
 
-    ClassInitializerBlock :
-      `static` `{` StatementList[~Yield, ~Await]? `}`
+    ClassInitializer :
+      `static` `{` FunctionBody[~Yield, ~Await] `}`
 
     MemberExpression[Yield, Await] :
       PrimaryExpression[?Yield, ?Await]

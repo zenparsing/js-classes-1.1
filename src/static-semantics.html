@@ -1,23 +1,123 @@
-<emu-clause id='sec-static-semantics'>
+<emu-clause id="sec-static-semantics">
   <h1>Static Semantics</h1>
 
-  <emu-clause id='sec-prop-name' aoid='PropName'>
+  <emu-clause id="sec-early-errors">
+    <h1>Early Errors</h1>
+
+    <emu-grammar>
+      ScriptBody : StatementList
+    </emu-grammar>
+    <ul>
+      <li>
+        <ins>It is a Syntax Error if ContainsInvalidHiddenReferences of |StatementList| with argument &laquo; &raquo; is *true* unless the source code is eval code that is being processed by a direct eval.</ins>
+      </li>
+    </ul>
+
+    <emu-grammar>
+      ModuleBody : ModuleItemList
+    </emu-grammar>
+    <ul>
+      <li>
+        <ins>It is a Syntax Error if ContainsInvalidHiddenReferences of |StatementList| with argument &laquo; &raquo; is *true*.</ins>
+      </li>
+    </ul>
+
+    <emu-grammar>
+      ObjectLiteral : `{` PropertyDefinitionList `}`
+      ObjectLiteral : `{` PropertyDefinitionList `,` `}`
+    </emu-grammar>
+    <ul>
+      <li><ins>It is a Syntax Error if HasDuplicateHiddenNames(|PropertyDefinitionList|) is *true*.</ins></li>
+    </ul>
+
+    <emu-grammar>
+      HiddenMethod : `hidden` MethodDefinition
+    </emu-grammar>
+    <ul>
+      <li>It is a Syntax Error if MethodHasIdentifierName of |MethodDefinition| is *false*.</li>
+      <li>It is a Syntax Error if HasDirectSuper of |MethodDefinition| is *true*.</li>
+    </ul>
+
+    <emu-grammar>
+      ClassBody : ClassElementList
+    </emu-grammar>
+    <ul>
+      <li><ins>It is a Syntax Error if HasDuplicateHiddenNames(|ClassElementList|) is *true*.</ins></li>
+      <li><ins>It is a Syntax Error if HasMultipleClassInitializers of |ClassElementList| is *true*.</ins></li>
+    </ul>
+
+    <emu-grammar>
+      ClassElement : ClassInitializer
+    </emu-grammar>
+    <emu-alg>
+      1. It is a Syntax Error if HasDirectSuper of |ClassInitializer| is *true*.
+    </emu-alg>
+
+    <emu-grammar>
+      UnaryExpression : `delete` UnaryExpression
+    </emu-grammar>
+    <ul>
+      <li>
+        It is a Syntax Error if the |UnaryExpression| is contained in strict mode code and the derived |UnaryExpression| is <emu-grammar>PrimaryExpression : IdentifierReference</emu-grammar>.
+      </li>
+      <li>
+        <ins>It is a Syntax Error if the derived |UnaryExpression| is
+        <emu-grammar>MemberExpression : MemberExpression `->` IdentifierName</emu-grammar> or <emu-grammar>CallExpression : CallExpression `->` IdentifierName</emu-grammar>.</ins>
+      </li>
+      <li>
+        It is a Syntax Error if the derived |UnaryExpression| is
+        <br>
+        <emu-grammar>PrimaryExpression : CoverParenthesizedExpressionAndArrowParameterList</emu-grammar>
+        <br>
+        and |CoverParenthesizedExpressionAndArrowParameterList| ultimately derives a phrase that, if used in place of |UnaryExpression|, would produce a Syntax Error according to these rules. This rule is recursively applied.
+      </li>
+    </ul>
+    <emu-note>
+      <p>The last rule means that expressions such as `delete (((foo)))` produce early errors because of recursive application of the first rule.</p>
+    </emu-note>
+
+  </emu-clause>
+
+  <emu-clause id="sec-propname" aoid="PropName">
     <h1>PropName</h1>
-    <emu-note type='editor'>
-      <p>PropName returns ~empty~ for hidden method definitions</p>
+    <emu-note type="editor">
+      <p>PropName returns ~empty~ for hidden method definitions and non-method class elements.</p>
     </emu-note>
     <emu-grammar>
-      PropertyDefinition : HiddenMethod
-      ClassElement : HiddenMethod
+      HiddenMethod : `hidden` MethodDefintion
+    </emu-grammar>
+    <emu-alg>
+      1. Return ~empty~.
+    </emu-alg>
+    <emu-grammar>
+      ClassElement : `;`
+      ClassElement : InstanceVariableDeclaration
+      ClassElement : ClassInitializer
     </emu-grammar>
     <emu-alg>
       1. Return ~empty~.
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-method-has-identifier-name' aoid='MethodHasIdentifierName'>
+  <emu-clause id="sec-object-initializer-static-semantics-contains">
+    <h1>Contains</h1>
+    <p>With parameter _symbol_.</p>
+    <emu-see-also-para op="Contains"></emu-see-also-para>
+    <emu-grammar>
+      HiddenMethod : `hidden` MethodDefinition
+    </emu-grammar>
+    <emu-alg>
+      1. If _symbol_ is |MethodDefinition|, return *true*.
+      1. Return *false*.
+    </emu-alg>
+    <emu-note>
+      <p>Static semantic rules that depend upon substructure generally do not look into function definitions.</p>
+    </emu-note>
+  </emu-clause>
+
+  <emu-clause id="sec-methodhasidentifiername" aoid="MethodHasIdentifierName">
     <h1>MethodHasIdentifierName</h1>
-    <emu-note type='editor'>
+    <emu-note type="editor">
       <p>MethodHasIdentifierName of a |MethodDefinition| returns *true* if it derives a method with an |IdentifierName| property name.</p>
     </emu-note>
 
@@ -25,12 +125,9 @@
       MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
       MethodDefinition : `get` PropertyName `(` `)` `{` FunctionBody `}`
       MethodDefinition : `set` PropertyName `(` PropertySetParameterList `)` `{` FunctionBody `}`
-    </emu-grammar>
-    <emu-grammar>
       GeneratorMethod : `*` PropertyName `(` UniqueFormalParameters `)` `{` GeneratorBody `}`
-    </emu-grammar>
-    <emu-grammar>
       AsyncMethod : `async` [no LineTerminator here] PropertyName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
+      AsyncGeneratorMethod : `async` [no LineTerminator here] `*` PropertyName `(` UniqueFormalParameters `)` `{` AsyncGeneratorBody `}`
     </emu-grammar>
     <emu-alg>
       1. Return MethodHasIdentifierName of |PropertyName|.
@@ -53,66 +150,20 @@
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-hidden-method-info' aoid='HiddenMethodInfo'>
-    <h1>HiddenMethodInfo</h1>
-    <emu-note type='editor'>
-      HiddenMethodInfo of a |HiddenMethod| returns a Record of the form { [[Name]]: *string*, [[Kind]]: *string* }.
-    </emu-note>
-    <emu-grammar>
-      HiddenMethod : `hidden` MethodDefinition
-    </emu-grammar>
-    <emu-alg>
-      1. Return HiddenMethodInfo of |MethodDefinition|.
-    </emu-alg>
-
-    <emu-grammar>
-      MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
-    </emu-grammar>
-    <emu-grammar>
-      GeneratorMethod : `*` PropertyName `(` UniqueFormalParameters `)` `{` GeneratorBody `}`
-    </emu-grammar>
-    <emu-grammar>
-      AsyncMethod : `async` [no LineTerminator here] PropertyName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
-    </emu-grammar>
-    <emu-alg>
-      1. Let _name_ be PropName of |PropertyName|.
-      2. If _name_ is ~empty~, return ~empty~.
-      3. Return a new Record { [[Name]]: _name_, [[Kind]]: *"method"* }.
-    </emu-alg>
-
-    <emu-grammar>
-      MethodDefinition : `get` PropertyName `(` `)` `{` FunctionBody `}`
-    </emu-grammar>
-    <emu-alg>
-      1. Let _name_ be PropName of |PropertyName|.
-      2. If _name_ is ~empty~, return ~empty~.
-      3. Return a new Record { [[Name]]: _name_, [[Kind]]: *"get"* }.
-    </emu-alg>
-
-    <emu-grammar>
-      MethodDefinition : `set` PropertyName `(` PropertySetParameterList `)` `{` FunctionBody `}`
-    </emu-grammar>
-    <emu-alg>
-      1. Let _name_ be PropName of |PropertyName|.
-      2. If _name_ is ~empty~, return ~empty~.
-      3. Return a new Record { [[Name]]: _name_, [[Kind]]: *"set"* }.
-    </emu-alg>
-  </emu-clause>
-
-  <emu-clause id='sec-hidden-member-list' aoid='HiddenMemberList'>
-    <h1>HiddenMemberList</h1>
-    <emu-note type='editor'>
-      HiddenMemberList of a |PropertyDefinitionList| or |ClassElementList| returns a List containing all of the hidden member names defined in an object literal or class body. Each element in the list is a Record of the form { [[Name]]: *string*, [[Kind]]: *string* }.
+  <emu-clause id="sec-hiddennames" aoid="HiddenNames">
+    <h1>HiddenNames</h1>
+    <emu-note type="editor">
+      HiddenNames of a |PropertyDefinitionList| or |ClassElementList| returns a List containing all of the hidden member names defined in an object literal or class body. Each element in the list is a Record of the form {[[Name]]: *string*, [[Kind]]: *string*}.
     </emu-note>
 
     <emu-grammar>
       PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition
     </emu-grammar>
     <emu-alg>
-      1. Let _members_ be HiddenMemberList of |PropertyDefinitionList|.
-      2. Let _newMembers_ be HiddenMemberList of |PropertyDefinition|.
-      3. Append the elements of _newMembers_ to _members_.
-      4. Return _members_.
+      1. Let _hiddenNames_ be HiddenNames of |PropertyDefinitionList|.
+      1. Let _newNames_ be HiddenNames of |PropertyDefinition|.
+      1. Append the elements of _newNames_ to _hiddenNames_.
+      1. Return _hiddenNames_.
     </emu-alg>
 
     <emu-grammar>
@@ -125,39 +176,53 @@
     </emu-alg>
 
     <emu-grammar>
-      PropertyDefinition : HiddenMethod
+      MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
+      GeneratorMethod : `*` PropertyName `(` UniqueFormalParameters `)` `{` GeneratorBody `}`
+      AsyncMethod : `async` [no LineTerminator here] PropertyName `(` UniqueFormalParameters `)` `{` AsyncFunctionBody `}`
+      AsyncGeneratorMethod : `async` [no LineTerminator here] `*` PropertyName `(` UniqueFormalParameters `)` `{` AsyncGeneratorBody `}`
     </emu-grammar>
     <emu-alg>
-      1. Let _methodInfo_ be HiddenMethodInfo of |HiddenMethod|
-      2. Return a new List containing _methodInfo_.
+      1. Let _name_ be PropName of |PropertyName|.
+      1. If _name_ is ~empty~, return a new empty List.
+      1. Return a new List containing the Record{ [[Name]]: _name_, [[Kind]]: *"method"* }.
+    </emu-alg>
+
+    <emu-grammar>
+      MethodDefinition : `get` PropertyName `(` `)` `{` FunctionBody `}`
+    </emu-grammar>
+    <emu-alg>
+      1. Let _name_ be PropName of |PropertyName|.
+      1. If _name_ is ~empty~, return a new empty List.
+      1. Return a new List containing the Record{ [[Name]]: _name_, [[Kind]]: *"get"* }.
+    </emu-alg>
+
+    <emu-grammar>
+      MethodDefinition : `set` PropertyName `(` PropertySetParameterList `)` `{` FunctionBody `}`
+    </emu-grammar>
+    <emu-alg>
+      1. Let _name_ be PropName of |PropertyName|.
+      1. If _name_ is ~empty~, return a new empty List.
+      1. Return a new List containing the Record{ [[Name]]: _name_, [[Kind]]: *"set"* }.
     </emu-alg>
 
     <emu-grammar>
       ClassElementList : ClassElementList ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Let _members_ be HiddenMemberList of |ClassElementList|.
-      2. Let _newMembers_ be HiddenMemberList of |ClassElement|.
-      3. Append the elements of _newMembers_ to _members_.
-      4. Return _members_.
+      1. Let _hiddenNames_ be HiddenNames of |ClassElementList|.
+      1. Let _newNames_ be HiddenNames of |ClassElement|.
+      1. Append the elements of _newNames_ to _hiddenNames_.
+      1. Return _hiddenNames_.
     </emu-alg>
 
     <emu-grammar>
       ClassElement : MethodDefinition
       ClassElement : `static` MethodDefinition
       ClassElement : `;`
-      ClassElement : ClassInitializerBlock
+      ClassElement : ClassInitializer
     </emu-grammar>
     <emu-alg>
       1. Return a new empty List.
-    </emu-alg>
-
-    <emu-grammar>
-      ClassElement : HiddenMethod
-    </emu-grammar>
-    <emu-alg>
-      1. Let _methodInfo_ be HiddenMethodInfo of |HiddenMethod|
-      2. Return a new List containing _methodInfo_.
     </emu-alg>
 
     <emu-grammar>
@@ -165,77 +230,77 @@
     </emu-grammar>
     <emu-alg>
       1. Let _name_ be StringValue of |BindingIdentifier|.
-      2. Let _member_ be a new Record { [[Name]]: _name_, [[Kind]]: *"var"* }.
-      3. Return a new List containing _member_.
+      1. Return a new List containing the Record{ [[Name]]: _name_, [[Kind]]: *"var"* }.
     </emu-alg>
 
     <emu-grammar>
       InstanceVariableList : InstanceVariableList `,` BindingIdentifier
     </emu-grammar>
     <emu-alg>
-      1. Let _members_ be HiddenMemberList of |InstanceVariableList|.
-      2. Let _name_ be StringValue of |BindingIdentifier|.
-      3. Let _member_ be a new Record { [[Name]]: _name_, [[Kind]]: *"var"* }.
-      4. Append _member_ to _members_.
-      5. Return _members_.
+      1. Let _hiddenNames_ be HiddenNames of |InstanceVariableList|.
+      1. Let _name_ be StringValue of |BindingIdentifier|.
+      1. Let _record_ be a new Record{ [[Name]]: _name_, [[Kind]]: *"var"* }.
+      1. Append _record_ to _hiddenNames_.
+      1. Return _hiddenNames_.
     </emu-alg>
 
   </emu-clause>
 
-  <emu-clause id='sec-has-duplicate-hidden-members' aoid='HasDuplicateHiddenMembers'>
-    <h1>HasDuplicateHiddenMembers</h1>
-    <emu-note type='editor'>
-      HasDuplicateHiddenMembers returns *true* if an object intializer or class body contains more than one definition for a single hidden name, and those definitions do not form an accessor method pair.
+  <emu-clause id="sec-hasduplicatehiddennames" aoid="HasDuplicateHiddenNames">
+    <h1>HasDuplicateHiddenNames ( _parseNode_ )</h1>
+    <emu-note type="editor">
+      HasDuplicateHiddenNames returns *true* if an object intializer or class body contains more than one definition for a single hidden name, and those definitions do not form an accessor method pair.
     </emu-note>
-    <p>The abstract operation HasDuplicateHiddenMembers with argument _parseNode_ performs the following steps:</p>
     <emu-alg>
       1. Assert: _parseNode_ is |ClassElementList| or |PropertyDefintionList|.
-      2. Let _members_ be HiddenMemberList of _parseNode_.
-      3. For each element _member_ of _members_,
-        1. For each element _otherMember_ of _members_,
-          1. If _otherMember_.[[Name]] is _member_.[[Name]],
-            1. If _otherMember_.[[Kind]] is *"set"* and _member_.[[Kind]] is not *"get"* return *true*.
-            2. Else if _otherMember_.[[Kind]] is *"get"* and _member_.[[Kind]] is not *"set"* return *true*.
-            3. Else return *true*.
-      4. Return *false*.
+      1. Let _members_ be HiddenNames of _parseNode_.
+      1. For each element _member_ of _members_, do
+        1. For each element _otherMember_ of _members_, do
+          1. If _otherMember_ is not _member_ and _otherMember_.[[Name]] is _member_.[[Name]], then
+            1. If _otherMember_.[[Kind]] is *"set"*, then
+              1. If _member_.[[Kind]] is not *"get"*, return *true*.
+            1. Else if _otherMember_.[[Kind]] is *"get"*, then
+              1. If _member_.[[Kind]] is not *"set"*, return *true*.
+            1. Else, return *true*.
+      1. Return *false*.
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-contains-invalid-hidden-references' aoid='ContainsInvalidHiddenReferences'>
+  <emu-clause id="sec-containsinvalidhiddenreferences" aoid="ContainsInvalidHiddenReferences">
     <h1>ContainsInvalidHiddenReferences</h1>
-    <emu-note type='editor'>
-      ContainsInvalidHiddenReferences of a parse node returns *true* if it contains any hidden references that are statically unresolvable or invalid using the initial set of member definitions in the parameter _hiddenNames_. ContainsInvalidHiddenReferences is a recursively applied semantic rule with a default definition similar to Contains.
+    <emu-note type="editor">
+      ContainsInvalidHiddenReferences of a parse node returns *true* if it contains any hidden references that are statically unresolvable or invalid using the initial set of member definitions in the parameter _hiddenNames_. ContainsInvalidHiddenReferences is a recursively applied semantic rule.
     </emu-note>
     <p>With parameter _hiddenNames_.</p>
+    <p><em>TODO</em></p>
   </emu-clause>
 
-  <emu-clause id='sec-class-initializer' aoid='ClassInitializer'>
-    <h1>ClassInitializer</h1>
-    <emu-note type='editor'>
-      ClassInitializer of |ClassElementList| returns the first |ClassInitializerBlock| within a class definition. Early errors prevent multiple occurrances of |ClassInitializerBlock| within a single class definition.
+  <emu-clause id="sec-classinitializerelement" aoid="ClassInitializerElement">
+    <h1>ClassInitializerElement</h1>
+    <emu-note type="editor">
+      ClassInitializerElement of |ClassElementList| returns the first |ClassInitializer| within a class definition. Early errors prevent multiple occurrances of |ClassInitializer| within a single class definition.
     </emu-note>
     <emu-grammar>
       ClassElementList : ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Return ClassInitializer of |ClassElement|.
+      1. If |ClassElement| is <emu-grammar>ClassElement : ClassInitializer</emu-grammar>, return |ClassElement|.
+      1. Return ~empty~.
     </emu-alg>
-
     <emu-grammar>
       ClassElementList : ClassElementList ClassElement
     </emu-grammar>
     <emu-alg>
-      1. Let _head_ be ClassInitializer of |ClassElementList|.
-      2. If _head_ is not ~empty~, return _head_.
-      3. If |ClassElement| is |ClassInitializerBlock|, return |ClassInitializerBlock|.
-      4. Return ~empty~.
+      1. Let _head_ be ClassInitializerElement of |ClassElementList|.
+      1. If _head_ is not ~empty~, return _head_.
+      1. Return ClassInitializerElement of |ClassElement|.
     </emu-alg>
   </emu-clause>
 
-  <emu-clause id='sec-has-multiple-class-initializers' aoid='HasMultipleClassInitializers'>
+  <emu-clause id="sec-hasmultipleclassinitializers" aoid="HasMultipleClassInitializers">
     <h1>HasMultipleClassInitializers</h1>
-    <emu-note type='editor'>
-      HasMultipleClassInitializers of |ClassElementList| returns *true* if the containing class body contains more than one occurance of |ClassInitializerBlock|.
+    <emu-note type="editor">
+      HasMultipleClassInitializers of |ClassElementList| returns *true* if the containing class body contains more than one occurance of |ClassInitializer|.
     </emu-note>
     <emu-grammar>
       ClassElementList : ClassElement
@@ -248,8 +313,79 @@
       ClassElementList : ClassElementList ClassElement
     </emu-grammar>
     <emu-alg>
-      1. If ClassInitializer of |ClassElementList| is not ~empty~ and ClassInitializer of |ClassElement| is not ~empty~, return *true*.
-      2. Return *false*.
+      1. If |ClassElementList| Contains |ClassInitializer| and |ClassElement| Contains |ClassInitializer|, return *true*.
+      1. Return *false*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-static-semantics-isstatic">
+    <h1>IsStatic</h1>
+    <emu-grammar>
+      ClassElement : MethodDefinition
+      ClassElement : HiddenMethod
+      ClassElement : InstanceVariableDeclaration
+      ClassElement : `;`
+    </emu-grammar>
+    <emu-alg>
+      1. Return *false*.
+    </emu-alg>
+    <emu-grammar>
+      ClassElement : `static` MethodDefinition
+      ClassElement : `static` HiddenMethod
+      ClassElement : ClassInitializer
+    </emu-grammar>
+    <emu-alg>
+      1. Return *true*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-ishiddenclasselement" aoid="IsHiddenClassElement">
+    <h1>IsHiddenClassElement</h1>
+    <emu-note type="editor">
+      |IsHiddenClassElement| of |ClassElement| returns *true* if the class element is a hidden method or instance variable declaration.
+    </emu-note>
+    <emu-grammar>
+      ClassElement : HiddenMethod
+      ClassElement : `static` HiddenMethod
+      ClassElement : InstanceVariableDeclaration
+    </emu-grammar>
+    <emu-alg>
+      1. Return *true*.
+    </emu-alg>
+
+    <emu-grammar>
+      ClassElement : `;`
+      ClassElement : ClassInitializer
+      ClassElement : MethodDefinition
+      ClassElement : `static` MethodDefinition
+    </emu-grammar>
+    <emu-alg>
+      1. Return *false*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-nonconstructorclasselements" aoid="NonConstructorClassElements">
+    <h1>NonConstructorClassElements</h1>
+    <emu-note type="editor">
+      |NonConstructorClassElements| of |ClassElementList| returns all non-empty |ClassElement| parse nodes other than the class constructor method.
+    </emu-note>
+    <emu-grammar>
+      ClassElementList : ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. If |ClassElement| is <emu-grammar>ClassElement : `;`</emu-grammar> , return a new empty List.
+      1. If IsStatic of |ClassElement| is *false* and PropName of |ClassElement| is `"constructor"`, return a new empty List.
+      1. Return a List containing |ClassElement|.
+    </emu-alg>
+    <emu-grammar>
+      ClassElementList : ClassElementList ClassElement
+    </emu-grammar>
+    <emu-alg>
+      1. Let _list_ be NonConstructorClassElements of |ClassElementList|.
+      1. If |ClassElement| is <emu-grammar>ClassElement : `;`</emu-grammar> , return _list_.
+      1. If IsStatic of |ClassElement| is *false* and PropName of |ClassElement| is `"constructor"`, return _list_.
+      1. Append |ClassElement| to the end of _list_.
+      1. Return _list_.
     </emu-alg>
   </emu-clause>
 

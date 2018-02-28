@@ -1,0 +1,98 @@
+<emu-clause id="sec-references">
+  <h1>References</h1>
+  <p>A <dfn>Reference</dfn> is a resolved name or property binding. A Reference consists of three components, the base value component, the referenced name component, and the Boolean-valued strict reference flag. The base value component is either *undefined*, an Object, a Boolean, a String, a Symbol, a Number, or an Environment Record. A base value component of *undefined* indicates that the Reference could not be resolved to a binding. The referenced name component is a String, a Symbol, <ins>or a HiddenMemberDescriptor</ins>.</p>
+
+  <emu-clause id="sec-ishiddenreference" aoid="IsHiddenReference">
+    <h1>IsHiddenReference ( _V_ )</h1>
+    <emu-alg>
+      1. Assert: Type(_V_) is Reference.
+      1. If the referenced name component of _V_ is a HiddenMemberDescriptor record, return *true*.
+      1. Return *false*.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-getvalue" aoid="GetValue">
+    <h1>GetValue ( _V_ )</h1>
+    <emu-alg>
+      1. ReturnIfAbrupt(_V_).
+      1. If Type(_V_) is not Reference, return _V_.
+      1. Let _base_ be GetBase(_V_).
+      1. If IsUnresolvableReference(_V_) is *true*, throw a *ReferenceError* exception.
+      1. <ins>If IsHiddenReference(_V_) is *true*, return GetHiddenValue(_V_).</ins>
+      1. If IsPropertyReference(_V_) is *true*, then
+        1. If HasPrimitiveBase(_V_) is *true*, then
+          1. Assert: In this case, _base_ will never be *undefined* or *null*.
+          1. Set _base_ to ! ToObject(_base_).
+        1. Return ? _base_.[[Get]](GetReferencedName(_V_), GetThisValue(_V_)).
+      1. Else _base_ must be an Environment Record,
+        1. Return ? _base_.GetBindingValue(GetReferencedName(_V_), IsStrictReference(_V_)) (see <emu-xref href="#sec-environment-records"></emu-xref>).
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-putvalue" aoid="PutValue">
+    <h1>PutValue ( _V_, _W_ )</h1>
+    <emu-alg>
+      1. ReturnIfAbrupt(_V_).
+      1. ReturnIfAbrupt(_W_).
+      1. If Type(_V_) is not Reference, throw a *ReferenceError* exception.
+      1. Let _base_ be GetBase(_V_).
+      1. If IsUnresolvableReference(_V_) is *true*, then
+        1. If IsStrictReference(_V_) is *true*, then
+          1. Throw a *ReferenceError* exception.
+        1. Let _globalObj_ be GetGlobalObject().
+        1. Return ? Set(_globalObj_, GetReferencedName(_V_), _W_, *false*).
+      1. <ins>Else if IsHiddenReference(_V_) is *true*, return SetHiddenValue(_V_, _W_).</ins>
+      1. Else if IsPropertyReference(_V_) is *true*, then
+        1. If HasPrimitiveBase(_V_) is *true*, then
+          1. Assert: In this case, _base_ will never be *undefined* or *null*.
+          1. Set _base_ to ! ToObject(_base_).
+        1. Let _succeeded_ be ? _base_.[[Set]](GetReferencedName(_V_), _W_, GetThisValue(_V_)).
+        1. If _succeeded_ is *false* and IsStrictReference(_V_) is *true*, throw a *TypeError* exception.
+        1. Return.
+      1. Else _base_ must be an Environment Record,
+        1. Return ? _base_.SetMutableBinding(GetReferencedName(_V_), _W_, IsStrictReference(_V_)) (see <emu-xref href="#sec-environment-records"></emu-xref>).
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-gethiddenvalue" aoid="GetHiddenValue">
+    <h1>GetHiddenValue ( _V_ )</h1>
+    <emu-alg>
+      1. Assert: Type(_V_) is Reference.
+      1. Let _hmd_ be GetReferencedName(_V_).
+      1. Assert: Type(_hmd_) is HiddenMemberDescriptor.
+      1. Let _kind_ be GetHiddenMemberDescriptorKind(_hmd_).
+      1. If _kind_ is *"method"*, return _desc_.[[Value]].
+      1. Let _base_ be GetBase(_V_).
+      1. If _kind_ is *"accessor"*, then
+        1. Let _getter_ be _desc_.[[Get]].
+        1. If _getter_ is *undefined*, return *undefined*.
+        1. Return ? Call(_getter_, _base_).
+      1. Else _kind_ must be *"var"*,
+        1. Let _var_ be ? FindInstanceVariable(_base_, _desc_).
+        1. Return _var_.[[Value]].
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-sethiddenvalue" aoid="SetHiddenValue">
+    <h1>SetHiddenValue ( _V_, _W_ )</h1>
+    <emu-alg>
+      1. Assert: Type(_V_) is Reference.
+      1. Let _hmd_ be GetReferencedName(_V_).
+      1. Assert: _hmd_ is a HiddenMemberDescriptor Record.
+      1. Let _kind_ be GetHiddenMemberDescriptorKind(_hmd_).
+      1. Assert: _kind_ will never be *"method"*.
+      1. Let _base_ be GetBase(_V_).
+      1. If _kind_ is *"accessor"*, then
+        1. Let _setter_ be _desc_.[[Set]].
+        1. Assert: IsCallable(_setter_) is *true*.
+        1. Return ? Call(_setter_, _base_, &laquo; _W_ &raquo;).
+      1. Else _kind_ must be *"var"*,
+        1. Let _var_ be ? FindInstanceVariable(_base_, _desc_).
+        1. Set _var_.[[Value]] to _W_.
+    </emu-alg>
+  </emu-clause>
+  <emu-note>
+    Early error rules prevent assignment to hidden references if there is no hidden set accessor method or instance variable in scope.
+  </emu-note>
+
+</emu-clause>
