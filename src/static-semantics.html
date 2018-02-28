@@ -22,6 +22,7 @@
       </li>
     </ul>
 
+    <!--
     <emu-grammar>
       ObjectLiteral : `{` PropertyDefinitionList `}`
       ObjectLiteral : `{` PropertyDefinitionList `,` `}`
@@ -29,6 +30,7 @@
     <ul>
       <li><ins>It is a Syntax Error if HasDuplicateHiddenNames(|PropertyDefinitionList|) is *true*.</ins></li>
     </ul>
+    -->
 
     <emu-grammar>
       HiddenMethod : `hidden` MethodDefinition
@@ -153,9 +155,10 @@
   <emu-clause id="sec-hiddennames" aoid="HiddenNames">
     <h1>HiddenNames</h1>
     <emu-note type="editor">
-      HiddenNames of a |PropertyDefinitionList| or |ClassElementList| returns a List containing all of the hidden member names defined in an object literal or class body. Each element in the list is a Record of the form {[[Name]]: *string*, [[Kind]]: *string*}.
+      HiddenNames of a |ClassElementList| returns a List containing all of the hidden member names defined in the class body. Each element in the list is a Record of the form {[[Name]]: *string*, [[Kind]]: *string*}.
     </emu-note>
 
+    <!--
     <emu-grammar>
       PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition
     </emu-grammar>
@@ -174,6 +177,7 @@
     <emu-alg>
       1. Return a new empty List.
     </emu-alg>
+    -->
 
     <emu-grammar>
       MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
@@ -249,10 +253,10 @@
   <emu-clause id="sec-hasduplicatehiddennames" aoid="HasDuplicateHiddenNames">
     <h1>HasDuplicateHiddenNames ( _parseNode_ )</h1>
     <emu-note type="editor">
-      HasDuplicateHiddenNames returns *true* if an object intializer or class body contains more than one definition for a single hidden name, and those definitions do not form an accessor method pair.
+      HasDuplicateHiddenNames returns *true* if a class body contains more than one definition for a single hidden name, and those definitions do not form an accessor method pair.
     </emu-note>
     <emu-alg>
-      1. Assert: _parseNode_ is |ClassElementList| or |PropertyDefintionList|.
+      1. Assert: _parseNode_ is |ClassElementList|.
       1. Let _members_ be HiddenNames of _parseNode_.
       1. For each element _member_ of _members_, do
         1. For each element _otherMember_ of _members_, do

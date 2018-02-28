@@ -1,13 +1,18 @@
 <emu-clause id="sec-syntax">
   <h1>Syntax</h1>
-  <emu-grammar>
 
+  <!--
+  <emu-grammar>
     PropertyDefinition[Yield, Await] :
       IdentifierReference[?Yield, ?Await]
       CoverInitializedName[?Yield, ?Await]
       PropertyName[?Yield, ?Await] `:` AssignmentExpression[+In, ?Yield, ?Await]
       MethodDefinition[?Yield, ?Await]
       <ins>HiddenMethod[?Yield, ?Await]</ins>
+  </emu-grammar>
+  -->
+
+  <emu-grammar>
 
     ClassElement[Yield, Await] :
       <ins>InstanceVariableDeclaration[?Yield, ?Await]</ins>

@@ -3,6 +3,8 @@
 
   <emu-clause id="sec-evaluation">
     <h1>Evaluation</h1>
+
+    <!--
     <emu-grammar>
       ObjectLiteral : `{` PropertyDefinitionList `}`
       ObjectLiteral : `{` PropertyDefinitionList `,` `}`
@@ -21,6 +23,7 @@
       1. <ins>Perform ! InitializeHiddenBindings(_hiddenDefinitions_, _hiddenEnv_).</ins>
       1. Return _obj_.
     </emu-alg>
+    -->
 
     <emu-grammar>
       SuperCall : `super` Arguments
@@ -106,6 +109,9 @@
 
   <emu-clause id="sec-definemethod" aoid="DefineMethod">
     <h1>DefineMethod</h1>
+    <emu-note type="editor">
+      DefineMethod has been generalized to create methods for all method definition productions.
+    </emu-note>
     <p>With parameter _homeObject_.</p>
 
     <emu-grammar>
@@ -212,7 +218,10 @@
   <emu-clause id="sec-property-definition-evaluation" aoid="PropertyDefinitionEvaluation">
     <h1>PropertyDefinitionEvaluation</h1>
     <emu-note type="editor">
-      Hidden method definitions are evaluated separately in HiddenDefinitionEvaluation.
+      PropertyDefinitionEvaluation of |MethodDefinition| productions has been refactored to use DefineMethod.
+    </emu-note>
+    <emu-note type="editor">
+      PropertyDefinitionEvaluation does not process hidden definitions. Hidden method definitions are evaluated separately in HiddenDefinitionEvaluation.
     </emu-note>
     <p>With parameters _object_ and _enumerable_.</p>
 
@@ -294,7 +303,12 @@
 
   <emu-clause id="sec-hidden-definition-evaluation" aoid="HiddenDefinitionEvaluation">
     <h1>HiddenDefinitionEvaluation</h1>
+    <emu-note type="editor">
+      HiddenDefinitionEvaluation evaluates hidden class elements and populates the specified _hiddenDefinitions_ List with HiddenMemberDescriptors.
+    </emu-note>
     <p>With parameters _object_ and _hiddenDefinitions_.</p>
+
+    <!--
     <emu-grammar>
       PropertyDefinitionList : PropertyDefinitionList `,` PropertyDefinition
     </emu-grammar>
@@ -312,6 +326,7 @@
     <emu-alg>
       1. Return.
     </emu-alg>
+    -->
 
     <emu-grammar>
       MethodDefinition : PropertyName `(` UniqueFormalParameters `)` `{` FunctionBody `}`
