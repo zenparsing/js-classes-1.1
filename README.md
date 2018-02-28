@@ -101,3 +101,4 @@ Lexically scoped instance variable declarations and hidden method definitions in
 - [Code examples](https://github.com/zenparsing/js-classes-1.1/tree/master/examples)
 - [Initial proposal and discussion](https://github.com/zenparsing/js-classes-1.1/issues/7)
 - [Assumptions and constraints](docs/assumptions-and-constraints.md)
+- [Specification text](https://zenparsing.github.io/js-classes-1.1/)
