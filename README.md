@@ -5,8 +5,8 @@
 The max-min class design, as implemented in ECMAScript 2018, has successfully balanced the need for a declarative class syntax with the desire to keep semantics lightweight and expressible in terms of the existing Javascript object model. Although there are currently several proposals for extending class definitions with additional features, we believe that existing class definitions are only missing the following fundamental capabilities:
 
 1. **Per-instance encapsulated state.** There should be a way for a class author to specify per-instance state that is not accessible outside of the class definition.
-1. **Secure method decomposition**. There should be a way for the user to refactor common code into methods that are not accessible outside of the class definition.
-1. **Constructor initialization.** There should be a way to initialize the class constructor function, for instance by adding arbitrary data properties, within the class definition.
+1. **Secure method decomposition.** There should be a way for the user to refactor common code into methods that are not accessible outside of the class definition.
+1. **Customized constructor initialization.** There should be a way to initialize the class constructor function, for instance by adding arbitrary data properties, within the class definition.
 
 ## Overview
 
