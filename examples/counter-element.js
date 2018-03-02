@@ -3,7 +3,7 @@ class Counter extends HTMLElement {
 
   constructor() {
     super();
-    this->x = 0;
+    x = 0;
     this.onclick = () => this->clicked();
   }
 
@@ -12,12 +12,12 @@ class Counter extends HTMLElement {
   }
 
   hidden clicked() {
-    this->x++;
+    x++;
     window.requestAnimationFrame(() => this->render());
   }
 
   hidden render() {
-    this.textContent = this->x.toString();
+    this.textContent = x.toString();
   }
 
   static {
