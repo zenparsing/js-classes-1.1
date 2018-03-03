@@ -3,7 +3,7 @@
 export const registry = new JSDOMRegistry();
 
 export class JSDOM {
-  let createdBy;
+  var createdBy;
 
   hidden registerWithRegistry() {
     // ... elided ...
