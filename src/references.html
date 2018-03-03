@@ -60,9 +60,12 @@
       1. Assert: Type(_V_) is Reference.
       1. Let _hmd_ be GetReferencedName(_V_).
       1. Assert: Type(_hmd_) is HiddenMemberDescriptor.
+      1. Let _base_ be GetBase(_V_).
+      1. If _base_ is an Environment Record, then
+        1. Assert: _base_ is a function Environment Record.
+        1. Let _base_ be ? _base_.GetThisBinding().
       1. Let _kind_ be GetHiddenMemberDescriptorKind(_hmd_).
       1. If _kind_ is *"method"*, return _desc_.[[Value]].
-      1. Let _base_ be GetBase(_V_).
       1. If _kind_ is *"accessor"*, then
         1. Let _getter_ be _desc_.[[Get]].
         1. If _getter_ is *undefined*, return *undefined*.
@@ -79,9 +82,12 @@
       1. Assert: Type(_V_) is Reference.
       1. Let _hmd_ be GetReferencedName(_V_).
       1. Assert: _hmd_ is a HiddenMemberDescriptor Record.
+      1. Let _base_ be GetBase(_V_).
+      1. If _base_ is an Environment Record, then
+        1. Assert: _base_ is a function Environment Record.
+        1. Let _base_ be ? _base_.GetThisBinding().
       1. Let _kind_ be GetHiddenMemberDescriptorKind(_hmd_).
       1. Assert: _kind_ will never be *"method"*.
-      1. Let _base_ be GetBase(_V_).
       1. If _kind_ is *"accessor"*, then
         1. Let _setter_ be _desc_.[[Set]].
         1. Assert: IsCallable(_setter_) is *true*.
