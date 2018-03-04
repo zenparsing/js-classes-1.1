@@ -2,6 +2,10 @@
 
 ## Motivation
 
+This is new proposal for extending ECMAScript class definition syntax and semantics. It is intend to a replacement for the  set of proposals currently under development within TC39. For the motivation for developing a new proposal see [Why A new Proposal](docs/motivation.md).
+
+## Goals
+
 The max-min class design, as implemented in ECMAScript 2018, has successfully balanced the need for a declarative class syntax with the desire to keep semantics lightweight and expressible in terms of the existing Javascript object model. Although there are currently several proposals for extending class definitions with additional features, we believe that existing class definitions are only missing the following fundamental capabilities:
 
 1. **Per-instance encapsulated state.** There should be a way for a class author to specify per-instance state that is not accessible outside of the class definition.
