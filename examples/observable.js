@@ -11,18 +11,18 @@ class Subscription {
   var cleanup;
 
   constructor(observer, subscriber) {
-    this->state = 'initializing';
-    this->observer = observer;
+    this::state = 'initializing';
+    this::observer = observer;
 
     let subscriptionObserver = new SubscriptionObserver(this);
 
     try {
-      this->cleanup = subscriber.call(undefined, subscriptionObserver);
+      this::cleanup = subscriber.call(undefined, subscriptionObserver);
     } catch (err) {
       enqueue(() => subscriptionObserver.error(err));
     }
 
-    this->state = 'ready';
+    this::state = 'ready';
   }
 
   unsubscribe() {
@@ -33,16 +33,16 @@ class Subscription {
   }
 
   get closed() {
-    return this->state === 'closed';
+    return this::state === 'closed';
   }
 
   hidden close() {
-    this->observer = undefined;
-    this->state = 'closed';
+    this::observer = undefined;
+    this::state = 'closed';
   }
 
   hidden validate() {
-    switch (this->state) {
+    switch (this::state) {
       case 'ready': break;
       case 'initializing': throw new Error('Subscription is not initialized');
       case 'running': throw new Error('Subscription observer is already running');
@@ -50,11 +50,11 @@ class Subscription {
   }
 
   hidden cleanup() {
-    let cleanup = this->cleanup;
+    let cleanup = this::cleanup;
     if (cleanup === undefined)
       return;
 
-    this->cleanup = undefined;
+    this::cleanup = undefined;
     if (!cleanup) {
       return;
     }
@@ -70,12 +70,12 @@ class Subscription {
   }
 
   static {
-    subscriptionClosed = s => s->state = 'closed';
-    closeSubscription = s => s->close();
-    validateSubscription = s => s->validate();
-    cleanupSubscription = s => s->cleanup();
-    setState = (s, state) => void s->state = state;
-    getObserver = s => s->observer;
+    subscriptionClosed = s => s::state = 'closed';
+    closeSubscription = s => s::close();
+    validateSubscription = s => s::validate();
+    cleanupSubscription = s => s::cleanup();
+    setState = (s, state) => void s::state = state;
+    getObserver = s => s::observer;
   }
 
 }
@@ -84,15 +84,15 @@ class SubscriptionObserver {
   var subscription;
 
   constructor(subscription) {
-    this->subscription = subscription;
+    this::subscription = subscription;
   }
 
   get closed() {
-    return subscriptionClosed(this->subscription);
+    return subscriptionClosed(this::subscription);
   }
 
   next(value) {
-    let subscription = this->subscription;
+    let subscription = this::subscription;
     if (subscriptionClosed(subscription))
       return;
 
@@ -113,7 +113,7 @@ class SubscriptionObserver {
   }
 
   error(value) {
-    let subscription = this->subscription;
+    let subscription = this::subscription;
     if (subscriptionClosed(subscription)) {
       throw value;
     }
@@ -136,7 +136,7 @@ class SubscriptionObserver {
   }
 
   complete() {
-    let subscription = this->subscription;
+    let subscription = this::subscription;
     if (subscriptionClosed(subscription))
       return;
 
@@ -168,7 +168,7 @@ class Observable {
     if (typeof subscriber !== 'function')
       throw new TypeError('Observable initializer must be a function');
 
-    this->subscriber = subscriber;
+    this::subscriber = subscriber;
   }
 
   subscribe(observer) {
@@ -179,7 +179,7 @@ class Observable {
         complete: arguments[2],
       };
     }
-    return new Subscription(observer, this->subscriber);
+    return new Subscription(observer, this::subscriber);
   }
 
   forEach(fn) {

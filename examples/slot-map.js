@@ -11,11 +11,11 @@ const DELETED = {};
 class SlotMap {
   var ctor;
 
-  constructor() { this->ctor = createCtor() }
-  get(key) { return this->ctor.get(key, value) }
-  set(key, value) { return this->ctor.set(key, value) }
-  delete(key) { return this->ctor.delete(key) }
-  has(key) { return this->ctor.has(key) }
+  constructor() { this::ctor = createCtor() }
+  get(key) { return this::ctor.get(key, value) }
+  set(key, value) { return this::ctor.set(key, value) }
+  delete(key) { return this::ctor.delete(key) }
+  has(key) { return this::ctor.has(key) }
 
   hidden createCtor() {
     return class extends (function(x) { return x }) {
@@ -23,12 +23,12 @@ class SlotMap {
 
       constructor(key, value) {
         super(key);
-        this->slot = value;
+        this::slot = value;
       }
 
       static get(key) {
         try {
-          const value = key->slot;
+          const value = key::slot;
           if (value !== DELETED)
             return value;
         } catch (x) {}
@@ -36,20 +36,20 @@ class SlotMap {
       }
 
       static set(key, value) {
-        try { key->slot = value }
+        try { key::slot = value }
         catch (x) { new this(key, value) }
         return this;
       }
 
       static has(key) {
-        try { return key->slot !== DELETED }
+        try { return key::slot !== DELETED }
         catch (x) { return false }
       }
 
       static delete(key) {
         try {
-          if (key->slot !== DELETED) {
-            key->slot = DELETED;
+          if (key::slot !== DELETED) {
+            key::slot = DELETED;
             return true;
           }
         } catch (x) {}

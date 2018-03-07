@@ -3,21 +3,21 @@ class Counter extends HTMLElement {
 
   constructor() {
     super();
-    this->x = 0;
-    this.onclick = () => this->clicked();
+    this::x = 0;
+    this.onclick = () => this::clicked();
   }
 
   connectedCallback() {
-    this->render();
+    this::render();
   }
 
   hidden clicked() {
-    this->x++;
-    window.requestAnimationFrame(() => this->render());
+    this::x++;
+    window.requestAnimationFrame(() => this::render());
   }
 
   hidden render() {
-    this.textContent = this->x.toString();
+    this.textContent = this::x.toString();
   }
 
   static {
