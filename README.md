@@ -2,7 +2,7 @@
 
 ## Motivation
 
-This is new proposal for extending ECMAScript class definition syntax and semantics. It is intend to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal see [Why A new Proposal](docs/motivation.md).
+This is new proposal for extending ECMAScript class definition syntax and semantics. It is intend to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal see *[why a new proposal](docs/motivation.md)*.
 
 ## Goals
 
