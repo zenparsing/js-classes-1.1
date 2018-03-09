@@ -506,7 +506,8 @@
       1. Assert: Type(_obj_) is Object.
       1. Assert: _constructor_ is an ECMAScript function object.
       1. Let _keys_ be _constructor_.[[InstanceVariableKeys]].
-      1. If _keys_ is *undefined*, return.
+      1. If _keys_ is *undefined* or an empty List, return.
+      1. If _obj_.[[Extensible]] is *false*, throw a *TypeError* exception.
       1. Let _instanceVars_ be _obj_.[[InstanceVariables]].
       1. For each element _key_ of _keys_, do
         1. For each element _var_ of _instanceVars_, do
