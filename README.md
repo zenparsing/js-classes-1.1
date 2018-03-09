@@ -2,7 +2,7 @@
 
 ## Motivation
 
-This is new proposal for extending ECMAScript class definition syntax and semantics. It is intend to a replacement for the  set of proposals currently under development within TC39. For the motivation for developing a new proposal see [Why A new Proposal](docs/motivation.md).
+This is new proposal for extending ECMAScript class definition syntax and semantics. It is intend to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal see [Why A new Proposal](docs/motivation.md).
 
 ## Goals
 
@@ -105,4 +105,5 @@ Lexically scoped instance variable declarations and hidden method definitions in
 - [Code examples](https://github.com/zenparsing/js-classes-1.1/tree/master/examples)
 - [Initial proposal and discussion](https://github.com/zenparsing/js-classes-1.1/issues/7)
 - [Assumptions and constraints](docs/assumptions-and-constraints.md)
+- [A Refactoring Example](docs/refactoring.md)
 - [Specification text](https://zenparsing.github.io/js-classes-1.1/)
