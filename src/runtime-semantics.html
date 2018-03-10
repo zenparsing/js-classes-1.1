@@ -37,7 +37,7 @@
       1. Let _result_ be ? Construct(_func_, _argList_, _newTarget_).
       1. Let _thisER_ be GetThisEnvironment().
       1. <ins>Perform</ins> ? _thisER_.BindThisValue(_result_).
-      1. <ins>Perform ! InitializeInstanceVariables(_result_, _thisER_.[[FunctionObject]]).</ins>
+      1. <ins>Perform ? InitializeInstanceVariables(_result_, _thisER_.[[FunctionObject]]).</ins>
       1. <ins>Return _result_.</ins>
     </emu-alg>
 
