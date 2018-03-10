@@ -69,7 +69,7 @@ window.customElements.define('num-counter', Counter);
 
 ## 2. Hidden Methods
 
-Next, we will convert our internal helper methods into *hidden methods* by adding the `hidden` modifier to method definitions and updating invocations of those methods to use the hidden access operator `->`.
+Next, we will convert our internal helper methods into *hidden methods* by adding the `hidden` modifier and updating invocations of those methods to use the hidden access operator `->`.
 
 ```js
 class Counter extends HTMLElement {
