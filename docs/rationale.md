@@ -5,9 +5,9 @@
 - Hidden names are lexically scoped to the body of the class definition that defines the hidden name.
 - Hidden names exist in a separate namespace from normal lexical declarations. A hidden name never shadows or clashes with a normal lexical declaration.
 - Conceptually, the bound value of a hidden name is the definition of that name provided by the class body.
-- Hidden names are only accessable using the `->` operator.
+- Hidden names are only accessible using the `->` operator.
 - The semantics of `->` is to create an ECMAScript Reference type value whose base component is the left operand of `->` and whose reference name component is the lexically bound value of the hidden name that is the right operand. Note that this is a new form of Reference.
-- The left operand of `->` must be object coerciable and supplies the object context for the reference. For a reference to an instance variable the reference base is the object whose instance variable state is being accessed.  For a reference to a hidden method the reference base is the `this` value that will be passed when the method is invoked.
+- The left operand of `->` must be object coercible and supplies the object context for the reference. For a reference to an instance variable the reference base is the object whose instance variable state is being accessed.  For a reference to a hidden method the reference base is the `this` value that will be passed when the method is invoked.
 - Hidden names (instance variables and hidden methods) exist in the same namespace, so an instance variable may not have the same name as a hidden method.
 - The kind of thing a hidden name is bound to is based upon its declaration. We can statically determine from the supplied name whether `->` is accessing an instance variable, a hidden accessor method, or invoking a hidden method.
 
@@ -24,7 +24,6 @@ trapped by ECMAScript Proxies.
 - The `var` declarations of a class definition collective and statically defined the "shape" of the hidden instance variable state introduced by that class definition. This "shape" can also be conceptualized as a group consisting of all the instance variables defined by a specific class definition.
 - When code attempts to access an instance variable of an object the access semantics must verify that the object state actually includes the instance variable group for that object. One way for an implementation to identify an instance variable group is by assigning a unique "brand" to each group and check for that brand on each instance variable access. This can be easily optimized with local flow analysis, since all instance variables in a group share the same brand, only the first access in a method must be checked.
 - A subclass that declares instance variables adds an additional instance variable group to the object returned from its `super` constructor call. The code in the subclass body only has visibility to the instance variables it defines.
-- An object that is non-extensible may not have additional instance variable groups added to it by a subclass constructor.
 
 ## Hidden Methods
 
@@ -40,7 +39,7 @@ trapped by ECMAScript Proxies.
 - The essential functionality provided by static initializers is the ability for a class definition to export functions that access hidden names into its enclosing lexical scope.  This permits construction of abstractions that permit sharing (i.e. friend access) among a group of related class definitions.
 - Static initializers also support encapsulation of static data property definitions and the freezing or sealing of the class.
 
-<sup>1</sup>Kevin's apparatus is a way to use class definitions to add a group of instance variables to an already constructed extensible object:
+<sup>1</sup>Kevin's apparatus is a way to use class definitions to add a group of instance variables to an already constructed object:
 
 ```js
 
