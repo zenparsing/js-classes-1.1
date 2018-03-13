@@ -45,11 +45,13 @@ trapped by ECMAScript Proxies.
 
 function IdentityConstructor(o) {
   // new IdentifyConstructor(o) just returns o
-  return o;
+  return function () {
+    return o;
+  }
 }
 
 
-let addSlot = x => class extends IdentityConstructor(x) {
+let addSlot = x => new class extends IdentityConstructor(x) {
   var slot;
   constructor() {
     super();
