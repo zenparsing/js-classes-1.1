@@ -48,6 +48,8 @@ Instance variable definitions don't have initializers. Instance variables are us
 
 A hidden method definition is a method that can only be directly invoked from inside the class body.
 
+Hidden method definitions begin with the `hidden` contextual keyword.
+
 Within a class body, hidden methods are invoked using the `->` operator.
 
 ```js
