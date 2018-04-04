@@ -1,12 +1,12 @@
-# Javascript Classes 1.1
+# JavaScript Classes 1.1
 
 ## Motivation
 
-This is new proposal for extending ECMAScript class definition syntax and semantics. It is intended to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal see *[why a new proposal](docs/motivation.md)*.
+This is a new proposal for extending ECMAScript's class definition syntax and semantics. It is intended to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal, see *[why a new proposal](docs/motivation.md)*.
 
 ## Goals
 
-The max-min class design, as implemented in ECMAScript 2015, has successfully balanced the need for a declarative class syntax with the desire to keep semantics lightweight and expressible in terms of the existing Javascript object model. Although there are currently several proposals for extending class definitions with additional features, we believe that existing class definitions are only missing the following fundamental capabilities:
+The max-min class design, as implemented in ECMAScript 2015, has successfully balanced the need for a declarative class syntax with the desire to keep semantics lightweight and expressible in terms of the existing JavaScript object model. Although there are currently several proposals for extending class definitions with additional features, we believe that existing class definitions are only missing the following fundamental capabilities:
 
 1. **Per-instance encapsulated state.** There should be a way for a class author to specify per-instance state that is not accessible outside of the class definition.
 1. **Secure method decomposition.** There should be a way for the user to refactor common code into methods that are not accessible outside of the class definition.
@@ -20,7 +20,7 @@ There are three kinds hidden class elements:
 
 ### 1. Instance Variables
 
-A instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class.
+An instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class.
 
 Within a class body, instance variables are accessed using the `->` operator.
 
@@ -38,7 +38,7 @@ class Point {
 }
 ```
 
-Instances variable names are lexically scoped and visible to everything (including nested functions and class definitions) contained in a class body.
+Instance variable names are lexically scoped and visible to everything (including nested functions and class definitions) contained in a class body.
 
 Attempting to access an instance variable using `->` produces a runtime `ReferenceError` if the left operand is not an object with the specific named instance variable defined by this class definition. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
 
