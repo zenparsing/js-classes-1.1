@@ -14,7 +14,7 @@ The max-min class design, as implemented in ECMAScript 2015, has successfully ba
 
 1. **Per-instance encapsulated state.** There should be a way for a class author to specify per-instance state that is not accessible outside of the class definition.
 2. **Secure method decomposition.** There should be a way for the user to refactor common code into methods that are not accessible outside of the class definition.
-3. **Customized constructor initialization.** There should be a way to initialize the class constructor function, for instance by adding arbitrary data properties, within the class definition.
+3. **Customized data initialization.** There should be a way to initialize the class prototype, for instance by adding arbitrary data properties, within the class definition.
 
 ## Overview
 
