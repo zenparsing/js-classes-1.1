@@ -1,100 +1,84 @@
-# JavaScript Classes 1.1
+# proposal-class-members
+This is a fork of the rejected js-classes-1.1 proposal aimed to pick up development where the previous proposal left off. Since the original was shot down due to the absense of a syntax for declaring public data members, that is one of the first things remedied by this fork. Along with a few syntax improvements for readability, the main goal is to provide TC39 with a proposal capable of providing everything demanded by the board without negatively impacting any features or natural integration expectations currently in the language.
 
 ## Motivation
 
 This is a new proposal for extending ECMAScript's class definition syntax and semantics. It is intended to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal, see *[why a new proposal](docs/motivation.md)*.
+
+## Philosophy
+Elements of a `class` definition should only appear on direct products of the `class` keyword. This means that if it's not on the prototype, on the constructor, or (as of this proposal) part of the closure definition, it's not a member of the `class` definition, and therefore, not a member of the class. A class "member" is therefore anything defined or produced within the lexical scope of the `class` definition and represented in on of the products of `class`.
 
 ## Goals
 
 The max-min class design, as implemented in ECMAScript 2015, has successfully balanced the need for a declarative class syntax with the desire to keep semantics lightweight and expressible in terms of the existing JavaScript object model. Although there are currently several proposals for extending class definitions with additional features, we believe that existing class definitions are only missing the following fundamental capabilities:
 
 1. **Per-instance encapsulated state.** There should be a way for a class author to specify per-instance state that is not accessible outside of the class definition.
-1. **Secure method decomposition.** There should be a way for the user to refactor common code into methods that are not accessible outside of the class definition.
-1. **Customized constructor initialization.** There should be a way to initialize the class constructor function, for instance by adding arbitrary data properties, within the class definition.
+2. **Secure method decomposition.** There should be a way for the user to refactor common code into methods that are not accessible outside of the class definition.
+3. **Customized constructor initialization.** There should be a way to initialize the class constructor function, for instance by adding arbitrary data properties, within the class definition.
 
 ## Overview
 
-This proposal adds the concept of hidden class elements to ECMAScript class definitions. Hidden class elements are only accessible from within the body of a class definition.
+This proposal adds the concept of an instance closure to ECMAScript class definitions. Much as with calling a function, creation of a new instance also triggers the creation of an instance closure. Declarations in the `class` definition beginning with `let` or `const` are directly executed inside the closure during this creation process. These closed-over instance-variables become the hidden instance-state of the new instance. 
 
-There are three kinds hidden class elements:
+There are four kinds hidden class members:
 
-### 1. Instance Variables
+### Instance Variables
 
-An instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class.
-
-Within a class body, instance variables are accessed using the `->` operator.
+An instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class. Within a class body, instance variables are accessed either directly by name if they have not been shadowed, or via the `::` operator. Instance variables are declared with the `let` keyword.
 
 ```js
 class Point {
   // Instance variable definition
-  var x, y;
+  let x, y;
 
   constructor(x, y) {
     // Instance variables are accessed
-    // with the "->" operator
-    this->x = x;
-    this->y = y;
+    // with the "::" operator
+    this::x = x;
+    this::y = y;
   }
 }
 ```
 
 Instance variable names are lexically scoped and visible to everything (including nested functions and class definitions) contained in a class body.
 
-Attempting to access an instance variable using `->` produces a runtime `ReferenceError` if the left operand is not an object with the specific named instance variable defined by this class definition. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
+Attempting to access an instance variable using `::` produces a runtime `ReferenceError` if the left operand is not an object posessing a closure with a definition aware of the current execution context. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
 
-Instance variable definitions don't have initializers. Instance variables are usually initialized by the constructor. An uninitialized instance variable has the value `undefined`.
+Instance variable definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of an initializer is determined at the time the `class` definition is parsed. Instance-specific value assignments can only be performed in the constructor.
 
-### 2. Hidden Methods
+### Instance Constants
 
-A hidden method definition is a method that can only be directly invoked from inside the class body.
+An instance constant is defined using the `const` keyword. As constants, they must have an initializer. Beyond these 2 points, everything that is true for instance variables is also true for instance constants.
 
-Hidden method definitions begin with the `hidden` contextual keyword.
+### Static Instance Variables & Constants
 
-Within a class body, hidden methods are invoked using the `->` operator.
+For each of the 2 kinds above, there is a static equivalent. The static equivalent is defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
 
 ```js
-class Spaceship {
-  // A hidden method definition
-  hidden flyTo(destination) {
-    // Blast off!
-  }
-
-  flyToMoon() {
-    // Hidden methods are invoked
-    // using the "->" operator
-    this->flyTo(Location.MOON);
-  }
+class A {
+  const static field1 = Symbol('field1');
+  let static field2;
+  ...
 }
 ```
 
-Like any other method, hidden methods can be accessors and may contain `super` property references.
+Hidden static members are placed in a separate closure attached to the constructor function. Such members can be accessed via the `::` operator with the constructor function itself as the target object.
 
-A hidden method definition may be prefixed by the `static` keyword.
+### Hidden Methods
 
-Hidden method names are lexically scoped and visible to everything contained in a class body.
+No direct syntax support will be available for creating hidden methods. However, since a variable can hold anything, a function expression is a valid initializer. If the function expression is an arrow function, it automatically inherits the context object of the instance-closure. Otherwise, the function will operate in accordance with the existing rules for all nested functions declared using the `function` keyword.
 
-Hidden methods can be accessed or invoked with any object supplied to the left of the `->`. It is up to the code of the method body whether or not a runtime error will occur if the `this` value is not an instance of the containing class or one of its subclasses.
+### Instance Closures
 
-### 3. Class Initializers
+The `class` keyword will, depending on the definition, produce up to 2 more products. Should the definition contain hidden static members, a closure containing these definitions will be produced, executed, and attached to the constructor function object. This closure definition will include a reference to each of the functions present as own properties of either the prototype or the constructor at the time of execution of the `class` definition.
 
-A class definition may contain at most one class initializer. If present, it is automatically executed as the final step of class definition evaluation.
+Should the definition contain hidden non-static members, a closure definition will be produced and attached to the constructor function object. This closure definition will include a reference to each of the functions present as own properties of the prototype at the time of execution of the `class` definition. Upon instantiation, immediately following the attaching of the prototype to the new instance, the closure definition will be executed and the resulting closure will be attached to the new instance.
 
-```js
-class MyElement extends HTMLElement {
-  // A class initializer
-  static {
-    customElements.define('my-element', this);
-  }
-}
-```
-
-There is no way to invoke the class initializer from outside of the class definition.
-
-Within a class initializer, the `this` value is bound to the class constructor and `super` property references are allowed.
+When a closure-referenced function is run with the closure's instance as its context, that closure is placed at the top of the scope chain just before adding the lexical scope of the called function itself.
 
 ### Additional Notes
 
-It is an early error if the name occurring to the right of a `->` operator is not the lexically visible name of a hidden method or instance variable.
+It is an early error if the name occurring to the right of a `::` operator is not the lexically visible name of a hidden method or instance variable.
 
 It is an early error if duplicate hidden names are defined within a single class definition and the names do not reference a get/set accessor pair.
 
@@ -104,7 +88,7 @@ Lexically scoped instance variable declarations and hidden method definitions in
 
 ### More
 
-- [Code examples](https://github.com/zenparsing/js-classes-1.1/tree/master/examples)
+- [Code examples](https://github.com/rdking/proposal-class-members/tree/master/examples)
 - [Technical notes and rationale](docs/rationale.md)
 - [Assumptions and constraints](docs/assumptions-and-constraints.md)
 - [A refactoring example](docs/refactoring.md)
