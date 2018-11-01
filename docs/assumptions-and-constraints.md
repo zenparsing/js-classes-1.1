@@ -2,7 +2,7 @@
 
 ## Assumptions
 
-We assume that either per-instance or per-class encapsulation is a required feature for Classes 1.1. We assume a strong preference for per-class encapsulation.
+We assume that either per-instance or per-class encapsulation is a required feature for Class Members. We assume a strong preference for per-class encapsulation.
 
 Using class-based encapsulation should be:
 

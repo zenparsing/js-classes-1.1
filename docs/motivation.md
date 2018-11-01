@@ -24,4 +24,5 @@ We identified a set of design rules that we have followed in developing our prop
 - Be internally consistent, with few, if any, special cases or unexpected feature interactions.
 - Have a pleasant, usable, and uncontroversial syntax.
 - Allow transpiler-based dialects by being syntactically orthogonal to known existing class extensions.
-- Be complete.  We don't expect to have to add of any new kinds of class elements in the foreseeable future.
+- Be complete.  We don't expect to have to add many if any new kinds of class elements in the foreseeable future.
+- Allow room for future expansion anyway. It's rare that someone thinks of everything up front.
