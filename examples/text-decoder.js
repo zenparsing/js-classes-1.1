@@ -1,31 +1,31 @@
 class Decoder {
-  var encoding;
-  var charBuffer;
-  var charOffset;
-  var charLength;
-  var surrogateSize;
+  let encoding;
+  let charBuffer;
+  let charOffset;
+  let charLength;
+  let surrogateSize;
 
   constructor(encoding = 'utf8') {
-    this->encoding = encoding
+    this::encoding = encoding
       .toLowerCase()
       .replace(/[-_]/, '')
       .replace(/^usc2$/, 'utf16le');
 
-    switch (this->encoding) {
-      case 'utf8': this->surrogateSize = 3; break;
-      case 'utf16le': this->surrogateSize = 2; break;
-      case 'base64': this->surrogateSize = 3; break;
-      default: this->surrogateSize = 0; break;
+    switch (this::encoding) {
+      case 'utf8': surrogateSize = 3; break;
+      case 'utf16le': surrogateSize = 2; break;
+      case 'base64': surrogateSize = 3; break;
+      default: surrogateSize = 0; break;
     }
 
-    this->charBuffer = new Buffer(6);
-    this->charOffset = 0;
-    this->charLength = 0;
+    charBuffer = new Buffer(6);
+    charOffset = 0;
+    charLength = 0;
   }
 
   decodeBuffer(buffer) {
-    if (this->surrogateSize === 0)
-      return buffer.toString(this->encoding);
+    if (surrogateSize === 0)
+      return buffer.toString(encoding);
 
     let value = '';
     let charCode = 0;
@@ -35,33 +35,33 @@ class Decoder {
     let end;
 
     // If the last write ended with an incomplete character...
-    while (this->charLength) {
+    while (charLength) {
       // Attempt to fill the char buffer
-      len = Math.min(this->charLength - this->charOffset, buffer.length);
-      buffer.copy(this->charBuffer, this->charOffset, offset, len);
+      len = Math.min(charLength - charOffset, buffer.length);
+      buffer.copy(charBuffer, charOffset, offset, len);
 
-      this->charOffset += (len - offset);
+      charOffset += (len - offset);
       offset = len;
 
       // If the char buffer is still not filled, exit and wait for more data
-      if (this->charOffset < this->charLength)
+      if (charOffset < charLength)
         return null;
 
       // Get the character that was split
-      value = this->charBuffer.slice(0, this->charLength).toString(this->encoding);
+      value = charBuffer.slice(0, charLength).toString(encoding);
       charCode = value.charCodeAt(value.length - 1);
 
       // If character is the first of a surrogate pair...
       if (charCode >= 0xD800 && charCode <= 0xDBFF) {
         // Extend the char buffer and attempt to fill it
         value = '';
-        this->charLength += this->surrogateSize;
+        charLength += surrogateSize;
         continue;
       }
 
       // Reset the char buffer
-      this->charOffset =
-      this->charLength = 0;
+      charOffset =
+      charLength = 0;
 
       // If there are no more bytes in this buffer, exit
       if (len === buffer.length)
@@ -71,17 +71,17 @@ class Decoder {
       break;
     }
 
-    len = this->detectIncomplete(buffer);
+    len = this::detectIncomplete(buffer);
     end = buffer.length;
 
-    if (this->charLength) {
+    if (charLength) {
       // Put incomplete character data into the char buffer
-      buffer.copy(this->charBuffer, 0, buffer.length - len, end);
-      this->charOffset = len;
+      buffer.copy(charBuffer, 0, buffer.length - len, end);
+      charOffset = len;
       end -= len;
     }
 
-    value += buffer.toString(this->encoding, 0, end);
+    value += buffer.toString(encoding, 0, end);
     end = value.length;
 
     // Get the last character in the string
@@ -90,66 +90,66 @@ class Decoder {
     // If character is a lead surrogate...
     if (charCode >= 0xD800 && charCode <= 0xDBFF) {
       end = value.length - 1;
-      size = this->surrogateSize;
+      size = surrogateSize;
 
       // Add surrogate data to the char buffer
-      this->charLength += size;
-      this->charOffset += size;
-      this->charBuffer.copy(this->charBuffer, size, 0, size);
-      this->charBuffer.write(value.charAt(end), this->encoding);
+      charLength += size;
+      charOffset += size;
+      charBuffer.copy(charBuffer, size, 0, size);
+      charBuffer.write(value.charAt(end), encoding);
     }
 
     return value.slice(0, end);
   }
 
   finalize() {
-    if (this->charOffset)
-      return this->charBuffer.slice(0, this->charOffset).toString(this->encoding);
+    if (charOffset)
+      return charBuffer.slice(0, charOffset).toString(encoding);
 
     return null;
   }
 
-  hidden detectIncomplete(buffer) {
-    switch (this->encoding) {
-      case 'utf8': return this->detectIncompleteUTF8(buffer);
-      case 'utf16le': return this->detectIncompleteUTF16(buffer);
-      case 'base64': return this->detectIncompleteBase64(buffer);
+  let detectIncomplete = (buffer) => {
+    switch (encoding) {
+      case 'utf8': return this::detectIncompleteUTF8(buffer);
+      case 'utf16le': return this::detectIncompleteUTF16(buffer);
+      case 'base64': return this::detectIncompleteBase64(buffer);
       default: throw new Error('Invalid encoding');
     }
   }
 
-  hidden detectIncompleteUTF8(buffer) {
+  let detectIncompleteUTF8 = (buffer) => {
     let c, i;
     for (i = Math.min(buffer.length, 3); i > 0; i--) {
       c = buffer[buffer.length - i];
       if (i == 1 && c >> 5 === 0x06) { // 110XXXXX
-        this->charLength = 2;
+        charLength = 2;
         break;
       }
 
       if (i <= 2 && c >> 4 === 0x0E) { // 1110XXXX
-        this->charLength = 3;
+        charLength = 3;
         break;
       }
 
       if (i <= 3 && c >> 3 === 0x1E) { // 11110XXX
-        this->charLength = 4;
+        charLength = 4;
         break;
       }
     }
     return i;
   }
 
-  hidden detectIncompleteUTF16(buffer) {
-    this->charOffset = buffer.length % 2;
-    this->charLength = this->charOffset ? 2 : 0;
-    return this->charOffset;
+  let detectIncompleteUTF16 = (buffer) => {
+    charOffset = buffer.length % 2;
+    charLength = charOffset ? 2 : 0;
+    return charOffset;
   }
 
-  hidden detectIncompleteBase64(buffer) {
-    this->charOffset = buffer.length % 3;
-    this->charLength = this->charOffset ? 3 : 0;
-    return this->charOffset;
+  let detectIncompleteBase64 = (buffer) => {
+    charOffset = buffer.length % 3;
+    charLength = charOffset ? 3 : 0;
+    return charOffset;
   }
 
 }

@@ -3,40 +3,40 @@
 export const registry = new JSDOMRegistry();
 
 export class JSDOM {
-  var createdBy;
+  let createdBy;
 
-  hidden registerWithRegistry() {
+  let registerWithRegistry = () => {
     // ... elided ...
   }
 
   static async fromURL(url, options = {}) {
-    JSDOM->normalizeFromURLOptions(options);
-    JSDOM->normalizeOptions(options);
+    JSDOM::normalizeFromURLOptions(options);
+    JSDOM::normalizeOptions(options);
 
     const body = await getBodyFromURL(url);
-    return JSDOM->finalizeFactoryCreated(new JSDOM(body, options), "fromURL");
+    return JSDOM::finalizeFactoryCreated(new JSDOM(body, options), "fromURL");
   }
 
   static fromFile(filename, options = {}) {
-    JSDOM->normalizeOptions(options);
+    JSDOM::normalizeOptions(options);
 
     const body = await getBodyFromFilename(filename);
-    return JSDOM->finalizeFactoryCreated(new JSDOM(body, options), "fromFile");
+    return JSDOM::finalizeFactoryCreated(new JSDOM(body, options), "fromFile");
   }
 
-  static hidden finalizeFactoryCreated(jsdom, factoryName) {
-    jsdom->createdBy = factoryName;
-    jsdom->registerWithRegistry(registry);
+  let static finalizeFactoryCreated = (jsdom, factoryName) => {
+    jsdom::createdBy = factoryName;
+    jsdom::registerWithRegistry(registry);
     return jsdom;
   }
 
-  static hidden normalizeFromURLOptions(options) {
+  let static normalizeFromURLOptions = (options) => {
     if (options.referrer === undefined) {
       throw new TypeError();
     }
   }
 
-  static hidden normalizeOptions(options) {
+  let static normalizeOptions = (options) => {
     if (options.url === undefined) {
       throw new TypeError();
     }

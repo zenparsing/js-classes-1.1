@@ -1,5 +1,5 @@
 class Counter extends HTMLElement {
-  let x;
+  let x = 0;
 
   let clicked = () => {
     x++;
@@ -10,11 +10,7 @@ class Counter extends HTMLElement {
     this.textContent = x.toString();
   }
 
-  constructor() {
-    super();
-    x = 0;
-    this.onclick = () => clicked();
-  }
+  onclick = () => clicked();
 
   connectedCallback() {
     render();
