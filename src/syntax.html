@@ -15,32 +15,28 @@
   <emu-grammar>
 
     ClassElement[Yield, Await] :
-      <ins>InstanceVariableDeclaration[?Yield, ?Await]</ins>
+      <ins>InstanceNonPropertyMemberDeclaration[?Yield, ?Await]</ins>
+      <ins>DataPropertyDeclaration[?Yield, ?Await]</ins>
       MethodDefinition[?Yield, ?Await]
-      <ins>HiddenMethod[?Yield, ?Await]</ins>
       `static` MethodDefinition[?Yield, ?Await]
-      <ins>`static` HiddenMethod[?Yield, ?Await]</ins>
-      <ins>ClassInitializer</ins>
       `;`
 
-    HiddenMethod[?Yield, ?Await] :
-      `hidden` MethodDefinition[?Yield, ?Await]
+    InstanceNonPropertyMemberDeclaration[Yield, Await] :
+      LetOrConst BindingList[?Yield, ?Await] `;`
+      LetOrConst `static` BindingList[?Yield, ?Await] `;`
 
-    InstanceVariableDeclaration[Yield, Await] :
-      `var` InstanceVariableList[?Yield, ?Await] `;`
+    DataPropertyDeclaration[Yield, Await] :
+      DataPropertyDefinition
+      `static` DataPropertyDefinition
 
-    InstanceVariableList[Yield, Await] :
-      BindingIdentifier[?Yield, ?Await]
-      InstanceVariableList `,` BindingIdentifier[?Yield, ?Await]
-
-    ClassInitializer :
-      `static` `{` FunctionBody[~Yield, ~Await] `}`
+    DataPropertyDefinition[Yield] :
+      PropertyName[?Yield] Initializer[?In, ?Yield]opt ';'
 
     MemberExpression[Yield, Await] :
       PrimaryExpression[?Yield, ?Await]
       MemberExpression[?Yield, ?Await] `[` Expression[+In, ?Yield, ?Await] `]`
       MemberExpression[?Yield, ?Await] `.` IdentifierName
-      <ins>MemberExpression[?Yield, ?Await] `->` IdentifierName</ins>
+      <ins>MemberExpression[?Yield, ?Await] `::` IdentifierName</ins>
       MemberExpression[?Yield, ?Await] TemplateLiteral[?Yield, ?Await]
       SuperProperty[?Yield, ?Await]
       MetaProperty
@@ -52,7 +48,7 @@
       CallExpression[?Yield, ?Await] Arguments[?Yield, ?Await]
       CallExpression[?Yield, ?Await] `[` Expression[+In, ?Yield, ?Await] `]`
       CallExpression[?Yield, ?Await] `.` IdentifierName
-      <ins>CallExpression[?Yield, ?Await] `->` IdentifierName</ins>
+      <ins>CallExpression[?Yield, ?Await] `::` IdentifierName</ins>
       CallExpression[?Yield, ?Await] TemplateLiteral[?Yield, ?Await]
 
   </emu-grammar>
