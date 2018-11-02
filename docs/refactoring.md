@@ -35,15 +35,16 @@ window.customElements.define('num-counter', Counter);
 
 ## 1. Instance Variables
 
-As the first step in our refactoring process, we will update the class definition so that internal state is stored in an *instance variable*. We add an instance variable declaration to the class using the `var` keyword and update references to this value using the hidden access operator `->`.
+As the first step in our refactoring process, we will update the class definition so that internal state is stored in an *instance variable*. We add an instance variable declaration to the class using the `let` keyword and update references to this value via direct access or using the "scope access operator" `::`.
 
 ```js
 class Counter extends HTMLElement {
-  var xValue;
+  let xValue;
 
-  get x() { return this->xValue; }
+  get x() { return xValue; }
+
   set x(value) {
-    this->xValue = value;
+    xValue = value;
     window.requestAnimationFrame(this.render.bind(this));
   }
 
@@ -55,7 +56,7 @@ class Counter extends HTMLElement {
   constructor() {
     super();
     this.onclick = this.clicked.bind(this);
-    this->xValue = 0;
+    xValue = 0;
   }
 
   connectedCallback() { this.render(); }
@@ -67,73 +68,29 @@ class Counter extends HTMLElement {
 window.customElements.define('num-counter', Counter);
 ```
 
-## 2. Hidden Methods
+## 2. Internal Methods
 
-Next, we will convert our internal helper methods into *hidden methods* by adding the `hidden` modifier and updating invocations of those methods to use the hidden access operator `->`.
+Finally, we will convert our internal helper methods into instance variable and assign the function to them using arrow function notation. Since instance variables are not properties, we'll have to convert our getter/setter pair into a simple function.
 
 ```js
 class Counter extends HTMLElement {
-  var xValue;
+  let xValue = 0;
 
-  hidden get x() { return this->xValue; }
-  hidden set x(value) {
-    this->xValue = value;
-    window.requestAnimationFrame(this->render.bind(this));
+  let incX = () => {
+    ++xValue;
+    window.requestAnimationFrame(render.bind(this));
   }
 
-  hidden clicked() {
-    this->x++;
-    window.requestAnimationFrame(this->render.bind(this));
+  let clicked = () => {
+    incX();
+    window.requestAnimationFrame(render.bind(this));
   }
 
-  constructor() {
-    super();
-    this->xValue = 0;
-    this.onclick = this->clicked.bind(this);
-  }
+  connectedCallback() { render(); }
 
-  connectedCallback() { this->render(); }
-
-  hidden render() {
-    this.textContent = this->x.toString();
+  let render = () => {
+    this.textContent = xValue.toString();
   }
 }
 window.customElements.define('num-counter', Counter);
-```
-
-## 3. Class Initializer Block
-
-Finally, we move the call to `customElements.define` inside the class definition by adding a *class initializer block*. The `this` value inside of a class initializer block refers to the constructor function of the class being defined.
-
-```js
-class Counter extends HTMLElement {
-  var xValue;
-
-  hidden get x() { return this->xValue; }
-  hidden set x(value) {
-    this->xValue = value;
-    window.requestAnimationFrame(this->render.bind(this));
-  }
-
-  hidden clicked() {
-    this->x++;
-    window.requestAnimationFrame(this->render.bind(this));
-  }
-
-  constructor() {
-    super();
-    this->xValue = 0;
-    this.onclick = this->clicked.bind(this);
-  }
-
-  connectedCallback() { this->render(); }
-
-  hidden render() {
-    this.textContent = this->x.toString();
-  }
-
-  static {
-    window.customElements.define('num-counter', this);
-  }
-}
 ```
