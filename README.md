@@ -50,9 +50,9 @@ Instance variable definitions may have initializers. The absense of an initializ
 
 An instance constant is defined using the `const` keyword. As constants, they must have an initializer. Beyond these 2 points, everything that is true for instance variables is also true for instance constants.
 
-### Static Instance Variables & Constants
+### Class Variables & Constants
 
-For each of the 2 kinds above, there is a static equivalent. The static equivalent is defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
+For each of the 2 kinds above, there is a static equivalent. Hidden static members are defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
 
 ```js
 class A {
@@ -67,6 +67,18 @@ Hidden static members are placed in a separate closure attached to the construct
 ### Hidden Methods
 
 No direct syntax support will be available for creating hidden methods. However, since a variable can hold anything, a function expression is a valid initializer. If the function expression is an arrow function, it automatically inherits the context object of the instance-closure. Otherwise, the function will operate in accordance with the existing rules for all nested functions declared using the `function` keyword.
+
+### Public Data Properties
+
+A public data property is declared in exactly the same fashion as an instance variable, but without the `let` prefix. Public data properties are placed on the prototype and initialized with undefined if no initializer is given, or the value of the initializer at the time the `class` definition is evaluated. Likewise, static public data properties can be created by prefixing a public data property with the `static` keyword.
+
+```js
+class A {
+  prop3 = 42;
+  static prop4;
+  ...
+}
+```
 
 ### Instance Closures
 
