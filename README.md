@@ -105,4 +105,4 @@ Lexically scoped instance variable declarations and hidden method definitions in
 - [Assumptions and constraints](docs/assumptions-and-constraints.md)
 - [A refactoring example](docs/refactoring.md)
 - [Why not fields?](docs/why-not-fields.md)
-- [Specification text](https://zenparsing.github.io/js-classes-1.1/)
+- [Specification text](https://rdking.github.io/proposal-class-members/)
