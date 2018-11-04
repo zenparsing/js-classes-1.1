@@ -80,17 +80,25 @@ class A {
 }
 ```
 
-### Instance Closures
+### Instance & Class Closures
 
-The `class` keyword will, depending on the definition, produce up to 2 more products. Should the definition contain hidden static members, a closure containing these definitions will be produced, executed, and attached to the constructor function object. This closure definition will include a reference to each of the functions present as own properties of either the prototype or the constructor at the time of execution of the `class` definition.
+The `class` keyword will, depending on the definition, produce up to 2 more products. Should the definition contain hidden static members, a class closure containing these definitions will be produced, executed, and attached to the constructor function object. Should the definition contain hidden non-static members, an instance closure definition will be produced and attached to the constructor function object.
 
-Should the definition contain hidden non-static members, a closure definition will be produced and attached to the constructor function object. This closure definition will include a reference to each of the functions present as own properties of the prototype at the time of execution of the `class` definition. Upon instantiation, immediately following the attaching of the prototype to the new instance, the closure definition will be executed and the resulting closure will be attached to the new instance.
+Upon instantiation of the class, immediately following the attaching of the prototype to the new instance, the instance closure definition will be executed and the resulting instance closure will be attached to the new instance.
 
-When a closure-referenced function is run with the closure's instance as its context, that closure is placed at the top of the scope chain just before adding the lexical scope of the called function itself.
+When a function is called with a class instance object (having an attached instance closure) as its context, the closure signature of the function is compared with the closure signature of the class instance object's instance closure prior to the generation of the called function's local scope. If the signatures match, the instance closure is added to the scope chain of the function call. This allows the variables in the instance closure to be used directly.
+
+### Closure Signatures
+
+When a `class` definition is evaluated, if an instance closure definition is created, a closure signature is created for and attached to that definition. This closure signature will be applied to every closure created from that definition. This signature is also attached to every member function declared by the `class` definition, including the default constructor. If a class closure is created, a closure signature is likewise create for and attached to it, as well as every member function declared by the `class` definition. This signature is used to make hidden member access verification as quick as possible.
 
 ### Additional Notes
 
-It is an early error if the name occurring to the right of a `::` operator is not the lexically visible name of a hidden method or instance variable.
+It is an early error if left hand argument (LHA) of a `::` operator is not an object with an attached instance closure.
+
+It is an early error if the right hand argument (RHA) of a `::` operator is not the lexically visible name of a hidden method or instance variable.
+
+It is an early error if the closure signature on the instance closure of the LHA of a `::` operator does not match a closure signature of the current execution context.
 
 It is an early error if duplicate hidden names are defined within a single class definition and the names do not reference a get/set accessor pair.
 
