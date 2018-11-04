@@ -1,11 +1,11 @@
-# Technical Notes and Rationale
+# Defintions and Technical Notes
 
-## Class Signature
+## Closure Signatures
 
-- A class signature is a unique internal value generated when the class definition is evaluated.
-- The class signature is attached to every function and accessor declaration lexically scoped in the class definition. This includes the default constructor provided when the developer does not write one.
-- The class signature is attached to every instance closure created by instantiating the class. Instance closures from subclasses may have multiple signatures attached.
-- The instance signature is used to quickly check if a given function has access to a particular instance closure.
+- A closure signature is a unique internal value generated whenever an instance closure definition or a class closure is generated.
+- The closure signature is attached to every function and accessor declaration lexically scoped in the class definition. 
+- The closure signature of the instance closure definition is attached to every instance closure created by instantiating the class.
+- The closure signature is used to quickly check if a given function has access to a particular instance or class closure.
 
 ## Class Members
 
@@ -15,18 +15,19 @@
 
 ## Operator `::`
 
-- Operator `::` is a "scope access operator" whose sole purpose is to provide access to the instance closure of an object from within a function sharing the same class signature.
+- Operator `::` is a "scope access operator" whose sole purpose is to provide access to the instance or class closure of an object from within a function sharing the same closure signature.
 - Since operator `::` does not access a property of the instance, ECMAScript Proxies cannot trap this operation.
 
-## Instance Closures
+## Instance & Class Closures
 
-- Instance closures are execution scopes containing the non-property declarations in a class definition.
-- Instance closures containing non-static members are attached to their target object immediately prior to the instance object becomming available as the context object of the constructor function.
-- Instance closures containing static members are attached to the constructor during the evaluation of the class definition.
-- Instance closures are added to the execution scope chain of member functions just before that function's own local scope.
-- The instance closure added to a called member function is provided by the target instance.
-- If the instance closure and the target instance do not share the same signature, a ReferenceError is thrown.
-- A Proxy is incapable of having an instance closure of its own. All operations against a Proxy involving instance closure access are immediately forwarded to the Proxy target. 
+- Instance & class closures are execution scopes containing the non-property declarations in a class definition.
+- Instance closures contain non-static members and are attached to their target object immediately prior to the instance object becomming available as the context object of the constructor function.
+- Class closures contain static members and are attached to the constructor during the evaluation of the class definition.
+- Class closures are only generated if the set of members to include is not empty.
+- Instance & class closures are added to the execution scope chain of member functions just before that function's own local scope.
+- The instance or class closure added to a called member function is provided by the target instance.
+- If the instance or class closure and the called member function do not share the same closure signature, the closure is not added to the scope chain.
+- A Proxy is incapable of having an instance or class closure of its own. All operations against a Proxy involving instance or class closure access are immediately forwarded to the Proxy target. 
 
 ## Instance Closure Definitions
 
@@ -41,7 +42,7 @@
 - Instance variables are declared via a distinct class body element (a `let` definition), and accessed via a distinct access operator (`::`) in order to conceptually distance them from the concept of object properties.
 - Instance variables can have initializers. The value of an initializer is statically determined at the time the class definition is evaluated. To initialize an instance variable to an instance-specific value, the constructor must be used. This should be no different from what ES developers are already accustomed to doing.
 - Instance variables can hold functions. If the function is an arrow function, the function will inherit the instance object that the instance closure is attached to as its default context.
-- Instance variables can be declared static using the `static` keyword after the `let` keyword. Static instance variables are collectively placed in a single instance closure that is attached to the constructor function. This instance closure shares the same class signature as the constructor.
+- Instance variables can be declared static using the `static` keyword after the `let` keyword. Static instance variables are collectively placed in a single class closure that is attached to the constructor function.
 - Instance variables are not visible to any existing reflection mechanisms.
 - Instance variable accesses are not trapped by ECMAScript Proxies.
 - `let` is repurposed to declare instance variables because its semantic conceptually limits the declaration to within the `{}` of the class definition.
