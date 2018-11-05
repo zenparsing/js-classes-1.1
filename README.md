@@ -44,7 +44,7 @@ Instance variable names are lexically scoped and visible to everything (includin
 
 Attempting to access an instance variable using `::` produces a runtime `ReferenceError` if the left operand is not an object posessing a closure with a definition aware of the current execution context. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
 
-Instance variable definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of an initializer is determined at the time the `class` definition is parsed. Instance-specific value assignments can only be performed in the constructor.
+Instance variable definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of a property initializer is determined at the time the `class` definition is parsed. Instance-specific property value assignments can only be performed in the constructor. The value of non-property initializers is determined during the creation of the instance or class closure. Their initializers are always instance-specific.
 
 ### Instance Constants
 
@@ -109,7 +109,7 @@ Lexically scoped instance variable declarations and hidden method definitions in
 ### More
 
 - [Code examples](https://github.com/rdking/proposal-class-members/tree/master/examples)
-- [Technical notes and rationale](docs/rationale.md)
+- [Definitions & Technical Notes](docs/definitions.md)
 - [Assumptions and constraints](docs/assumptions-and-constraints.md)
 - [A refactoring example](docs/refactoring.md)
 - [Why not fields?](docs/why-not-fields.md)

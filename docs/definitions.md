@@ -39,7 +39,7 @@
 
 - Instance variables provide per-instance state that is only accessible to code that is defined within the body of a class definition.
 - Instance variables are not object properties and have minimal semantic overlap with properties. They do not have attributes. They are not accessible via prototype lookup. They generally<sup>1</sup> may not be dynamically added after their construction is completed. They may not be deleted. We think it is very important that JS programmer develop a conceptual model of objects that does not confuse or conflate instance variables and own properties.
-- Instance variables are declared via a distinct class body element (a `let` definition), and accessed via a distinct access operator (`::`) in order to conceptually distance them from the concept of object properties.
+- Instance variables are declared via a distinct class body element (a `let` definition), and accessed via either a lexical name or a distinct access operator (`::`) in order to conceptually distance them from the concept of object properties.
 - Instance variables can have initializers. The value of an initializer is statically determined at the time the class definition is evaluated. To initialize an instance variable to an instance-specific value, the constructor must be used. This should be no different from what ES developers are already accustomed to doing.
 - Instance variables can hold functions. If the function is an arrow function, the function will inherit the instance object that the instance closure is attached to as its default context.
 - Instance variables can be declared static using the `static` keyword after the `let` keyword. Static instance variables are collectively placed in a single class closure that is attached to the constructor function.
@@ -52,7 +52,7 @@
 
 ## Instance Constants
 
-- Instance constants are declared via a distinct class body element (a `const` definition), and accessed via a distinct access operator (`::`) in order to conceptually distance them from the concept of object properties.
+- Instance constants are declared via a distinct class body element (a `const` definition), and accessed via either a lexical name or a distinct access operator (`::`) in order to conceptually distance them from the concept of object properties.
 - Instance constants must have an initializer as their values cannot be changed by any code within the class.
 - Beyond the first 2 points, everything that applies to an instance variable, also applies to an instance constant.
 
