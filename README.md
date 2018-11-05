@@ -24,7 +24,7 @@ There are four kinds hidden class members:
 
 ### Instance Variables
 
-An instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class. Within a class body, instance variables are accessed either directly by name if they have not been shadowed, or via the `::` operator. Instance variables are declared with the `let` keyword.
+An instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class. Within a class body, instance variables are accessed via the `::` operator. Instance variables are declared with the `let` keyword.
 
 ```js
 class Point {
@@ -42,7 +42,7 @@ class Point {
 
 Instance variable names are lexically scoped and visible to everything (including nested functions and class definitions) contained in a class body.
 
-Attempting to access an instance variable using `::` produces a runtime `ReferenceError` if the left operand is not an object posessing a closure with a definition aware of the current execution context. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
+Attempting to access an instance variable using `::` produces a runtime `ReferenceError` if the left operand is not an object posessing an instance or class closure whose closure signature is attached to the function object of the current execution context. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
 
 Instance variable definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of a property initializer is determined at the time the `class` definition is parsed. Instance-specific property value assignments can only be performed in the constructor. The value of non-property initializers is determined during the creation of the instance or class closure. Their initializers are always instance-specific.
 

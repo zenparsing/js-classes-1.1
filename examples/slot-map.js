@@ -14,13 +14,13 @@ class SlotMap {
 
     constructor(key, value) {
       super(key);
-      slot = value;
+      this::slot = value;
     }
 
     static get(key) {
       try {
         const value = key::slot;
-        if (value !== DELETED)
+        if (value !== this::DELETED)
           return value;
       } catch (x) {}
       return undefined;
@@ -33,14 +33,14 @@ class SlotMap {
     }
 
     static has(key) {
-      try { return key::slot !== DELETED }
+      try { return key::slot !== this::DELETED }
       catch (x) { return false }
     }
 
     static delete(key) {
       try {
-        if (key::slot !== DELETED) {
-          key::slot = DELETED;
+        if (key::slot !== this::DELETED) {
+          key::slot = this::DELETED;
           return true;
         }
       } catch (x) {}
@@ -48,8 +48,8 @@ class SlotMap {
     }
   };
 
-  get(key) { return ctor.get(key, value) }
-  set(key, value) { return ctor.set(key, value) }
-  delete(key) { return ctor.delete(key) }
-  has(key) { return ctor.has(key) }
+  get(key) { return this::ctor.get(key, value) }
+  set(key, value) { return this::ctor.set(key, value) }
+  delete(key) { return this::ctor.delete(key) }
+  has(key) { return this::ctor.has(key) }
 }

@@ -41,10 +41,10 @@ As the first step in our refactoring process, we will update the class definitio
 class Counter extends HTMLElement {
   let xValue;
 
-  get x() { return xValue; }
+  get x() { return this::xValue; }
 
   set x(value) {
-    xValue = value;
+    this::xValue = value;
     window.requestAnimationFrame(this.render.bind(this));
   }
 
@@ -56,7 +56,7 @@ class Counter extends HTMLElement {
   constructor() {
     super();
     this.onclick = this.clicked.bind(this);
-    xValue = 0;
+    this::xValue = 0;
   }
 
   connectedCallback() { this.render(); }
@@ -77,7 +77,7 @@ class Counter extends HTMLElement {
   let xValue = 0;
 
   let incX = () => {
-    ++xValue;
+    ++this::xValue;
     window.requestAnimationFrame(render.bind(this));
   }
 
@@ -89,7 +89,7 @@ class Counter extends HTMLElement {
   connectedCallback() { render(); }
 
   let render = () => {
-    this.textContent = xValue.toString();
+    this.textContent = this::xValue.toString();
   }
 }
 window.customElements.define('num-counter', Counter);
