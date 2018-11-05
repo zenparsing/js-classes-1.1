@@ -36,13 +36,13 @@
       1. ReturnIfAbrupt(_argList_).
       1. Let _result_ be ? Construct(_func_, _argList_, _newTarget_).
       1. Let _thisER_ be GetThisEnvironment().
-      1. <ins>Perform</ins> ? _thisER_.BindThisValue(_result_).
-      1. <ins>Perform ? InitializeInstanceVariables(_result_, _thisER_.[[FunctionObject]]).</ins>
-      1. <ins>Return _result_.</ins>
+      1. <ins>Let _activeFunction_ be _thisER_.[[FunctionObject]].</ins>
+      1. <ins>Perform ? InitializeInstanceVariables(_result_, _activeFunction_).</ins>
+      1. Return _thisER_.BindThisValue(_result_).
     </emu-alg>
 
     <emu-grammar>
-      MemberExpression : MemberExpression `->` IdentifierName
+      MemberExpression : MemberExpression `::` IdentifierName
     </emu-grammar>
     <emu-alg>
       1. Let _baseReference_ be the result of evaluating |MemberExpression|.
@@ -505,14 +505,25 @@
     <emu-alg>
       1. Assert: Type(_obj_) is Object.
       1. Assert: _constructor_ is an ECMAScript function object.
-      1. Let _keys_ be _constructor_.[[InstanceVariableKeys]].
-      1. If _keys_ is *undefined* or an empty List, return.
-      1. Let _instanceVars_ be _obj_.[[InstanceVariables]].
-      1. For each element _key_ of _keys_, do
-        1. For each element _var_ of _instanceVars_, do
-          1. If _var_.[[Key]] is _key_, throw a *TypeError* exception.
-        1. Let _var_ be a new Record{ [[Key]]: _key_, [[Value]]: *undefined* }.
-        1. Append _var_ to _instanceVars_.
+      1. Let _closureDef_ be _constructor_.[[InstanceClosureDefinition]].
+      1. If _closureDef_ is an ECMAScript function object, then
+        1. Let _instanceClosure_ be EvalInstanceClosureDefinition(_closureDef_).
+        1. Let _obj_.[[InstanceClosure]] be _instanceClosure_.
+      1. Return.
+    </emu-alg>
+  </emu-clause>
+
+  <emu-clause id="sec-evalinstanceclosuredefinition" aoid="EvalInstanceClosureDefinition">
+    <h1>EvalInstanceClosureDefinition ( _closureDef_ )</h1>
+    <emu-alg>
+      1. Let _callerContext_ be the running execution context.
+      1. Let _closure_ be PrepareForOrdinaryCall(_closureDef_, Undefined).
+      1. Assert: _closure_ is now the running execution context.
+      1. Perform OrdinaryCallBindThis(_closureDef_, _closure_, _obj_).
+      1. Perform OrdinaryCallEvaluateBody(_closureDef_, "[]").
+      1. Let _result_ be GetThisEnvironment().
+      1. Remove _closure_ from the execution context stack and restore _callerContext_ as the running execution context.
+      1. Return _result_.
     </emu-alg>
   </emu-clause>
 
