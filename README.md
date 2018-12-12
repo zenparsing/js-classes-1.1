@@ -6,7 +6,7 @@ This is a fork of the rejected js-classes-1.1 proposal aimed to pick up developm
 This is a new proposal for extending ECMAScript's class definition syntax and semantics. It is intended to be a replacement for the  set of proposals currently under development within TC39. For the motivation behind developing a new proposal, see *[why a new proposal](docs/motivation.md)*.
 
 ## Philosophy
-Elements of a `class` definition should only appear on direct products of the `class` keyword. This means that if it's not on the prototype, on the constructor, or (as of this proposal) part of the closure definition, it's not a member of the `class` definition, and therefore, not a member of the class. A class "member" is therefore anything defined or produced within the lexical scope of the `class` definition and represented in on of the products of `class`.
+Elements of a `class` definition should only appear on direct products of the `class` keyword. This means that if it's not on the prototype, on the constructor, or (as of this proposal) part of the private container definition, it's not a part of the `class` definition, and therefore, not a member of the class. A class "member" is therefore anything defined or produced within the lexical scope of the `class` definition and represented in one of the products of `class`.
 
 ## Goals
 
@@ -18,21 +18,33 @@ The max-min class design, as implemented in ECMAScript 2015, has successfully ba
 
 ## Overview
 
-This proposal adds the concept of an instance closure to ECMAScript class definitions. Much as with calling a function, creation of a new instance also triggers the creation of an instance closure. Declarations in the `class` definition beginning with `let` or `const` are directly executed inside the closure during this creation process. These closed-over instance-variables become the hidden instance-state of the new instance. 
+This proposal borrows the concept of private symbols, as proposed [here](https://github.com/zenparsing/proposal-private-symbols). Many attempts to create a form of data privacy have been attempted, but all save for private-symbols have failed to create privacy in a way that preserves the functionality of Proxy in the presence of private data. However, private-symbols introduces limitations of its own. Due to the fact that private symbols are themselves 1st class values in ES, developers would have the ability to monkey-patch code containing private symbols and expose the corresponding properties to the public. This is a violation of hard private, but not one that is insurmountable. With this proposal, private symbols are a mere implementation detail that provides the ability to create properties who's name is unknown and unretrievable on any object. Using this capability, the engine will be able to hide data on an object without fear that a developer can manipulate that data through any means other than provided for in this document.
 
-There are four kinds hidden class members:
 
-### Instance Variables
+### New products of `class`
+Both the constructor, and prototype will have additional properties as result of this proposal:
 
-An instance variable definition defines one or more hidden variables that exist as part of the state of each instance of a class. Within a class body, instance variables are accessed via the `::` operator. Instance variables are declared with the `let` keyword.
+Constructor -
+* Symbol.private("Signature") - This property contains a private symbol value used to passively perform basic brand checking. The value of this symbol is the key name for the private container created by the private initializer. This is the "class signature".
+* [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition.
+
+Prototype -
+* Symbol.private("Initializer") - This property is a function, similar to the constructor itself, and run by the constructor as the first instruction following "super". It's purpose is to create the private container on the instance and initialize the properties of that container to the specified values. The key name for this private container is the class signature. This function also creates a similar container on the constructor using the same class signature, to contain any static private data that has been declared.
+* [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition.
+
+
+### Instance-Private Properties
+
+An instance-private property definition defines one or more properties that exist in one of the private containers on an instance of the class. Within a class body, instance-private properties are accessed via the `::` operator. Instance-private properties are declared with the `priv` keyword.
 
 ```js
 class Point {
-  // Instance variable definition
-  let x, y;
+  // Instance-Private property definition
+  priv x = Symbol("Example");
+  priv [x];
 
   constructor(x, y) {
-    // Instance variables are accessed
+    // Instance-private properties are accessed
     // with the "::" operator
     this::x = x;
     this::y = y;
@@ -40,37 +52,31 @@ class Point {
 }
 ```
 
-Instance variable names are lexically scoped and visible to everything (including nested functions and class definitions) contained in a class body.
+Attempting to access an instance-private property using `::` produces a runtime `ReferenceError` if the class signature of the current execution context does not exist as a property of the instance object that is the left operand. In other words, a reference to an instance-private property only works when the object has been initialized by the constructor of the class owning the function making the access.
 
-Attempting to access an instance variable using `::` produces a runtime `ReferenceError` if the left operand is not an object posessing an instance or class closure whose closure signature is attached to the function object of the current execution context. In other words, a reference to an instance variable only works when the object is a normally constructed instance of this class or one of its subclasses.
+Instance-private property definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of an instance-private property's initializer is determined at the time an instance is initialized.
 
-Instance variable definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of a property initializer is determined at the time the `class` definition is parsed. Instance-specific property value assignments can only be performed in the constructor. The value of non-property initializers is determined during the creation of the instance or class closure. Their initializers are always instance-specific.
+### Class-Private Properties
 
-### Instance Constants
-
-An instance constant is defined using the `const` keyword. As constants, they must have an initializer. Beyond these 2 points, everything that is true for instance variables is also true for instance constants.
-
-### Class Variables & Constants
-
-For each of the 2 kinds above, there is a static equivalent. Hidden static members are defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
+The static equivalent of an instance-private property is a class-private property. Class-private properties are defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
 
 ```js
 class A {
-  const static field1 = Symbol('field1');
-  let static field2;
+  priv static field1 = Symbol('field1');
+  priv static field2;
   ...
 }
 ```
 
-Hidden static members are placed in a separate closure attached to the constructor function. Such members can be accessed via the `::` operator with the constructor function itself as the target object.
+Class-private properties are placed in a private container on the constructor function. Such members can be accessed via the `::` operator with the constructor function itself as the target object.
 
-### Hidden Methods
+### Instance-Private Methods
 
-No direct syntax support will be available for creating hidden methods. However, since a variable can hold anything, a function expression is a valid initializer. If the function expression is an arrow function, it automatically inherits the context object of the instance-closure. Otherwise, the function will operate in accordance with the existing rules for all nested functions declared using the `function` keyword.
+No direct syntax support will be available for creating instance-private methods. However, a property can hold anything, and a function expression is a valid initializer. If the function expression is an arrow function, it automatically inherits the context object of the instance object. Otherwise, the function will operate in accordance with the existing rules for all nested functions declared using the `function` keyword.
 
 ### Public Data Properties
 
-A public data property is declared in exactly the same fashion as an instance variable, but without the `let` prefix. Public data properties are placed on the prototype and initialized with undefined if no initializer is given, or the value of the initializer at the time the `class` definition is evaluated. Likewise, static public data properties can be created by prefixing a public data property with the `static` keyword.
+A public data property is declared in exactly the same fashion as an instance variable, but without the `priv` prefix. Public data properties are placed on the prototype and initialized with undefined if no initializer is given, or the value of the initializer at the time the `class` definition is evaluated. Likewise, static public data properties can be created by prefixing a public data property with the `static` keyword.
 
 ```js
 class A {
@@ -80,31 +86,31 @@ class A {
 }
 ```
 
-### Instance & Class Closures
+### `class` Products
 
-The `class` keyword will, depending on the definition, produce up to 2 more products. Should the definition contain hidden static members, a class closure containing these definitions will be produced, executed, and attached to the constructor function object. Should the definition contain hidden non-static members, an instance closure definition will be produced and attached to the constructor function object.
+Beyond the constructor and the prototype, the `class` keyword will, depending on the definition, produce up to 3 more products.
+* If the class contains no member definitions prefixed with `priv`, no additional products will be produced.
+* If `priv` members exist, `class will produce at minimum a class signature applied to all functions of the class, including the constructor.
+* If there are any `priv static` members, the `class` keyword will also produce a private container on the constructor.
+* If there are any `priv` members that are not `static`:
+    * The `class` keyword will produce a private initializer function attached to the prototype.
+    * The private initializer function will produce a private container on the instance.
 
-Upon instantiation of the class, immediately following the attaching of the prototype to the new instance, the instance closure definition will be executed and the resulting instance closure will be attached to the new instance.
+Upon instantiation of the class, immediately following the return of the new instance from the base class, the private initializer will be executed.
 
-When a function is called with a class instance object (having an attached instance closure) as its context, the closure signature of the function is compared with the closure signature of the class instance object's instance closure prior to the generation of the called function's local scope. If the signatures match, the instance closure is added to the scope chain of the function call. This allows the variables in the instance closure to be used directly.
-
-### Closure Signatures
-
-When a `class` definition is evaluated, if an instance closure definition is created, a closure signature is created for and attached to that definition. This closure signature will be applied to every closure created from that definition. This signature is also attached to every member function declared by the `class` definition, including the default constructor. If a class closure is created, a closure signature is likewise create for and attached to it, as well as every member function declared by the `class` definition. This signature is used to make hidden member access verification as quick as possible.
+When a function that accesses the private members of the context object is called, the context object is cheked to see if it has a property whose name matches the class signature of that function prior to the execution of the function. The same test is performed for each access of a private member of an object that is not the current context. These 2 checks guarantee that no access to private members can be performed from an inappropriate execution context, or using an inappropriate context object. This is _brand-checking_ as defined by this proposal.
 
 ### Additional Notes
 
-It is an early error if left hand argument (LHA) of a `::` operator is not an object with an attached instance closure.
+It is an early error if left hand argument (LHA) of a `::` operator is not an object with private members.
 
-It is an early error if the right hand argument (RHA) of a `::` operator is not the lexically visible name of a hidden method or instance variable.
+It is an early error if the class signature of the current execution context is not a property of the LHA of the `::` operator.
 
-It is an early error if the closure signature on the instance closure of the LHA of a `::` operator does not match a closure signature of the current execution context.
+It is an early error if duplicate private member names are defined within a single class definition and the names do not reference a get/set accessor pair.
 
-It is an early error if duplicate hidden names are defined within a single class definition and the names do not reference a get/set accessor pair.
+Reflection is not externally supported for any private member. It is not a goal of this proposal to support internal reflection, but it is likewise not precluded.
 
-Reflection is not supported on instance variables, instance variable names, hidden methods, or hidden method names.
-
-Lexically scoped instance variable declarations and hidden method definitions introduce new names into a parallel scope. Hidden names do not shadow non-hidden names.
+Private member names do not shadow public member names.
 
 ### More
 

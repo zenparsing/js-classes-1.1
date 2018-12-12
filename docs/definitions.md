@@ -1,6 +1,10 @@
 # Defintions and Technical Notes
 
-## Closure Signatures
+## Brand Checking
+- A brand check is the process by which a function verifies that it has the right to access the private container of an instance object.
+- A brand check cannot verify that the target object was constructed by the associated constructor, only that it was initialized by the constructor. 
+
+## Class Signatures
 
 - A closure signature is a unique internal value generated whenever an instance closure definition or a class closure is generated.
 - The closure signature is attached to every function and accessor declaration lexically scoped in the class definition. 
