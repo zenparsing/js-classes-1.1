@@ -120,3 +120,4 @@ Private member names do not shadow public member names.
 - [A refactoring example](docs/refactoring.md)
 - [Why not fields?](docs/why-not-fields.md)
 - [Specification text](https://rdking.github.io/proposal-class-members/)
+- [Private Symbols Specification](https://github.com/zenparsing/proposal-private-symbols)
