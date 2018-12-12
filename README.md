@@ -24,12 +24,14 @@ This proposal borrows the concept of private symbols, as proposed [here](https:/
 ### New products of `class`
 Both the constructor, and prototype will have additional properties as result of this proposal:
 
-Constructor -
+#### Constructor -
 * Symbol.private("Signature") - This property contains a private symbol value used to passively perform basic brand checking. The value of this symbol is the key name for the private container created by the private initializer. This is the "class signature".
 * [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition.
 
-Prototype -
+#### Prototype -
 * Symbol.private("Initializer") - This property is a function, similar to the constructor itself, and run by the constructor as the first instruction following "super". It's purpose is to create the private container on the instance and initialize the properties of that container to the specified values. The key name for this private container is the class signature. This function also creates a similar container on the constructor using the same class signature, to contain any static private data that has been declared.
+
+#### Additionally, the following property can appear on instances:
 * [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition.
 
 
