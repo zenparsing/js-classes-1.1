@@ -18,7 +18,9 @@ The max-min class design, as implemented in ECMAScript 2015, has successfully ba
 
 ## Overview
 
-This proposal borrows the concept of private symbols, as proposed [here](https://github.com/zenparsing/proposal-private-symbols). Many attempts to create a form of data privacy have been attempted, but all save for private-symbols have failed to create privacy in a way that preserves the functionality of Proxy in the presence of private data. However, private-symbols introduces limitations of its own. Due to the fact that private symbols are themselves 1st class values in ES, developers would have the ability to monkey-patch code containing private symbols and expose the corresponding properties to the public. This is a violation of hard private, but not one that is insurmountable. With this proposal, private symbols are a mere implementation detail that provides the ability to create properties who's name is unknown and unretrievable on any object. Using this capability, the engine will be able to hide data on an object without fear that a developer can manipulate that data through any means other than provided for in this document.
+This proposal borrows the concept of private symbols, as proposed [here](https://github.com/zenparsing/proposal-private-symbols), but there are a few differences. Private symbols will not be directly accessible to user-land code at all. `Object.assign` and operator `...` will not be affected by the private symbol implementation, as they only affect enumerable keys. `Object.seal` will not be affected by the private symbol implementation, as the private container is sealed immediately after initialization. `Object.freeze` will not be affected by the private symbol implementation, as it doesn't currently affect accessor properties, which remain the only "values" exposed on the object that may still change value after freezing.
+
+Many attempts to create a form of data privacy have been attempted, but all save for private-symbols have failed to create privacy in a way that preserves the functionality of Proxy in the presence of private data. However, private-symbols introduces limitations of its own. Due to the fact that private symbols are themselves 1st class values in ES, developers would have the ability to monkey-patch code containing private symbols and expose the corresponding properties to the public. This is a violation of hard private, but not one that is insurmountable. With this proposal, private symbols are a mere implementation detail that provides the ability to create properties who's name is unknown and unretrievable on any object. Using this capability, the engine will be able to hide data on an object without fear that a developer can manipulate that data through any means other than provided for in this document.
 
 
 ### New products of `class`
@@ -42,8 +44,8 @@ An instance-private property definition defines one or more properties that exis
 ```js
 class Point {
   // Instance-Private property definition
-  priv x = Symbol("Example");
-  priv [x];
+  priv x = 0;
+  priv y;
 
   constructor(x, y) {
     // Instance-private properties are accessed
@@ -74,7 +76,27 @@ Class-private properties are placed in a private container on the constructor fu
 
 ### Instance-Private Methods
 
-No direct syntax support will be available for creating instance-private methods. However, a property can hold anything, and a function expression is a valid initializer. If the function expression is an arrow function, it automatically inherits the context object of the instance object. Otherwise, the function will operate in accordance with the existing rules for all nested functions declared using the `function` keyword.
+Instance-private methods will have the same format as public methods, preceeded by `priv`. It is also possible to assign a function to a private data property. However, such functions will not be granted the class signature. It is not reasonable to expect the private initializer to be able to distinguish between initialization values that are external to the `class` definition and values defined inside the `class`. Therefore all such functions will be treated as external and left unsigned, even if they are defined inside the `class` lexical scope.
+
+```js
+class A {
+  priv member() { /* is a signed member function */ }
+  priv nonMember = () => {
+    /*
+      This one is a non-member and cannot access private members, even though
+      it is declared inside the class lexical scope. It does, however, still
+      automatically receive the `this` instance as its context.
+    */
+  }
+  priv nonMember2 = function() {
+    /*
+      This one has the same restrictions as nonMember, except that it does not
+      automatically receive the `this` instance as its context. It might as
+      have been defined outside of the `class`.
+    */
+  }
+}
+```
 
 ### Public Data Properties
 
@@ -92,7 +114,7 @@ class A {
 
 Beyond the constructor and the prototype, the `class` keyword will, depending on the definition, produce up to 3 more products.
 * If the class contains no member definitions prefixed with `priv`, no additional products will be produced.
-* If `priv` members exist, `class will produce at minimum a class signature applied to all functions of the class, including the constructor.
+* If `priv` members exist, `class` will produce at minimum a class signature applied to all functions of the class, including the constructor.
 * If there are any `priv static` members, the `class` keyword will also produce a private container on the constructor.
 * If there are any `priv` members that are not `static`:
     * The `class` keyword will produce a private initializer function attached to the prototype.
