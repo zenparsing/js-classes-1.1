@@ -2,31 +2,33 @@
 
 This proposal borrows the concept of private symbols, as proposed [here](https://github.com/zenparsing/proposal-private-symbols), but there are a few differences. Private symbols will not be directly accessible to user-land code at all. `Object.assign` and operator `...` will not be affected by the private symbol implementation, as they only affect enumerable keys. `Object.seal` will not be affected by the private symbol implementation, as the private container is sealed immediately after initialization. `Object.freeze` will not be affected by the private symbol implementation, as it doesn't currently affect accessor properties, which remain the only "values" exposed on the object that may still change value after freezing.
 
-Many attempts to create a form of data privacy have been attempted, but all save for private-symbols have failed to create privacy in a way that preserves the functionality of Proxy in the presence of private data. However, private-symbols introduces limitations of its own. Due to the fact that private symbols are themselves 1st class values in ES, developers would have the ability to monkey-patch code containing private symbols and expose the corresponding properties to the public. This is a violation of hard private, but not one that is insurmountable. With this proposal, private symbols are a mere implementation detail that provides the ability to create properties who's name is unknown and unretrievable on any object. Using this capability, the engine will be able to hide data on an object without fear that a developer can manipulate that data through any means other than provided for in this document.
+There have been many attempts to create a form of data privacy, but all save for private-symbols have failed to create privacy in a way that preserves the functionality of Proxy in the presence of private data. However, private-symbols introduces limitations of its own. Due to the fact that private symbols are themselves 1st class values in ES, developers would have the ability to monkey-patch code containing private symbols and expose the corresponding properties to the public. This is a violation of hard private, but not one that is insurmountable. 
+
+With this proposal, private symbols are a mere implementation detail that provides the ability to create properties who's name is unknown and unretrievable on any object. Using this capability, the engine will be able to hide data on an object without fear that a developer can manipulate that data through any means other than provided for in this proposal.
 
 ## New products of `class`
-Both the constructor, and prototype will have additional properties as result of this proposal:
+Both the constructor, and prototype can have additional properties as result of this proposal:
 
 #### Constructor -
 * Symbol.private("Signature") - This property contains a private symbol value used to passively perform basic brand checking. The value of this symbol is the key name for the private container created by the private initializer. This is the "class signature".
-* [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition.
+* [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition. This is the "class-closure".
 
 #### Prototype -
-* Symbol.private("Initializer") - This property is a function, similar to the constructor itself, and run by the constructor as the first instruction following "super". It's purpose is to create the private container on the instance and initialize the properties of that container to the specified values. The key name for this private container is the class signature. This function also creates a similar container on the constructor using the same class signature, to contain any static private data that has been declared.
+* Symbol.private("Initializer") - This property is a function, similar to the constructor itself, and run by the constructor as the first instruction (following "super", if it exists). It's purpose is to create the instance-closure and initialize the properties of that container to the specified values. The key name for this private container is the class signature. This function also initializes any `inst` properties. This is the "private initializer".
 
 #### Additionally, the following property can appear on instances:
-* [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition.
+* [Constructor[Symbol.private("Signature")]] - This property contains a private container object created by the private initializer of a constructor. It holds data properties and methods that were declared private and static in the `class` definition. This is the "instance-closure".
 
 
-## Instance-Private Properties
+## Private Data Members
 
-An instance-private property definition defines one or more properties that exist in one of the private containers on an instance of the class. Within a class body, instance-private properties are accessed via the `::` operator. Instance-private properties are declared with the `priv` keyword.
+A private data member definition defines one or more properties that exist in one of the private containers on an instance of the `class`. Within a `class` body, private data members are accessed via the `::` operator. Private data members are declared with the `let` keyword.
 
 ```js
 class Point {
   // Instance-Private property definition
-  priv x = 0;
-  priv y;
+  let x = 0;
+  let y;
 
   constructor(x, y) {
     // Instance-private properties are accessed
@@ -37,51 +39,35 @@ class Point {
 }
 ```
 
-Attempting to access an instance-private property using `::` produces a runtime `ReferenceError` if the class signature of the current execution context does not exist as a property of the instance object that is the left operand. In other words, a reference to an instance-private property only works when the object has been initialized by the constructor of the class owning the function making the access.
+Attempting to access a private data member using `::` produces a runtime `ReferenceError` if the class signature of the current execution context does not exist as a property of the instance object that is the left operand. In other words, a reference to a private data member only works when the object has been initialized by the constructor of the class that defines the function making the access.
 
-Instance-private property definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of an instance-private property's initializer is determined at the time an instance is initialized.
+Private data member definitions may have initializers. The absense of an initializer is equivalent to being initialized with `undefined`. The value of an private data member's initializer is determined at the time an instance is initialized.
 
-## Class-Private Properties
+## Private Constant Data Members
 
-The static equivalent of an instance-private property is a class-private property. Class-private properties are defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
+There are only 2 significant differences between private data members and private constant data members. Private constant data members are declared with the `const` keyword. Also, they must be initialized in their declaration.
+
+## Class-Private Members
+
+The static equivalent of a private data member is a class-private data member. Class-private data members are defined by placing the `static` keyword as the 2<sup>nd</sup> term of the definition.
 
 ```js
 class A {
-  priv static field1 = Symbol('field1');
-  priv static field2;
+  let static field1 = Symbol('field1');
+  const static field2 = 0;
   ...
 }
 ```
 
-Class-private properties are placed in a private container on the constructor function. Such members can be accessed via the `::` operator with the constructor function itself as the target object.
+Class-private data members are placed in a class-closure on the constructor function. Such members can be accessed via the `::` operator with the constructor function itself as the target object.
 
-## Instance-Private Methods
+## Private Member Functions
 
-Instance-private methods will have the same format as public methods, preceeded by `priv`. It is also possible to assign a function to a private data property. However, such functions will not be granted the class signature. It is not reasonable to expect the private initializer to be able to distinguish between initialization values that are external to the `class` definition and values defined inside the `class`. Therefore all such functions will be treated as external and left unsigned, even if they are defined inside the `class` lexical scope.
+No direct syntax support will be available for creating private member functions. However, since a private data member can hold anything, using a function expression as an initializer creates a private member function. If the function expression is an arrow function, it is automatically bound to the context object of the instance-closure. Otherwise, the function will operate in accordance with the existing rules for all nested functions declared using the function keyword.
 
-```js
-class A {
-  priv member() { /* is a signed member function */ }
-  priv nonMember = () => {
-    /*
-      This one is a non-member and cannot access private members, even though
-      it is declared inside the class lexical scope. It does, however, still
-      automatically receive the `this` instance as its context.
-    */
-  }
-  priv nonMember2 = function() {
-    /*
-      This one has the same restrictions as nonMember, except that it does not
-      automatically receive the `this` instance as its context. It might as
-      have been defined outside of the `class`.
-    */
-  }
-}
-```
+## Public Data Members
 
-## Public Data Properties
-
-A public data property is declared in exactly the same fashion as an instance variable, but without the `priv` prefix. Public data properties are placed on the prototype and initialized with undefined if no initializer is given, or the value of the initializer at the time the `class` definition is evaluated. Likewise, static public data properties can be created by prefixing a public data property with the `static` keyword.
+A public data member is declared in exactly the same fashion as a private data member, but without the `let` or `const` prefix. Public data properties are placed on the prototype and initialized with undefined if no initializer is given, or the value of the initializer at the time the `class` definition is evaluated. Likewise, static public data properties can be created by prefixing a public data property with the `static` keyword.
 
 ```js
 class A {

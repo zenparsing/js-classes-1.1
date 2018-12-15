@@ -10,9 +10,24 @@ Using class-based encapsulation should be:
 - Approachable: it should look easy and fun
 - Familiar: it should be similar to other encapsulation mechanisms in Javascript
 
+## Basic Principles
+
+For this proposal, and any others I may release, the following principles are considered absolute requirements. 
+
+#### The proposal must:
+
+* achieve the desired functionality
+* feel like regular ES code
+* be maximally compatible with all existing language features
+* be minimally conflicting with other, non-competing proposals
+* be maximally extensible for future related concepts
+* require as few trade-offs as possible
+* preserve the "prototype-based" nature of the language,
+* leave adequate room to ensure that what is sugar has a reasonably sugar-free equivalent
+
 ## Constraints
 
-Our solution space is considerably limited by path-dependencies that have arisen as a result of existing practice, Babel transformations, and compile-to-JS languages.
+Our solution space is considerably limited by path-dependencies that have arisen as a result of existing practice, Babel transformations, and compile-to-JS languages. 
 
 ### C1. The current instance/class field syntax for public fields is taken
 
