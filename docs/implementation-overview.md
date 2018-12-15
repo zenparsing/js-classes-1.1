@@ -67,12 +67,13 @@ No direct syntax support will be available for creating private member functions
 
 ## Public Data Members
 
-A public data member is declared in exactly the same fashion as a private data member, but without the `let` or `const` prefix. Public data properties are placed on the prototype and initialized with undefined if no initializer is given, or the value of the initializer at the time the `class` definition is evaluated. Likewise, static public data properties can be created by prefixing a public data property with the `static` keyword.
+A public data member is declared in almost the same fashion as a private data member, but with either `prop`, `inst`, or `static` as the prefix. Public data members declared with `prop` are placed on the prototype, while those declared with `inst` are placed on instance objects, and those declared with `static` are placed on the constructor. Members defined with either `prop` or `static` are initialized during the evaluation of the `class` definition while those defined with `inst` are initialized during the creation of an instance object. It is not valid to use `static`, `inst`, or `prop` in the same declaration as all 3 are placement modifiers targeting different objects.
 
 ```js
 class A {
-  prop3 = 42;
-  static prop4;
+  prop prop3 = 42;          //Lives on the prototype
+  static prop4;             //Lives on the constructor
+  inst prop5;               //Lives on an instance
   ...
 }
 ```
@@ -80,14 +81,14 @@ class A {
 ## `class` Products
 
 Beyond the constructor and the prototype, the `class` keyword will, depending on the definition, produce up to 3 more products.
-* If the class contains no member definitions prefixed with `priv`, no additional products will be produced.
-* If `priv` members exist, `class` will produce at minimum a class signature applied to all functions of the class, including the constructor.
-* If there are any `priv static` members, the `class` keyword will also produce a private container on the constructor.
-* If there are any `priv` members that are not `static`:
+* If the class contains no private data member definitions, no additional products will be produced.
+* If private data members exist, `class` will produce at minimum a class signature applied to all functions of the class, including the constructor.
+* If there are any class-private data members, the `class` keyword will also produce a class-closure on the constructor.
+* If there are any private data members that are not class-private:
     * The `class` keyword will produce a private initializer function attached to the prototype.
-    * The private initializer function will produce a private container on the instance.
+    * The private initializer function will produce a instance-closure on all instances.
 
-Upon instantiation of the class, immediately following the return of the new instance from the base class, the private initializer will be executed.
+Upon instantiation of the `class`, immediately following the return of the new instance from the base class, the private initializer will be executed.
 
 When a function that accesses the private members of the context object is called, the context object is cheked to see if it has a property whose name matches the class signature of that function prior to the execution of the function. The same test is performed for each access of a private member of an object that is not the current context. These 2 checks guarantee that no access to private members can be performed from an inappropriate execution context, or using an inappropriate context object. This is _brand-checking_ as defined by this proposal.
 
@@ -97,7 +98,7 @@ It is an early error if left hand argument (LHA) of a `::` operator is not an ob
 
 It is an early error if the class signature of the current execution context is not a property of the LHA of the `::` operator.
 
-It is an early error if duplicate private member names are defined within a single class definition and the names do not reference a get/set accessor pair.
+It is an early error if duplicate member names are defined within a single class definition and the names do not reference a get/set accessor pair.
 
 Reflection is not externally supported for any private member. It is not a goal of this proposal to support internal reflection, but it is likewise not precluded.
 
