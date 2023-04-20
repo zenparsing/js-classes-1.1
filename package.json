@@ -12,6 +12,6 @@
     "url": "git+https://github.com/zenparsing/js-classes-1.1.git"
   },
   "dependencies": {
-    "ecmarkup": "^3.12.0"
+    "ecmarkup": "^16.2.0"
   }
 }
